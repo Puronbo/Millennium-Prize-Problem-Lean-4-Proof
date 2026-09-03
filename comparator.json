@@ -1,7 +1,7 @@
 {
   "challenge_module": "Challenge",
   "solution_module": "Solution",
-  "permitted_axioms": ["classical.choice", "prop_ext"],
+  "permitted_axioms": ["classical.choice"],
   "theorem_names": [
     "massGapUnificationTheorem",
     "riemannHypothesisGodForceEquivalence"
