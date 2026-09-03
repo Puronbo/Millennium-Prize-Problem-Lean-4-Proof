@@ -199,8 +199,7 @@ instance : MassGapProblem PNPData where
           by_contra h₅
           have h₆ : a.pEvidence + a.uncertainty ≤ 0 := by linarith
           have h₇ : a.pEvidence ≤ -a.uncertainty := by linarith
-          have h₈ : a.uncertainthesis is non-negative, pEvidence can be normalized to be non-negative
-          have h₉ : a.uncertainty ≥ 0 := by
+          have h₈ : a.uncertainty ≥ 0 := by
             by_contra h₉
             have h₁₀ : a.uncertainty < 0 := by linarith
             linarith
