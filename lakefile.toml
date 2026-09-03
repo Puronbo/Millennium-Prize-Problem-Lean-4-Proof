@@ -1,0 +1,11 @@
+name = "millennium-prize-problem-lean-4-proof"
+version = "0.1.0"
+
+dependencies.Mathlib.git = "https://github.com/leanprover-community/mathlib4"
+
+[[exe]]
+name = "main"
+main = "Main.lean"
+
+[aliases]
+build = "exe"

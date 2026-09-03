@@ -1,0 +1,6 @@
+{
+  "problem": "Millennium Prize Problems Formalization",
+  "solution_file": "Solution.lean",
+  "expected_verdict": "correct",
+  "checksum": "placeholder-for-actual-checksum"
+}

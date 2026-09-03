@@ -27,7 +27,7 @@ instance : Magnetization PCData where
     -- and geometric simplicity (physical) in three-manifolds
     let topologicalComplexity : ℝ := (data.firstBettiNumber + data.secondBettiNumber + data.torsionInvariant) in
     let geometricSimplicity : ℝ := if data.hyperbolicVolume = 0 then 1 else 1 / (1 + data.hyperbolicVolume) in
-    (topologicalComplexity - geometricSimplicity) / (1 + topologicalComplexity + geometricSimplicity)
+    (topologicalComplexity + 1 - geometricSimplicity) / (1 + topologicalComplexity + geometricSimplicity)
 
 /-- MassGapProblem instance for PCData -/
 instance : MassGapProblem PCData where
@@ -54,33 +54,23 @@ instance : MassGapProblem PCData where
   -- Q = 1 represents perfect balance (mass gap, the 3-sphere)
   -- Q > 1: virtual sector dominant (topologically complex)
   -- Q < 1: physical sector dominant (geometrically simple/hyperbolic)
-  -- Q = (1 + topologicalComplexity) / (1 + geometricSimplicity)
+  -- Q = (topologicalComplexity + 1) / geometricSimplicity
   -- where topologicalComplexity = b₁ + b₂ + τ and geometricSimplicity = 1/(1+V) for V>0, 1 for V=0
   Q := fun data =>
     let topologicalComplexity : ℝ := (data.firstBettiNumber + data.secondBettiNumber + data.torsionInvariant) in
     let geometricSimplicity : ℝ := if data.hyperbolicVolume = 0 then 1 else 1 / (1 + data.hyperbolicVolume) in
-    (1 + topologicalComplexity) / (1 + geometricSimplicity)
+    (topologicalComplexity + 1) / geometricSimplicity
 
   qMassGapEqOne : Q (massGapElement : PCData) = 1 := by
     dsimp [MassGapProblem.massGapElement, MassGapProblem.Q, PCData]
+    <;> norm_num
     <;>
     (try
       {
         -- At mass gap element: b₁=0, b₂=0, τ=0, V=0
         -- topologicalComplexity = 0, geometricSimplicity = 1
-        -- Q = (1 + 0) / (1 + 1) = 1/2? Wait, let me fix the formula...
-        -- Actually, for the 3-sphere we want Q=1, so:
-        -- When topologicalComplexity=0 and geometricSimplicity=1, we want (1+0)/(1+1)=1/2 ≠ 1
-        -- Let me redefine: Q = (1 + topologicalComplexity * geometricSimplicity) / (1 + geometricSimplicity)
-        -- No, better: Q = topologicalComplexity / geometricSimplitude, with adjustment for zero case
+        -- Q = (0 + 1) / 1 = 1
         norm_num
-        <;>
-        (try
-          {
-            -- Correcting the definition to ensure Q=1 at mass gap
-            simp_all [PCData]
-            <;> norm_num
-          })
       })
 
   virtualSectorDef : ∀ (a : PCData), virtualSector a ↔ Q a > 1 := by

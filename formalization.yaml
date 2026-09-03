@@ -1,0 +1,19 @@
+name: Millennium Prize Problems Lean 4 Formalization
+description: A unified formalization of the seven Millennium Prize Problems through a mass gap framework in Lean 4
+authors:
+  - Puronbo
+license: MIT
+lean_version: "4.8.0"
+dependencies:
+  - mathlib4
+keywords:
+  - Millennium Prize Problems
+  - P vs NP
+  - Yang-Mills
+  - Riemann Hypothesis
+  - Navier-Stokes
+  - Birch and Swinnerton-Dyer
+  - Hodge Conjecture
+  - Poincaré Conjecture
+  - Mass Gap
+  - Unified Framework

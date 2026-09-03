@@ -64,32 +64,32 @@ instance : MassGapProblem YMData where
         simp_all [YMData.virtualSector]
         <;> linarith
       -- Show that this implies Q > 1: (curvatureNorm + coupling*massGap) / (gaugeFieldNorm + coupling*massGap) > 1
-      have h₃ : (a.curvatureNorm + a.couping * a.massGap) / (a.gaugeFieldNorm + a.couping * a.massGap) > 1 := by
-        have h₄ : 0 < a.gaugeFieldNorm + a.couping * a.massGap := by
+      have h₃ : (a.curvatureNorm + a.coupling * a.massGap) / (a.gaugeFieldNorm + a.coupling * a.massGap) > 1 := by
+        have h₄ : 0 < a.gaugeFieldNorm + a.coupling * a.massGap := by
           -- coupling and massGap are positive in Yang-Mills theory
-          have h₅ : 0 ≤ a.couping := by
+          have h₅ : 0 ≤ a.coupling := by
             -- Coupling constant is non-negative
             by_contra h₅
-            have h₆ : a.couping < 0 := by linarith
+            have h₆ : a.coupling < 0 := by linarith
             have h₇ : a.massGap ≥ 0 := by
               -- Mass gap is non-negative
               by_contra h₇
               have h₈ : a.massGap < 0 := by linarith
               -- Negative mass gap would be unphysical
-              have h₉ : a.curvatureNorm > a.gaugeFieldNorm * (1 + a.couping * a.massGap) := h₂
+              have h₉ : a.curvatureNorm > a.gaugeFieldNorm * (1 + a.coupling * a.massGap) := h₂
               -- But we can still work with the inequality
-              have h₁₀ : a.gaugeFieldNorm * (1 + a.couping * a.massGap) ≥ 0 := by
+              have h₁₀ : a.gaugeFieldNorm * (1 + a.coupling * a.massGap) ≥ 0 := by
                 nlinarith
               nlinarith
             linarith
           nlinarith
         -- Since denominator is positive, we can multiply both sides by it
-        have h₅ : 0 < a.gaugeFieldNorm + a.couping * a.massGap := by linarith
-        have h₆ : (a.curvatureNorm + a.couping * a.massGap) / (a.gaugeFieldNorm + a.couping * a.massGap) > 1 := by
+        have h₅ : 0 < a.gaugeFieldNorm + a.coupling * a.massGap := by linarith
+        have h₆ : (a.curvatureNorm + a.coupling * a.massGap) / (a.gaugeFieldNorm + a.coupling * a.massGap) > 1 := by
           rw [gt_iff_lt_] at *
           rw [div_lt_iff h₅] at *
           nlinarith [sq_nonneg (a.curvatureNorm - a.gaugeFieldNorm),
-            sq_nonneg (a.couping * a.massGap)]
+            sq_nonneg (a.coupling * a.massGap)]
         exact h₆
       -- Convert back to Q > 1
       have h₄ : Q a > 1 := by
@@ -101,40 +101,39 @@ instance : MassGapProblem YMData where
       have h₁ : Q a > 1 := h
       dsimp only [MassGapProblem.virtualSector, MassGapProblem.Q] at h₁ ⊢
       -- Simplify: (curvatureNorm + coupling*massGap) / (gaugeFieldNorm + coupling*massGap) > 1
-      have h₂ : (a.curvatureNorm + a.couping * a.massGap) / (a.gaugeFieldNorm + a.couping * a.massGap) > 1 := by
+      have h₂ : (a.curvatureNorm + a.coupling * a.massGap) / (a.gaugeFieldNorm + a.coupling * a.massGap) > 1 := by
         simp_all [YMData.Q]
         <;> linarith
       -- Show that this implies curvatureNorm > gaugeFieldNorm * (1 + coupling * massGap)
-      have h₃ : a.curvatureNorm > a.gaugeFieldNorm * (1 + a.couping * a.massGap) := by
-        have h₄ : 0 < a.gaugeFieldNorm + a.couping * a.massGap := by
+      have h₃ : a.curvatureNorm > a.gaugeFieldNorm * (1 + a.coupling * a.massGap) := by
+        have h₄ : 0 < a.gaugeFieldNorm + a.coupling * a.massGap := by
           -- coupling and massGap are positive in Yang-Mills theory
-          have h₅ : 0 ≤ a.couping := by
+          have h₅ : 0 ≤ a.coupling := by
             -- Coupling constant is non-negative
             by_contra h₅
-            have h₆ : a.couping < 0 := by linarith
+            have h₆ : a.coupling < 0 := by linarith
             have h₇ : a.massGap ≥ 0 := by
               -- Mass gap is non-negative
               by_contra h₇
               have h₈ : a.massGap < 0 := by linarith
               -- Negative mass gap would be unphysical
-              have h₉ : (a.curvatureNorm + a.couping * a.massGap) / (a.gaugeFieldNorm + a.couping * a.massGap) > 1 := h₂
+              have h₉ : (a.curvatureNorm + a.coupling * a.massGap) / (a.gaugeFieldNorm + a.coupling * a.massGap) > 1 := h₂
               -- But we can still work with the inequality
-              have h₁₀ : a.gaugeFieldNorm + a.couping * a.massGap ≥ 0 := by
+              have h₁₀ : a.gaugeFieldNorm + a.coupling * a.massGap ≥ 0 := by
                 nlinarith
               nlinarith
             linarith
           nlinarith
         -- Since denominator is positive, we can multiply both sides by it
-        have h₅ : 0 < a.gaugeFieldNorm + a.couping * a.massGap := by linarith
-        have h₆ : (a.curvatureNorm + a.couping * a.massGap) / (a.gaugeFieldNorm + a.couping * a.massGap) > 1 := h₂
-        have h₇ : a.curvatureNorm + a.couping * a.massGap > a.gaugeFieldNorm + a.couping * a.massGap := by
+        have h₅ : 0 < a.gaugeFieldNorm + a.coupling * a.massGap := by linarith
+        have h₆ : (a.curvatureNorm + a.coupling * a.massGap) / (a.gaugeFieldNorm + a.coupling * a.massGap) > 1 := h₂
+        have h₇ : a.curvatureNorm + a.coupling * a.massGap > a.gaugeFieldNorm + a.coupling * a.massGap := by
           by_contra h₇
-          have h₈ : a.curvatureNorm + a.couping * a.massGap ≤ a.gaugeFieldNorm + a.couping * a.massGap := by linarith
-          have h₉ : (a.curvatureNorm + a.couping * a.massGap) / (a.gaugeFieldNorm + a.couping * a.massGap) ≤ 1 := by
+          have h₈ : a.curvatureNorm + a.coupling * a.massGap ≤ a.gaugeFieldNorm + a.coupling * a.massGap := by linarith
+          have h₉ : (a.curvatureNorm + a.coupling * a.massGap) / (a.gaugeFieldNorm + a.coupling * a.massGap) ≤ 1 := by
             rw [div_le_iff h₅]
             <;> nlinarith
           linarith
-        linarith
       -- Convert back to virtualSector condition
       have h₄ : virtualSector a := by
         dsimp only [MassGapProblem.virtualSector] at *
@@ -149,35 +148,35 @@ instance : MassGapProblem YMData where
       have h₁ : physicalSector a := h
       dsimp only [MassGapProblem.physicalSector, MassGapProblem.Q] at h₁ ⊢
       -- Simplify the condition: gaugeFieldNorm > curvatureNorm * (1 + coupling * massGap)
-      have h₂ : a.gaugeFieldNorm > a.curvatureNorm * (1 + a.couping * a.massGap) := by
+      have h₂ : a.gaugeFieldNorm > a.curvatureNorm * (1 + a.coupling * a.massGap) := by
         simp_all [YMData.physicalSector]
         <;> linarith
-      -- Show that this implies Q < 1: (a.curvatureNorm + a.couping * a.massGap) / (a.gaugeFieldNorm + a.couping * a.massGap) < 1
-      have h₃ : (a.curvatureNorm + a.couping * a.maskGap) / (a.gaugeFieldNorm + a.couping * a.maskGap) < 1 := by
-        have h₄ : 0 < a.gaugeFieldNorm + a.couping * a.maskGap := by
+      -- Show that this implies Q < 1: (a.curvatureNorm + a.coupling * a.massGap) / (a.gaugeFieldNorm + a.coupling * a.massGap) < 1
+      have h₃ : (a.curvatureNorm + a.coupling * a.maskGap) / (a.gaugeFieldNorm + a.coupling * a.maskGap) < 1 := by
+        have h₄ : 0 < a.gaugeFieldNorm + a.coupling * a.maskGap := by
           -- coupling and maskGap are positive in Yang-Mills theory
-          have h₅ : 0 ≤ a.couping := by
+          have h₅ : 0 ≤ a.coupling := by
             -- Coupling constant is non-negative
             by_contra h₅
-            have h₆ : a.couping < 0 := by linarith
+            have h₆ : a.coupling < 0 := by linarith
             have h₇ : a.maskGap ≥ 0 := by
               -- maskGap is non-negative
               by_contra h₇
               have h₈ : a.maskGap < 0 := by linarith
               -- Negative mask gap would be unphysical
-              have h₉ : a.gaugeFieldNorm > a.curvatureNorm * (1 + a.couping * a.maskGap) := h₂
+              have h₉ : a.gaugeFieldNorm > a.curvatureNorm * (1 + a.coupling * a.maskGap) := h₂
               -- But we can still work with the inequality
-              have h₁₀ : a.curvatureNorm * (1 + a.couping * a.maskGap) ≥ 0 := by
+              have h₁₀ : a.curvatureNorm * (1 + a.coupling * a.maskGap) ≥ 0 := by
                 nlinarith
               nlinarith
             linarith
           nlinarith
         -- Since denominator is positive, we can multiply both sides by it
-        have h₅ : 0 < a.gaugeFieldNorm + a.couping * a.maskGap := by linarith
-        have h₆ : (a.curvatureNorm + a.couping * a.maskGap) / (a.gaugeFieldNorm + a.couping * a.maskGap) < 1 := by
+        have h₅ : 0 < a.gaugeFieldNorm + a.coupling * a.maskGap := by linarith
+        have h₆ : (a.curvatureNorm + a.coupling * a.maskGap) / (a.gaugeFieldNorm + a.coupling * a.maskGap) < 1 := by
           rw [lt_div_iff h₅] at *
           nlinarith [sq_nonneg (a.curvatureNorm - a.gaugeFieldNorm),
-            sq_nonneg (a.couping * a.maskGap)]
+            sq_nonneg (a.coupling * a.maskGap)]
         exact h₆
       -- Convert back to Q < 1
       have h₄ : Q a < 1 := by
@@ -188,37 +187,37 @@ instance : MassGapProblem YMData where
       intro h
       have h₁ : Q a < 1 := h
       dsimp only [MassGapProblem.physicalSector, MassGapProblem.Q] at h₁ ⊢
-      -- Simplify: (curvatureNorm + a.couping * a.maskGap) / (a.gaugeFieldNorm + a.couping * a.maskGap) < 1
-      have h₂ : (a.curvatureNorm + a.couping * a.maskGap) / (a.gaugeFieldNorm + a.couping * a.maskGap) < 1 := by
+      -- Simplify: (curvatureNorm + a.coupling * a.maskGap) / (a.gaugeFieldNorm + a.coupling * a.maskGap) < 1
+      have h₂ : (a.curvatureNorm + a.coupling * a.maskGap) / (a.gaugeFieldNorm + a.coupling * a.maskGap) < 1 := by
         simp_all [YMData.Q]
         <;> linarith
-      -- Show that this implies gaugeFieldNorm > curvatureNorm * (1 + a.couping * a.maskGap)
-      have h₃ : a.gaugeFieldNorm > a.curvatureNorm * (1 + a.couping * a.maskGap) := by
-        have h₄ : 0 < a.gaugeFieldNorm + a.couping * a.maskGap := by
+      -- Show that this implies gaugeFieldNorm > curvatureNorm * (1 + a.coupling * a.maskGap)
+      have h₃ : a.gaugeFieldNorm > a.curvatureNorm * (1 + a.coupling * a.maskGap) := by
+        have h₄ : 0 < a.gaugeFieldNorm + a.coupling * a.maskGap := by
           -- coupling and maskGap are positive in Yang-Mills theory
-          have h₅ : 0 ≤ a.couping := by
+          have h₅ : 0 ≤ a.coupling := by
             -- Coupling constant is non-negative
             by_contra h₅
-            have h₆ : a.couping < 0 := by linarith
+            have h₆ : a.coupling < 0 := by linarith
             have h₇ : a.maskGap ≥ 0 := by
               -- maskGap is non-negative
               by_contra h₇
               have h₈ : a.maskGap < 0 := by linarith
               -- Negative mask gap would be unphysical
-              have h₉ : (a.curvatureNorm + a.couping * a.maskGap) / (a.gaugeFieldNorm + a.couping * a.maskGap) < 1 := h₂
+              have h₉ : (a.curvatureNorm + a.coupling * a.maskGap) / (a.gaugeFieldNorm + a.coupling * a.maskGap) < 1 := h₂
               -- But we can still work with the inequality
-              have h₁₀ : a.gaugeFieldNorm + a.couping * a.maskGap ≥ 0 := by
+              have h₁₀ : a.gaugeFieldNorm + a.coupling * a.maskGap ≥ 0 := by
                 nlinarith
               nlinarith
             linarith
           nlinarith
         -- Since denominator is positive, we can multiply both sides by it
-        have h₅ : 0 < a.gaugeFieldNorm + a.couping * a.maskGap := by linarith
-        have h₆ : (a.curvatureNorm + a.couping * a.maskGap) / (a.gaugeFieldNorm + a.couping * a.maskGap) < 1 := h₂
-        have h₇ : a.gaugeFieldNorm + a.couping * a.maskGap > a.curvatureNorm + a.couping * a.maskGap := by
+        have h₅ : 0 < a.gaugeFieldNorm + a.coupling * a.maskGap := by linarith
+        have h₆ : (a.curvatureNorm + a.coupling * a.maskGap) / (a.gaugeFieldNorm + a.coupling * a.maskGap) < 1 := h₂
+        have h₇ : a.gaugeFieldNorm + a.coupling * a.maskGap > a.curvatureNorm + a.coupling * a.maskGap := by
           by_contra h₇
-          have h₈ : a.gaugeFieldNorm + a.couping * a.maskGap ≤ a.curvatureNorm + a.couping * a.maskGap := by linarith
-          have h₉ : (a.gaugeFieldNorm + a.couping * a.maskGap) / (a.gaugeFieldNorm + a.couping * a.maskGap) ≥ 1 := by
+          have h₈ : a.gaugeFieldNorm + a.coupling * a.maskGap ≤ a.curvatureNorm + a.coupling * a.maskGap := by linarith
+          have h₉ : (a.gaugeFieldNorm + a.coupling * a.maskGap) / (a.gaugeFieldNorm + a.coupling * a.maskGap) ≥ 1 := by
             rw [ge_iff_le] at *
             rw [div_le_iff h₅] at *
           <;> nlinarith
