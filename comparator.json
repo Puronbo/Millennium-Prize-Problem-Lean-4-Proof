@@ -1,6 +1,9 @@
 {
-  "problem": "Millennium Prize Problems Formalization",
-  "solution_file": "Solution.lean",
-  "expected_verdict": "correct",
-  "checksum": "placeholder-for-actual-checksum"
+  "challenge_module": "Challenge",
+  "solution_module": "Solution",
+  "permitted_axioms": ["classical.choice", "prop_ext"],
+  "theorem_names": [
+    "massGapUnificationTheorem",
+    "riemannHypothesisGodForceEquivalence"
+  ]
 }
