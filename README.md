@@ -1,27 +1,58 @@
-# Millennium Prize Problem Proofs in Lean 4
+# Mass Gap Framework Implementation in Lean
 
-This repository contains formal proofs of the Millennium Prize Problems in Lean 4, organized within a unified mass gap framework.
+This project implements a unified mass gap framework connecting major mathematical conjectures and theories through a common structure involving virtual/physical sectors, a Q parameter, and mass gap elements.
 
-## Contents
+## Components Implemented
 
-- `UniversalSingularity/PvsNP.lean` - P vs NP problem
-- `UniversalSingularity/YangMills.lean` - Yang-Mills existence and mass gap
-- `UniversalSingularity/RiemannHypothesis.lean` - Riemann Hypothesis
-- `UniversalSingularity/NavierStokes.lean` - Navier-Stokes existence and smoothness
-- `UniversalSingularity/BSD.lean` - Birch and Swinnerton-Dyer conjecture
-- `UniversalSingularity/PoincareConjecture.lean` - Poincaré conjecture (Perelman's theorem)
-- `UniversalSingularity/HodgeConjecture.lean` - Hodge conjecture
-- `UniversalSingularity/GodForce.lean` - Supporting framework for god force properties
-- `UniversalSingularity/MassGap.lean` - Core mass gap framework definitions
-- `UniversalSingularity/MassGapTheorem.lean` - Core mass gap theorem proofs
+1. **P vs NP** (`UniversalSingularity/PvsNP.lean`)
+   - Computational complexity theory
+   - Evidence measures for P and NP problems
 
-## Framework Overview
+2. **Yang-Mills** (`UniversalSingularity/YangMills.lean`)
+   - Gauge theory and mass gap
+   - Curvature and gauge field norms
 
-Each problem is implemented as an instance of a unified mass gap framework that defines:
-- Virtual and physical sectors
-- A Q parameter measuring deviation from balance (Q = 1 at mass gap)
-- Magnetization and god force properties
+3. **Riemann Hypothesis** (`UniversalSingularity/RiemannHypothesis.lean`)
+   - Zeta zero statistics
+   - Pair correlation and GUE connections
+
+4. **Navier-Stokes** (`UniversalSingularity/NavierStokes.lean`)
+   - Fluid dynamics and turbulence
+   - Vorticity and velocity field norms
+
+5. **Birch and Swinnerton-Dyer Conjecture** (`UniversalSingularity/BSD.lean`)
+   - Elliptic curve theory
+   - Analytic vs algebraic rank
+   - Regulator, period, Tamagawa, and Sha invariants
+
+## Framework Concepts
+
+Each component follows this structure:
+
+- **Virtual Sector**: Represents UV/high-energy/fluctuation-dominated behavior
+- **Physical Sector**: Represents IR/low-energy/configuration-dominated behavior  
+- **Mass Gap Element**: Balanced state where Q = 1
+- **Q Parameter**: Measures deviation from balance (Q > 1: virtual dominant, Q < 1: physical dominant)
+- **Magnetization**: Measures net alignment between virtual and physical components
+- **God Force Property**: Holds at mass gap element (neither sector dominant)
+- **Zero Magnetization**: Holds at mass gap element (perfect balance)
+
+## Mathematical Connections
+
+Each implementation includes enhanced connections to the underlying mathematical theory:
+- P vs NP: Computational complexity, proof verification
+- Yang-Mills: Gauge theory, confinement, coupling constants
+- Riemann Hypothesis: Zeta function, pair correlations, random matrix theory
+- Navier-Stokes: Fluid turbulence, Reynolds number, energy cascade
+- BSD Conjecture: Elliptic curves, L-functions, Birch and Swinnerton-Dyer formula
+
+## Implementation Details
+
+All components are implemented in Lean 4 with:
+- Type-safe structures for domain-specific data
+- Typeclass instances for Magnetization and MassGapProblem
 - Rigorous proofs of key properties
+- Connections to actual mathematical theories
 
 ## Usage
 
@@ -36,22 +67,13 @@ let mg : ComponentName.Data := ComponentName.massGapElement
 let q : ℝ := ComponentName.Q mg  -- Should be 1
 ```
 
-## Build Requirements
+## Current Status
 
-- Lean 4
-- Mathlib
-
-## Status
-
-All core Millennium Prize Problems have been formalized within the mass gap framework:
+All five major components have been successfully implemented:
 - [x] P vs NP
-- [x] Yang-Mills existence and mass gap
+- [x] Yang-Mills  
 - [x] Riemann Hypothesis
-- [x] Navier-Stokes existence and smoothness
-- [x] Birch and Swinnerton-Dyer conjecture
-- [x] Poincaré conjecture
-- [x] Hodge conjecture
+- [x] Navier-Stokes
+- [x] Birch and Swinnerton-Dyer Conjecture
 
-## References
-
-The formalizations are based on the mathematical literature for each problem and incorporate the mass gap framework as a unifying conceptual structure.
+The framework provides a unified language for discussing balance conditions across disparate mathematical domains.
