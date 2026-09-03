@@ -1,13 +1,13 @@
 name: Millennium Prize Problems Lean 4 Formalization
 description: A unified formalization of the seven Millennium Prize Problems through a mass gap framework in Lean 4, connecting P vs NP, Yang-Mills, Riemann Hypothesis, Navier-Stokes, Birch and Swinnerton-Dyer, Hodge Conjecture, and Poincaré Conjecture via the Q parameter and God force property where Q=1 represents the balance point between virtual and physical sectors.
 authors:
-  - name: Puronbo
-    email: puronbo@example.com
+  - name: Michael_Grafiel_S._Puno
+    email: michaelgrafielspuno@gmail.com
 license: MIT
 lean_version: "4.8.0"
 responsible_maintainers:
-  - name: Puronbo
-    email: puronbo@example.com
+  - name: Michael_Grafiel_S._Puno
+    email: michaelgrafielspuno@gmail.com
 classification:
   arxiv: [math.LO, cs.LO, math.NT, math.AP, math-ph]
 dependencies:
