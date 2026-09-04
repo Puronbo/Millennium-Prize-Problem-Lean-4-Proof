@@ -80,12 +80,4 @@ theorem godForceAtMassGap [P : MassGapProblem α] :
 
 end MassGapProblem
 
-/-- Magnetization of a configuration (a real "net alignment"), used to describe
-the balance between virtual and physical contributions in the analogy. -/
-class Magnetization (α : Type u) where
-  /-- Net alignment of a configuration. -/
-  magnetization : α → ℝ
-  /-- A configuration has zero magnetization. -/
-  isMagnetizationZero : α → Prop
-
 end UniversalSingularity
