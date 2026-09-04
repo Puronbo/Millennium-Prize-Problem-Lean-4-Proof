@@ -1,11 +1,26 @@
 name = "millennium-prize-problem-lean-4-proof"
 version = "0.1.0"
+keywords = ["math", "formal-verification"]
+defaultTargets = ["MillenniumPrizeProblem"]
 
-dependencies.Mathlib.git = "https://github.com/leanprover-community/mathlib4"
+[[require]]
+name = "mathlib"
+scope = "leanprover-community"
+rev = "v4.33.1"
 
-[[exe]]
-name = "main"
-main = "Main.lean"
-
-[aliases]
-build = "exe"
+[[lean_lib]]
+name = "MillenniumPrizeProblem"
+roots = [
+  "Main",
+  "Solution",
+  "Challenge",
+  "UniversalSingularity.MassGap",
+  "UniversalSingularity.MassGapTheorem",
+  "UniversalSingularity.RiemannHypothesis",
+  "UniversalSingularity.PvsNP",
+  "UniversalSingularity.YangMills",
+  "UniversalSingularity.NavierStokes",
+  "UniversalSingularity.BSD",
+  "UniversalSingularity.PoincareConjecture",
+  "UniversalSingularity.HodgeConjecture",
+]

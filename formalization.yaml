@@ -1,15 +1,15 @@
-name: Millennium Prize Problems Lean 4 Formalization
-description: A unified formalization of the seven Millennium Prize Problems through a mass gap framework in Lean 4, connecting P vs NP, Yang-Mills, Riemann Hypothesis, Navier-Stokes, Birch and Swinnerton-Dyer, Hodge Conjecture, and Poincaré Conjecture via the Q parameter and God force property where Q=1 represents the balance point between virtual and physical sectors.
+name: Heuristic Q-Model in Lean 4 + Mathlib
+description: An honest, pedagogical Lean 4 + Mathlib framework that attaches each of the seven Millennium Prize Problems to a real-valued parameter Q and a massGapElement with Q = 1. It proves only elementary facts about the real numbers (trichotomy of <=); it does NOT prove or resolve any Millennium Prize Problem.
 authors:
   - name: Michael_Grafiel_S._Puno
     email: michaelgrafielspuno@gmail.com
 license: MIT
-lean_version: "4.28.0"
+lean_version: "4.33.1"
 responsible_maintainers:
   - name: Michael_Grafiel_S._Puno
     email: michaelgrafielspuno@gmail.com
 classification:
-  arxiv: [math.LO, cs.LO, math.NT, math.AP, math-ph]
+  arxiv: [math.LO]
 dependencies:
   - mathlib4
 sources:
@@ -20,15 +20,14 @@ automation:
 review:
   status: pending
 keywords:
-  - Millennium Prize Problems
+  - Lean 4
+  - Mathlib
+  - Mass Gap
+  - Heuristic Model
   - P vs NP
   - Yang-Mills
   - Riemann Hypothesis
   - Navier-Stokes
   - Birch and Swinnerton-Dyer
   - Hodge Conjecture
-  - Poincaré Conjecture
-  - Mass Gap
-  - Unified Framework
-  - Lean 4
-  - Formal Verification
+  - Poincare Conjecture
