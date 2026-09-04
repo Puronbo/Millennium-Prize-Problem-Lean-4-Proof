@@ -17,10 +17,12 @@ roots = [
   "UniversalSingularity.MassGap",
   "UniversalSingularity.MassGapTheorem",
   "UniversalSingularity.RiemannHypothesis",
+  "UniversalSingularity.RiemannHypothesisReal",
   "UniversalSingularity.PvsNP",
   "UniversalSingularity.YangMills",
   "UniversalSingularity.NavierStokes",
   "UniversalSingularity.BSD",
+  "UniversalSingularity.BSDReal",
   "UniversalSingularity.PoincareConjecture",
   "UniversalSingularity.HodgeConjecture",
 ]

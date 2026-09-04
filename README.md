@@ -42,6 +42,19 @@ about the *model*, not a proof of the Riemann Hypothesis.
 `Main.lean`, `Solution.lean`, and `Challenge.lean` are thin entry points with
 explicit disclaimers.
 
+## Bridge modules (real mathematics, statements only)
+
+Two modules state two problems on the **genuine** Mathlib objects, leaving every
+unproved step as an explicit `sorry` `gap` marker (see `ROADMAP.md`):
+
+- `UniversalSingularity/RiemannHypothesisReal.lean` — states RH on
+  `riemannZeta` / `riemannZetaZeros`.
+- `UniversalSingularity/BSDReal.lean` — states BSD on `WeierstrassCurve ℚ` and
+  its complex `WeierstrassCurve.LSeries`.
+
+These prove **no** Millennium statement; they pin down precisely what a real proof
+would need. Use them as the bridge head for future work.
+
 ## Build
 
 ```
