@@ -664,6 +664,41 @@ theorem eight_p_eq_z : p + p + p + p + p + p + p + p = z := by
 theorem nine_p_eq_a : p + p + p + p + p + p + p + p + p = a := by
   rw [eight_p_eq_z, add_z_p_eq_a]
 
+/-! ## An independent computation: `3T = 9P`
+
+Adding `T` and `X` directly gives the same point as the nine-term chain: with
+`T = 3P` and `X = 6P` the relation `T + X = 9P` is `3T = 9P`, cross-checking the
+doubling `2T = X` and the multiple `9P = A` above.
+-/
+
+/-- The secant slope through `T` and `X` is `15/7`. -/
+theorem slope_tx : W.slope (-1) 6 (-1) 14 = 15 / 7 := by
+  rw [WeierstrassCurve.Affine.slope_of_X_ne (x₁ := -1) (x₂ := 6) (y₁ := -1) (y₂ := 14)
+    (by norm_num : (-1 : ℚ) ≠ 6)]
+  norm_num
+
+/-- The coordinate `x(T + X) = -20/49`. -/
+theorem addX_tx : W.addX (-1) 6 (W.slope (-1) 6 (-1) 14) = -20 / 49 := by
+  norm_num [slope_tx, WeierstrassCurve.Affine.addX]
+
+/-- The coordinate `y(T + X) = -435/343`. -/
+theorem addY_tx : W.addY (-1) 6 (-1) (W.slope (-1) 6 (-1) 14) = -435 / 343 := by
+  norm_num [slope_tx, WeierstrassCurve.Affine.addY]
+
+/-- `T + X = A`, i.e. `3T = 9P`. -/
+theorem add_t_x_eq_a : t + x = a := by
+  unfold t x a
+  rw [add_of_X_ne (x₁ := -1) (x₂ := 6) (y₁ := -1) (y₂ := 14) (h₁ := nonsingular_T)
+    (h₂ := nonsingular_X) (by norm_num : (-1 : ℚ) ≠ 6)]
+  rw [WeierstrassCurve.Affine.Point.some.injEq]
+  exact ⟨addX_tx, addY_tx⟩
+
+/-- `3T = 9P`. -/
+theorem three_t_eq_a : t + t + t = a := by
+  rw [two_t_eq_x]
+  rw [add_comm]
+  exact add_t_x_eq_a
+
 /-- `-P = (0, -1)`. -/
 theorem neg_p_eq_r : -p = r := by
   unfold p r
@@ -717,6 +752,19 @@ theorem neg_u_eq_q : -u = q := by
   rw [neg_some nonsingular_U]
   rw [WeierstrassCurve.Affine.Point.some.injEq]
   exact ⟨rfl, negY_1m1⟩
+
+/-- `-(2P) = U`: the negative of a multiple is the corresponding negative
+multiple. -/
+theorem neg_two_p_eq_u : -(p + p) = u := by
+  rw [two_p_eq_q, neg_q_eq_u]
+
+/-- `-(3P) = S`. -/
+theorem neg_three_p_eq_s : -(p + p + p) = s := by
+  rw [three_p_eq_t, neg_t_eq_s]
+
+/-- `-S = T`: the negative of `-3P` is `3P`. -/
+theorem neg_s_eq_t : -s = t := by
+  rw [← neg_t_eq_s, neg_neg]
 
 /-! ## None of the points is the identity -/
 
@@ -806,7 +854,10 @@ theorem p_ne_q : p ≠ q := by
 /-! ## There is no torsion of order `2` through `9`
 
 For the generator `P`, the multiples `2P`, `3P`, `4P`, `5P`, `6P`, `7P`, `8P`,
-`9P` are computed above and are all distinct from the identity.
+`9P` are computed above and are all distinct from the identity.  Below, the same
+facts are restated in the group-theoretic form `(n : ℕ) • p ≠ 0`, using the
+`nsmul` operation of the additive group of the curve; the rewrite by
+`succ_nsmul` recovers the repeated-sum notation of the `*_ne_zero` theorems.
 -/
 
 /-- `P` does not have order `2`. -/
@@ -841,19 +892,82 @@ theorem not_eight_torsion : p + p + p + p + p + p + p + p ≠ 0 :=
 theorem not_nine_torsion : p + p + p + p + p + p + p + p + p ≠ 0 :=
   nine_p_ne_zero
 
+/-- `P` does not have order `2`, in the `(n : ℕ) • p` notation. -/
+theorem not_two_nsmul_torsion : (2 : ℕ) • p ≠ 0 := by
+  rw [show (2 : ℕ) = 1 + 1 by norm_num, succ_nsmul, show (1 : ℕ) = 0 + 1 by norm_num,
+    succ_nsmul]
+  exact two_p_ne_zero
+
+/-- `P` does not have order `3`, in the `(n : ℕ) • p` notation. -/
+theorem not_three_nsmul_torsion : (3 : ℕ) • p ≠ 0 := by
+  rw [show (3 : ℕ) = 2 + 1 by norm_num, succ_nsmul, show (2 : ℕ) = 1 + 1 by norm_num,
+    succ_nsmul, show (1 : ℕ) = 0 + 1 by norm_num, succ_nsmul]
+  exact three_p_ne_zero
+
+/-- `P` does not have order `4`, in the `(n : ℕ) • p` notation. -/
+theorem not_four_nsmul_torsion : (4 : ℕ) • p ≠ 0 := by
+  rw [show (4 : ℕ) = 3 + 1 by norm_num, succ_nsmul, show (3 : ℕ) = 2 + 1 by norm_num,
+    succ_nsmul, show (2 : ℕ) = 1 + 1 by norm_num, succ_nsmul, show (1 : ℕ) = 0 + 1 by norm_num,
+    succ_nsmul]
+  exact four_p_ne_zero
+
+/-- `P` does not have order `5`, in the `(n : ℕ) • p` notation. -/
+theorem not_five_nsmul_torsion : (5 : ℕ) • p ≠ 0 := by
+  rw [show (5 : ℕ) = 4 + 1 by norm_num, succ_nsmul, show (4 : ℕ) = 3 + 1 by norm_num,
+    succ_nsmul, show (3 : ℕ) = 2 + 1 by norm_num, succ_nsmul, show (2 : ℕ) = 1 + 1 by norm_num,
+    succ_nsmul, show (1 : ℕ) = 0 + 1 by norm_num, succ_nsmul]
+  exact five_p_ne_zero
+
+/-- `P` does not have order `6`, in the `(n : ℕ) • p` notation. -/
+theorem not_six_nsmul_torsion : (6 : ℕ) • p ≠ 0 := by
+  rw [show (6 : ℕ) = 5 + 1 by norm_num, succ_nsmul, show (5 : ℕ) = 4 + 1 by norm_num,
+    succ_nsmul, show (4 : ℕ) = 3 + 1 by norm_num, succ_nsmul, show (3 : ℕ) = 2 + 1 by norm_num,
+    succ_nsmul, show (2 : ℕ) = 1 + 1 by norm_num, succ_nsmul, show (1 : ℕ) = 0 + 1 by norm_num,
+    succ_nsmul]
+  exact six_p_ne_zero
+
+/-- `P` does not have order `7`, in the `(n : ℕ) • p` notation. -/
+theorem not_seven_nsmul_torsion : (7 : ℕ) • p ≠ 0 := by
+  rw [show (7 : ℕ) = 6 + 1 by norm_num, succ_nsmul, show (6 : ℕ) = 5 + 1 by norm_num,
+    succ_nsmul, show (5 : ℕ) = 4 + 1 by norm_num, succ_nsmul, show (4 : ℕ) = 3 + 1 by norm_num,
+    succ_nsmul, show (3 : ℕ) = 2 + 1 by norm_num, succ_nsmul, show (2 : ℕ) = 1 + 1 by norm_num,
+    succ_nsmul, show (1 : ℕ) = 0 + 1 by norm_num, succ_nsmul]
+  exact seven_p_ne_zero
+
+/-- `P` does not have order `8`, in the `(n : ℕ) • p` notation. -/
+theorem not_eight_nsmul_torsion : (8 : ℕ) • p ≠ 0 := by
+  rw [show (8 : ℕ) = 7 + 1 by norm_num, succ_nsmul, show (7 : ℕ) = 6 + 1 by norm_num,
+    succ_nsmul, show (6 : ℕ) = 5 + 1 by norm_num, succ_nsmul, show (5 : ℕ) = 4 + 1 by norm_num,
+    succ_nsmul, show (4 : ℕ) = 3 + 1 by norm_num, succ_nsmul, show (3 : ℕ) = 2 + 1 by norm_num,
+    succ_nsmul, show (2 : ℕ) = 1 + 1 by norm_num, succ_nsmul, show (1 : ℕ) = 0 + 1 by norm_num,
+    succ_nsmul]
+  exact eight_p_ne_zero
+
+/-- `P` does not have order `9`, in the `(n : ℕ) • p` notation. -/
+theorem not_nine_nsmul_torsion : (9 : ℕ) • p ≠ 0 := by
+  rw [show (9 : ℕ) = 8 + 1 by norm_num, succ_nsmul, show (8 : ℕ) = 7 + 1 by norm_num,
+    succ_nsmul, show (7 : ℕ) = 6 + 1 by norm_num, succ_nsmul, show (6 : ℕ) = 5 + 1 by norm_num,
+    succ_nsmul, show (5 : ℕ) = 4 + 1 by norm_num, succ_nsmul, show (4 : ℕ) = 3 + 1 by norm_num,
+    succ_nsmul, show (3 : ℕ) = 2 + 1 by norm_num, succ_nsmul, show (2 : ℕ) = 1 + 1 by norm_num,
+    succ_nsmul, show (1 : ℕ) = 0 + 1 by norm_num, succ_nsmul]
+  exact nine_p_ne_zero
+
 /-! ## The points are pairwise distinct
 
-The group `W.Point` has decidable equality, so the pairwise distinctness of the
-twelve listed points together with the identity is a finite computation:
+A point of the curve is determined by its coordinates, so each pairwise
+inequality is a rational computation.  Every listed point is `Point.some`, and
+coordinate injectivity (`Point.some.injEq`) reduces each pairwise inequality to
+a rational comparison, which `norm_num` decides with a kernel-checked proof
+term:
 
-- a point is determined by its coordinates, so different coordinates give
-  different points;
-- the only pairs among the twelve whose `x`-coordinates coincide are
-  `(P, R)` at `x = 0`, `(Q, U)` at `x = 1`, and `(S, T)` at `x = -1`, which
-  differ in `y`.
+- the only pairs among the twelve whose `x`-coordinates coincide are `(P, R)`
+  at `x = 0`, `(Q, U)` at `x = 1`, and `(S, T)` at `x = -1`, which differ in
+  `y`; these three are recorded explicitly below;
+- the remaining pairs are decided wholesale by `norm_num`.
 
-We record the equal-`x` exceptions explicitly (the mixed pairs follow from the
-coordinate computation), then count the whole thirteen-element set.
+Each point is also distinct from the identity (the `*_ne_zero` theorems above),
+so the identity together with the twelve points gives *thirteen* distinct
+elements of the group.
 -/
 
 /-- A point is determined by its coordinates. -/
@@ -894,15 +1008,19 @@ theorem t_ne_v : t ≠ v := by
   unfold t v
   exact some_ne_of_x_ne (by norm_num : (-1 : ℚ) ≠ 2)
 
-/-- Identity, the ten multiples `P, ..., 9P`, and the three negative points are
-pairwise distinct: thirteen elements of the group in all. -/
-theorem points_distinct_card :
-    ({(0 : W.Point), p, q, r, s, t, u, v, w, x, y, z, a} : Finset W.Point).card = 13 := by
-  native_decide
+/-- The twelve rational points are pairwise distinct (kernel-checked by
+`norm_num`). -/
+theorem points_nodup_nonzero :
+    List.Nodup [p, q, r, s, t, u, v, w, x, y, z, a] := by
+  norm_num [p, q, r, s, t, u, v, w, x, y, z, a,
+    WeierstrassCurve.Affine.Point.some.injEq]
 
-/-- The listed thirteen group elements have no duplicates. -/
-theorem points_nodup :
-    List.Nodup [(0 : W.Point), p, q, r, s, t, u, v, w, x, y, z, a] := by
-  native_decide
+/-- The twelve rational points have cardinality twelve; together with the
+identity (distinct from each of them by the `*_ne_zero` theorems above) they
+form thirteen distinct elements of the group. -/
+theorem points_distinct_card :
+    (([p, q, r, s, t, u, v, w, x, y, z, a].toFinset) : Finset W.Point).card = 12 := by
+  rw [List.toFinset_card_of_nodup points_nodup_nonzero]
+  simp
 
 end UniversalSingularity.BSD37a1

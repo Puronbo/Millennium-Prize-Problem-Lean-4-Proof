@@ -24,10 +24,12 @@ proofs:
     description: >-
       Fully proved concrete arithmetic on the rational elliptic curve 37a1
       (y^2 + y = x^3 - x): discriminant Delta = 37, twelve nonsingular rational
-      points, pairwise distinct (identity included: thirteen group elements),
-      the group-law relations nP for n = 2..9 (with 2T = X), the inverse pairs
-      P + R = 0, Q + U = 0, T + S = 0, and the absence of torsion of order 2
-      through 9 for the generator P. Does not prove BSD.
+      points, pairwise distinct (identity included: thirteen group elements,
+      kernel-checked by norm_num), the group-law relations nP for n = 2..9
+      (with 2T = X and the independent check 3T = 9P), the inverse pairs
+      P + R = 0, Q + U = 0, T + S = 0 plus -2P = U, -3P = S, -S = T, the
+      no-torsion form (n : Nat) • p ≠ 0 for generator P and n = 2..9, and the
+      absence of torsion of order 2 through 9. Does not prove BSD.
 review:
   status: pending
 keywords:
