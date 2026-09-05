@@ -23,10 +23,10 @@ proofs:
     sorries: 0
     description: >-
       Fully proved concrete arithmetic on the rational elliptic curve 37a1
-      (y^2 + y = x^3 - x): discriminant Delta = 37, nine nonsingular rational
-      points, the group-law relations 2P = Q, 3P = T, 4P = V, 5P = W, 6P = X,
-      2T = X, the inverse pairs P + R = 0, Q + U = 0, T + S = 0, and the absence
-      of 2-, 3-, 4-, 5-, and 6-torsion for the generator P. Does not prove BSD.
+      (y^2 + y = x^3 - x): discriminant Delta = 37, eleven nonsingular rational
+      points, the group-law relations nP for n = 2..8 (with 2T = X), the inverse
+      pairs P + R = 0, Q + U = 0, T + S = 0, and the absence of torsion of
+      order 2 through 8 for the generator P. Does not prove BSD.
 review:
   status: pending
 keywords:

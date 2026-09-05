@@ -9,11 +9,11 @@ This module computes *genuine* arithmetic content about the specific rational
 elliptic curve `37a1` (`y² + y = x³ - x`), using only what Mathlib's affine
 elliptic-curve group law already provides.
 
-Every theorem here is fully proved (no `sorry`): the discriminant `Δ = 37`, nine
-rational points with their group-law relations inside
-`WeierstrassCurve.Affine.Point`, and the absence of `2`/`3`/`4`/`5`/`6`-torsion
-for the generator `P`.  These are *real* statements about *real* mathematics, in
-contrast to the placeholder `analyticRank`/`mordellWeilRank` in
+Every theorem here is fully proved (no `sorry`): the discriminant `Δ = 37`,
+eleven rational points with their group-law relations inside
+`WeierstrassCurve.Affine.Point`, and the absence of torsion of order `2` through
+`8` for the generator `P`.  These are *real* statements about *real*
+mathematics, in contrast to the placeholder `analyticRank`/`mordellWeilRank` in
 `UniversalSingularity.BSDReal`.
 
 They do **not** prove BSD itself: the analytic rank (order of vanishing of the
@@ -199,6 +199,36 @@ theorem nonsingular_X : W.Nonsingular 6 14 := by
     simp
     norm_num
 
+/-- `(-5/9, 8/27)` lies on the curve. -/
+theorem equation_Y : W.Equation (-5/9) (8/27) := by
+  rw [WeierstrassCurve.Affine.equation_iff]
+  simp
+  norm_num
+
+/-- `(-5/9, 8/27)` is a nonsingular rational point. -/
+theorem nonsingular_Y : W.Nonsingular (-5/9) (8/27) := by
+  rw [WeierstrassCurve.Affine.nonsingular_iff]
+  constructor
+  · exact equation_Y
+  · left
+    simp
+    norm_num
+
+/-- `(21/25, -69/125)` lies on the curve. -/
+theorem equation_Z : W.Equation (21/25) (-69/125) := by
+  rw [WeierstrassCurve.Affine.equation_iff]
+  simp
+  norm_num
+
+/-- `(21/25, -69/125)` is a nonsingular rational point. -/
+theorem nonsingular_Z : W.Nonsingular (21/25) (-69/125) := by
+  rw [WeierstrassCurve.Affine.nonsingular_iff]
+  constructor
+  · exact equation_Z
+  · left
+    simp
+    norm_num
+
 /-! ## The distinguished rational points -/
 
 /-- The rational point `P = (0, 0)`. -/
@@ -227,6 +257,12 @@ def w : W.Point := Point.some (1/4) (-5/8) nonsingular_W
 
 /-- The rational point `6P = (6, 14)`. -/
 def x : W.Point := Point.some 6 14 nonsingular_X
+
+/-- The rational point `7P = (-5/9, 8/27)`. -/
+def y : W.Point := Point.some (-5/9) (8/27) nonsingular_Y
+
+/-- The rational point `8P = (21/25, -69/125)`. -/
+def z : W.Point := Point.some (21/25) (-69/125) nonsingular_Z
 
 /-- The canonical equivalence records the coordinates of the rational points. -/
 theorem p_coords : W.nonsingularPointEquiv p =
@@ -291,11 +327,26 @@ theorem x_coords : W.nonsingularPointEquiv x =
   unfold x
   rw [WeierstrassCurve.Affine.nonsingularPointEquiv_some nonsingular_X]
 
+/-- The canonical equivalence records the coordinates of the rational points. -/
+theorem y_coords : W.nonsingularPointEquiv y =
+    (Option.some ⟨⟨-5/9, 8/27⟩, nonsingular_Y⟩ :
+      WithZero {xy : ℚ × ℚ // W.Nonsingular xy.fst xy.snd}) := by
+  unfold y
+  rw [WeierstrassCurve.Affine.nonsingularPointEquiv_some nonsingular_Y]
+
+/-- The canonical equivalence records the coordinates of the rational points. -/
+theorem z_coords : W.nonsingularPointEquiv z =
+    (Option.some ⟨⟨21/25, -69/125⟩, nonsingular_Z⟩ :
+      WithZero {xy : ℚ × ℚ // W.Nonsingular xy.fst xy.snd}) := by
+  unfold z
+  rw [WeierstrassCurve.Affine.nonsingularPointEquiv_some nonsingular_Z]
+
 /-! ## Slopes and addition coordinates
 
 These are the explicit affine formulae for the group law, verified by
 `norm_num`.  They constitute the honest computational content: the coordinates
-of `P + P`, `P + Q`, `Q + Q`, `T + P`, `T + T`, `V + P`, and `W + P` on `37a1`.
+of `P + P`, `P + Q`, `Q + Q`, `T + P`, `T + T`, `V + P`, `W + P`, `X + P`, and
+`Y + P` on `37a1`.
 -/
 
 /-- `W.negY 0 0 = -1`. -/
@@ -430,6 +481,36 @@ theorem addX_wp : W.addX (1/4) 0 (W.slope (1/4) 0 (-5/8) 0) = 6 := by
 theorem addY_wp : W.addY (1/4) 0 (-5/8) (W.slope (1/4) 0 (-5/8) 0) = 14 := by
   norm_num [slope_wp, WeierstrassCurve.Affine.addY]
 
+/-- The secant slope through `X` and `P` is `7/3`. -/
+theorem slope_xp : W.slope 6 0 14 0 = 7 / 3 := by
+  rw [WeierstrassCurve.Affine.slope_of_X_ne (x₁ := 6) (x₂ := 0) (y₁ := 14) (y₂ := 0)
+    (by norm_num : (6 : ℚ) ≠ 0)]
+  simp
+  norm_num
+
+/-- The coordinate `x(X + P) = -5/9`. -/
+theorem addX_xp : W.addX 6 0 (W.slope 6 0 14 0) = -5 / 9 := by
+  norm_num [slope_xp, WeierstrassCurve.Affine.addX]
+
+/-- The coordinate `y(X + P) = 8/27`. -/
+theorem addY_xp : W.addY 6 0 14 (W.slope 6 0 14 0) = 8 / 27 := by
+  norm_num [slope_xp, WeierstrassCurve.Affine.addY]
+
+/-- The secant slope through `Y` and `P` is `-8/15`. -/
+theorem slope_yp : W.slope (-5/9) 0 (8/27) 0 = -8 / 15 := by
+  rw [WeierstrassCurve.Affine.slope_of_X_ne (x₁ := -5/9) (x₂ := 0) (y₁ := 8/27) (y₂ := 0)
+    (by norm_num : (-5/9 : ℚ) ≠ 0)]
+  simp
+  norm_num
+
+/-- The coordinate `x(Y + P) = 21/25`. -/
+theorem addX_yp : W.addX (-5/9) 0 (W.slope (-5/9) 0 (8/27) 0) = 21 / 25 := by
+  norm_num [slope_yp, WeierstrassCurve.Affine.addX]
+
+/-- The coordinate `y(Y + P) = -69/125`. -/
+theorem addY_yp : W.addY (-5/9) 0 (8/27) (W.slope (-5/9) 0 (8/27) 0) = -69 / 125 := by
+  norm_num [slope_yp, WeierstrassCurve.Affine.addY]
+
 /-! ## Group-law relations on `37a1` -/
 
 /-- `P + P = Q`; equivalently `2P = Q`. -/
@@ -504,6 +585,30 @@ theorem five_p_eq_w : p + p + p + p + p = w := by
 theorem six_p_eq_x : p + p + p + p + p + p = x := by
   rw [two_p_eq_q, add_comm (a := q) (b := p), add_p_q_eq_t, add_t_p_eq_v,
     add_v_p_eq_w, add_w_p_eq_x]
+
+/-- `X + P = Y`; hence `7P = Y`. -/
+theorem add_x_p_eq_y : x + p = y := by
+  unfold x p y
+  rw [add_of_X_ne (x₁ := 6) (x₂ := 0) (y₁ := 14) (y₂ := 0) (h₁ := nonsingular_X)
+    (h₂ := nonsingular_P) (by norm_num : (6 : ℚ) ≠ 0)]
+  rw [WeierstrassCurve.Affine.Point.some.injEq]
+  exact ⟨addX_xp, addY_xp⟩
+
+/-- `Y + P = Z`; hence `8P = Z`. -/
+theorem add_y_p_eq_z : y + p = z := by
+  unfold y p z
+  rw [add_of_X_ne (x₁ := -5/9) (x₂ := 0) (y₁ := 8/27) (y₂ := 0) (h₁ := nonsingular_Y)
+    (h₂ := nonsingular_P) (by norm_num : (-5/9 : ℚ) ≠ 0)]
+  rw [WeierstrassCurve.Affine.Point.some.injEq]
+  exact ⟨addX_yp, addY_yp⟩
+
+/-- `7P = Y`. -/
+theorem seven_p_eq_y : p + p + p + p + p + p + p = y := by
+  rw [six_p_eq_x, add_x_p_eq_y]
+
+/-- `8P = Z`. -/
+theorem eight_p_eq_z : p + p + p + p + p + p + p + p = z := by
+  rw [seven_p_eq_y, add_y_p_eq_z]
 
 /-- `-P = (0, -1)`. -/
 theorem neg_p_eq_r : -p = r := by
@@ -585,6 +690,14 @@ theorem w_ne_zero : w ≠ 0 :=
 theorem x_ne_zero : x ≠ 0 :=
   some_ne_zero nonsingular_X
 
+/-- `Y` is not the identity. -/
+theorem y_ne_zero : y ≠ 0 :=
+  some_ne_zero nonsingular_Y
+
+/-- `Z` is not the identity. -/
+theorem z_ne_zero : z ≠ 0 :=
+  some_ne_zero nonsingular_Z
+
 /-- `2P` is not the identity. -/
 theorem two_p_ne_zero : p + p ≠ 0 := by
   rw [two_p_eq_q]
@@ -610,6 +723,16 @@ theorem six_p_ne_zero : p + p + p + p + p + p ≠ 0 := by
   rw [six_p_eq_x]
   exact x_ne_zero
 
+/-- `7P` is not the identity. -/
+theorem seven_p_ne_zero : p + p + p + p + p + p + p ≠ 0 := by
+  rw [seven_p_eq_y]
+  exact y_ne_zero
+
+/-- `8P` is not the identity. -/
+theorem eight_p_ne_zero : p + p + p + p + p + p + p + p ≠ 0 := by
+  rw [eight_p_eq_z]
+  exact z_ne_zero
+
 /-- The points `P` and `Q` are distinct. -/
 theorem p_ne_q : p ≠ q := by
   intro h
@@ -617,10 +740,10 @@ theorem p_ne_q : p ≠ q := by
   rw [WeierstrassCurve.Affine.Point.some.injEq] at h
   norm_num at h
 
-/-! ## There is no `2`-, `3`-, `4`-, `5`-, or `6`-torsion
+/-! ## There is no torsion of order `2` through `8`
 
-For the generator `P`, the multiples `2P`, `3P`, `4P`, `5P`, `6P` are computed
-above and are all distinct from the identity.
+For the generator `P`, the multiples `2P`, `3P`, `4P`, `5P`, `6P`, `7P`, `8P`
+are computed above and are all distinct from the identity.
 -/
 
 /-- `P` does not have order `2`. -/
@@ -642,5 +765,13 @@ theorem not_five_torsion : p + p + p + p + p ≠ 0 :=
 /-- `P` does not have order `6`. -/
 theorem not_six_torsion : p + p + p + p + p + p ≠ 0 :=
   six_p_ne_zero
+
+/-- `P` does not have order `7`. -/
+theorem not_seven_torsion : p + p + p + p + p + p + p ≠ 0 :=
+  seven_p_ne_zero
+
+/-- `P` does not have order `8`. -/
+theorem not_eight_torsion : p + p + p + p + p + p + p + p ≠ 0 :=
+  eight_p_ne_zero
 
 end UniversalSingularity.BSD37a1

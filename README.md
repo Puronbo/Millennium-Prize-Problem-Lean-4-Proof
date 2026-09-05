@@ -54,10 +54,10 @@ explicit `sorry` `gap` marker (see `ROADMAP.md`):
   its complex `WeierstrassCurve.LSeries`.
 - `UniversalSingularity/BSD37a1.lean` — **fully proved** (no `sorry`s) concrete
   arithmetic on the rank-one curve `37a1` (`y² + y = x³ − x`): discriminant
-  `Δ = 37`, nine nonsingular rational points, the group-law relations
-  `2P = Q`, `3P = T`, `4P = V`, `5P = W`, `6P = X`, the inverse pairs, and the
-  absence of `2`/`3`/`4`/`5`/`6`-torsion for the generator `P`. It proves BSD's
-  nuts-and-bolts for one curve, not BSD itself.
+  `Δ = 37`, eleven nonsingular rational points, the group-law relations `nP` for
+  `n = 2, ..., 8`, the inverse pairs, and the absence of torsion of order `2`
+  through `8` for the generator `P`. It proves BSD's nuts-and-bolts for one
+  curve, not BSD itself.
 - `UniversalSingularity/HilbertPolya.lean` — states the Hilbert–Pólya conjecture
   on genuine spectral theory (`IsSelfAdjoint`, `spectrum Complex A`), plus the
   Riemann–von Mangoldt zero-counting and Montgomery–Odlyzko (GUE) bridge gaps.
