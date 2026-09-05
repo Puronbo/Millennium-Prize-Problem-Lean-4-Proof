@@ -11,11 +11,12 @@ elliptic-curve group law already provides.
 
 Every theorem here is fully proved (no `sorry`): the discriminant `Δ = 37`,
 twelve rational points with their group-law relations inside
-`WeierstrassCurve.Affine.Point`, the pairwise distinctness of those points and
-the identity (thirteen elements of the group in all), and the absence of
-torsion of order `2` through `9` for the generator `P`.  These are *real*
-statements about *real* mathematics, in contrast to the placeholder
-`analyticRank`/`mordellWeilRank` in
+`WeierstrassCurve.Affine.Point`, each of those points explicitly an integer
+multiple `(m : ℤ) • p` of the generator `P` for `-3 ≤ m ≤ 9`, the pairwise
+distinctness of the nineteen elements of the symmetric family
+`{0, ±P, ..., ±9P}`, and the absence of torsion of order `2` through `9` for
+`P`.  These are *real* statements about *real* mathematics, in contrast to the
+placeholder `analyticRank`/`mordellWeilRank` in
 `UniversalSingularity.BSDReal`.
 
 They do **not** prove BSD itself: the analytic rank (order of vanishing of the
@@ -1160,6 +1161,223 @@ theorem neg_three_zsmul_p_ne_zero : (-3 : ℤ) • p ≠ 0 := by
   rw [show (-3 : ℤ) = -(3 : ℤ) by norm_num, neg_zsmul]
   exact neg_ne_zero.mpr not_three_nsmul_torsion
 
+/-! ## The negative multiples `-4P` through `-9P`
+
+With `-1P = R`, `-2P = U`, `-3P = S` already recorded, the six remaining
+negative multiples `-4P, ..., -9P` complete the symmetric family
+`{0, ±P, ..., ±9P}` of nineteen multiples of `P`.
+-/
+
+/-- `-4P = (2, 2)` lies on the curve. -/
+theorem equation_m4 : W.Equation 2 2 := by
+  rw [WeierstrassCurve.Affine.equation_iff]
+  simp
+  norm_num
+
+/-- `-4P = (2, 2)` is a nonsingular rational point. -/
+theorem nonsingular_m4 : W.Nonsingular 2 2 := by
+  rw [WeierstrassCurve.Affine.nonsingular_iff]
+  constructor
+  · exact equation_m4
+  · left
+    simp
+    norm_num
+
+/-- The point `-4P = (2, 2)`. -/
+def m4 : W.Point := Point.some 2 2 nonsingular_m4
+
+/-- `-V = -4P = (2, 2)`. -/
+theorem neg_v_eq_m4 : -v = m4 := by
+  unfold v m4
+  rw [neg_some nonsingular_V]
+  rw [WeierstrassCurve.Affine.Point.some.injEq]
+  norm_num [WeierstrassCurve.Affine.negY]
+
+/-- `(-4) • P = -4P`. -/
+theorem neg_four_zsmul_p_eq_m4 : (-4 : ℤ) • p = m4 := by
+  rw [neg_zsmul, four_zsmul_p_eq_v]
+  exact neg_v_eq_m4
+
+/-- `(-4) • P` is not the identity. -/
+theorem neg_four_zsmul_p_ne_zero : (-4 : ℤ) • p ≠ 0 := by
+  rw [neg_four_zsmul_p_eq_m4]
+  exact some_ne_zero nonsingular_m4
+
+/-- `-5P = (1/4, -3/8)` lies on the curve. -/
+theorem equation_m5 : W.Equation (1 / 4) (-3 / 8) := by
+  rw [WeierstrassCurve.Affine.equation_iff]
+  simp
+  norm_num
+
+/-- `-5P = (1/4, -3/8)` is a nonsingular rational point. -/
+theorem nonsingular_m5 : W.Nonsingular (1 / 4) (-3 / 8) := by
+  rw [WeierstrassCurve.Affine.nonsingular_iff]
+  constructor
+  · exact equation_m5
+  · left
+    simp
+    norm_num
+
+/-- The point `-5P = (1/4, -3/8)`. -/
+def m5 : W.Point := Point.some (1 / 4) (-3 / 8) nonsingular_m5
+
+/-- `-W = -5P = (1/4, -3/8)`. -/
+theorem neg_w_eq_m5 : -w = m5 := by
+  unfold w m5
+  rw [neg_some nonsingular_W]
+  rw [WeierstrassCurve.Affine.Point.some.injEq]
+  norm_num [WeierstrassCurve.Affine.negY]
+
+/-- `(-5) • P = -5P`. -/
+theorem neg_five_zsmul_p_eq_m5 : (-5 : ℤ) • p = m5 := by
+  rw [neg_zsmul, five_zsmul_p_eq_w]
+  exact neg_w_eq_m5
+
+/-- `(-5) • P` is not the identity. -/
+theorem neg_five_zsmul_p_ne_zero : (-5 : ℤ) • p ≠ 0 := by
+  rw [neg_five_zsmul_p_eq_m5]
+  exact some_ne_zero nonsingular_m5
+
+/-- `-6P = (6, -15)` lies on the curve. -/
+theorem equation_m6 : W.Equation 6 (-15) := by
+  rw [WeierstrassCurve.Affine.equation_iff]
+  simp
+  norm_num
+
+/-- `-6P = (6, -15)` is a nonsingular rational point. -/
+theorem nonsingular_m6 : W.Nonsingular 6 (-15) := by
+  rw [WeierstrassCurve.Affine.nonsingular_iff]
+  constructor
+  · exact equation_m6
+  · left
+    simp
+    norm_num
+
+/-- The point `-6P = (6, -15)`. -/
+def m6 : W.Point := Point.some 6 (-15) nonsingular_m6
+
+/-- `-X = -6P = (6, -15)`. -/
+theorem neg_x_eq_m6 : -x = m6 := by
+  unfold x m6
+  rw [neg_some nonsingular_X]
+  rw [WeierstrassCurve.Affine.Point.some.injEq]
+  norm_num [WeierstrassCurve.Affine.negY]
+
+/-- `(-6) • P = -6P`. -/
+theorem neg_six_zsmul_p_eq_m6 : (-6 : ℤ) • p = m6 := by
+  rw [neg_zsmul, six_zsmul_p_eq_x]
+  exact neg_x_eq_m6
+
+/-- `(-6) • P` is not the identity. -/
+theorem neg_six_zsmul_p_ne_zero : (-6 : ℤ) • p ≠ 0 := by
+  rw [neg_six_zsmul_p_eq_m6]
+  exact some_ne_zero nonsingular_m6
+
+/-- `-7P = (-5/9, -35/27)` lies on the curve. -/
+theorem equation_m7 : W.Equation (-5 / 9) (-35 / 27) := by
+  rw [WeierstrassCurve.Affine.equation_iff]
+  simp
+  norm_num
+
+/-- `-7P = (-5/9, -35/27)` is a nonsingular rational point. -/
+theorem nonsingular_m7 : W.Nonsingular (-5 / 9) (-35 / 27) := by
+  rw [WeierstrassCurve.Affine.nonsingular_iff]
+  constructor
+  · exact equation_m7
+  · left
+    simp
+    norm_num
+
+/-- The point `-7P = (-5/9, -35/27)`. -/
+def m7 : W.Point := Point.some (-5 / 9) (-35 / 27) nonsingular_m7
+
+/-- `-Y = -7P = (-5/9, -35/27)`. -/
+theorem neg_y_eq_m7 : -y = m7 := by
+  unfold y m7
+  rw [neg_some nonsingular_Y]
+  rw [WeierstrassCurve.Affine.Point.some.injEq]
+  norm_num [WeierstrassCurve.Affine.negY]
+
+/-- `(-7) • P = -7P`. -/
+theorem neg_seven_zsmul_p_eq_m7 : (-7 : ℤ) • p = m7 := by
+  rw [neg_zsmul, seven_zsmul_p_eq_y]
+  exact neg_y_eq_m7
+
+/-- `(-7) • P` is not the identity. -/
+theorem neg_seven_zsmul_p_ne_zero : (-7 : ℤ) • p ≠ 0 := by
+  rw [neg_seven_zsmul_p_eq_m7]
+  exact some_ne_zero nonsingular_m7
+
+/-- `-8P = (21/25, -56/125)` lies on the curve. -/
+theorem equation_m8 : W.Equation (21 / 25) (-56 / 125) := by
+  rw [WeierstrassCurve.Affine.equation_iff]
+  simp
+  norm_num
+
+/-- `-8P = (21/25, -56/125)` is a nonsingular rational point. -/
+theorem nonsingular_m8 : W.Nonsingular (21 / 25) (-56 / 125) := by
+  rw [WeierstrassCurve.Affine.nonsingular_iff]
+  constructor
+  · exact equation_m8
+  · left
+    simp
+    norm_num
+
+/-- The point `-8P = (21/25, -56/125)`. -/
+def m8 : W.Point := Point.some (21 / 25) (-56 / 125) nonsingular_m8
+
+/-- `-Z = -8P = (21/25, -56/125)`. -/
+theorem neg_z_eq_m8 : -z = m8 := by
+  unfold z m8
+  rw [neg_some nonsingular_Z]
+  rw [WeierstrassCurve.Affine.Point.some.injEq]
+  norm_num [WeierstrassCurve.Affine.negY]
+
+/-- `(-8) • P = -8P`. -/
+theorem neg_eight_zsmul_p_eq_m8 : (-8 : ℤ) • p = m8 := by
+  rw [neg_zsmul, eight_zsmul_p_eq_z]
+  exact neg_z_eq_m8
+
+/-- `(-8) • P` is not the identity. -/
+theorem neg_eight_zsmul_p_ne_zero : (-8 : ℤ) • p ≠ 0 := by
+  rw [neg_eight_zsmul_p_eq_m8]
+  exact some_ne_zero nonsingular_m8
+
+/-- `-9P = (-20/49, 92/343)` lies on the curve. -/
+theorem equation_m9 : W.Equation (-20 / 49) (92 / 343) := by
+  rw [WeierstrassCurve.Affine.equation_iff]
+  simp
+  norm_num
+
+/-- `-9P = (-20/49, 92/343)` is a nonsingular rational point. -/
+theorem nonsingular_m9 : W.Nonsingular (-20 / 49) (92 / 343) := by
+  rw [WeierstrassCurve.Affine.nonsingular_iff]
+  constructor
+  · exact equation_m9
+  · left
+    simp
+    norm_num
+
+/-- The point `-9P = (-20/49, 92/343)`. -/
+def m9 : W.Point := Point.some (-20 / 49) (92 / 343) nonsingular_m9
+
+/-- `-A = -9P = (-20/49, 92/343)`. -/
+theorem neg_a_eq_m9 : -a = m9 := by
+  unfold a m9
+  rw [neg_some nonsingular_A]
+  rw [WeierstrassCurve.Affine.Point.some.injEq]
+  norm_num [WeierstrassCurve.Affine.negY]
+
+/-- `(-9) • P = -9P`. -/
+theorem neg_nine_zsmul_p_eq_m9 : (-9 : ℤ) • p = m9 := by
+  rw [neg_zsmul, nine_zsmul_p_eq_a]
+  exact neg_a_eq_m9
+
+/-- `(-9) • P` is not the identity. -/
+theorem neg_nine_zsmul_p_ne_zero : (-9 : ℤ) • p ≠ 0 := by
+  rw [neg_nine_zsmul_p_eq_m9]
+  exact some_ne_zero nonsingular_m9
+
 /-! ## The points are pairwise distinct
 
 A point of the curve is determined by its coordinates, so each pairwise
@@ -1175,7 +1393,9 @@ term:
 
 Each point is also distinct from the identity (the `*_ne_zero` theorems above),
 so the identity together with the twelve points gives *thirteen* distinct
-elements of the group.
+elements of the group.  Including the six negative multiples `-4P, ..., -9P`,
+the full symmetric family `{0, ±P, ..., ±9P}` gives *nineteen* distinct
+elements.
 -/
 
 /-- A point is determined by its coordinates. -/
@@ -1230,5 +1450,25 @@ theorem points_distinct_card :
     (([p, q, r, s, t, u, v, w, x, y, z, a].toFinset) : Finset W.Point).card = 12 := by
   rw [List.toFinset_card_of_nodup points_nodup_nonzero]
   simp
+
+/-- The twelve rational points together with the negative multiples `-4P` to
+`-9P` are pairwise distinct (kernel-checked by `norm_num`). -/
+theorem symmetric_nodup_nonzero :
+    List.Nodup [m9, m8, m7, m6, m5, m4, s, u, r, p, q, t, v, w, x, y, z, a] := by
+  norm_num [p, q, r, s, t, u, v, w, x, y, z, a, m4, m5, m6, m7, m8, m9,
+    WeierstrassCurve.Affine.Point.some.injEq]
+
+/-- The full symmetric family `{0, ±P, ..., ±9P}` has nineteen distinct
+elements. -/
+theorem symmetric_family_card :
+    ((([(0 : W.Point), m9, m8, m7, m6, m5, m4, s, u, r, p, q, t, v, w, x, y, z, a]
+      : List W.Point).toFinset) : Finset W.Point).card = 19 := by
+  rw [List.toFinset_card_of_nodup]
+  · simp
+  · rw [List.nodup_cons]
+    constructor
+    · simp [p, q, r, s, t, u, v, w, x, y, z, a, m4, m5, m6, m7, m8, m9]
+    · norm_num [p, q, r, s, t, u, v, w, x, y, z, a, m4, m5, m6, m7, m8, m9,
+        WeierstrassCurve.Affine.Point.some.injEq]
 
 end UniversalSingularity.BSD37a1
