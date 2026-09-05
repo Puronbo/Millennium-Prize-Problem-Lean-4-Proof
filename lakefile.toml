@@ -25,4 +25,5 @@ roots = [
   "UniversalSingularity.BSDReal",
   "UniversalSingularity.PoincareConjecture",
   "UniversalSingularity.HodgeConjecture",
+  "UniversalSingularity.HilbertPolya",
 ]
