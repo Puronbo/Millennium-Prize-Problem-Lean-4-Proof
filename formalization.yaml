@@ -23,16 +23,17 @@ proofs:
     sorries: 0
     description: >-
       Fully proved concrete arithmetic on the rational elliptic curve 37a1
-      (y^2 + y = x^3 - x): discriminant Delta = 37, twelve nonsingular rational
-      points plus the six negative multiples -4P..-9P, all integer multiples
-      (m : Int) • p of the generator P for -3 <= m <= 9, the pairwise-distinct
-      symmetric family {0, +-P, ..., +-9P} of nineteen elements (kernel-checked
-      by norm_num), the group-law relations nP for n = 2..9 (with 2T = X and
-      the independent check 3T = 9P; plus direct pair checks
-      Q + R = P, Q + T = W, S + P = U, U + T = P), the inverse pairs
-      P + R = 0, Q + U = 0, T + S = 0 plus -2P = U, -3P = S, -S = T, and the
-      no-torsion forms (n : Nat) • p ≠ 0 and (n : Int) • p ≠ 0 for
-      2 <= |n| <= 9. Does not prove BSD.
+      (y^2 + y = x^3 - x): discriminant Delta = 37, twenty-one nonsingular
+      rational points P, 2P..18P, -P, -2P, -3P, -4P..-9P, all integer multiples
+      (m : Int) • p of the generator P for -9 <= m <= 18, the pairwise-distinct
+      symmetric family {0, +-P, ..., +-9P} of nineteen elements and
+      {0, 10P, ..., 18P} of ten elements (kernel-checked by norm_num), the
+      group-law relations nP for n = 2..9 (with 2T = X and the independent
+      check 3T = 9P; plus direct pair checks Q + R = P, Q + T = W, S + P = U,
+      U + T = P), the inverse pairs P + R = 0, Q + U = 0, T + S = 0 plus
+      -2P = U, -3P = S, -S = T, and the no-torsion forms (n : Nat) • p ≠ 0 and
+      (n : Int) • p ≠ 0 for 2 <= |n| <= 18, giving each named multiple 2P
+      through 9P its own small-order no-torsion certificate. Does not prove BSD.
 review:
   status: pending
 keywords:

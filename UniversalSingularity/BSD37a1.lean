@@ -10,13 +10,17 @@ elliptic curve `37a1` (`y² + y = x³ - x`), using only what Mathlib's affine
 elliptic-curve group law already provides.
 
 Every theorem here is fully proved (no `sorry`): the discriminant `Δ = 37`,
-twelve rational points with their group-law relations inside
-`WeierstrassCurve.Affine.Point`, each of those points explicitly an integer
-multiple `(m : ℤ) • p` of the generator `P` for `-3 ≤ m ≤ 9`, the pairwise
+twenty-one rational points with their group-law relations inside
+`WeierstrassCurve.Affine.Point` — `P`, `2P` through `18P`, and the negatives
+`-P`, `-2P`, `-3P` (with `-4P` through `-9P` recorded separately in the
+symmetric family) — each of those points explicitly an integer multiple
+`(m : ℤ) • p` of the generator `P` for `-9 ≤ m ≤ 18`; the pairwise
 distinctness of the nineteen elements of the symmetric family
-`{0, ±P, ..., ±9P}`, and the absence of torsion of order `2` through `9` for
-`P`.  These are *real* statements about *real* mathematics, in contrast to the
-placeholder `analyticRank`/`mordellWeilRank` in
+`{0, ±P, ..., ±9P}` and of `{0, 10P, ..., 18P}`; the no-torsion certificates
+`(n : ℕ) • p ≠ 0` and `(n : ℤ) • p ≠ 0` for every order `2 ≤ |n| ≤ 18`; and
+the resulting absence of small-order torsion for each of the named multiples
+`2P` through `9P`.  These are *real* statements about *real* mathematics, in
+contrast to the placeholder `analyticRank`/`mordellWeilRank` in
 `UniversalSingularity.BSDReal`.
 
 They do **not** prove BSD itself: the analytic rank (order of vanishing of the
@@ -810,6 +814,431 @@ theorem neg_three_p_eq_s : -(p + p + p) = s := by
 theorem neg_s_eq_t : -s = t := by
   rw [← neg_t_eq_s, neg_neg]
 
+/-! ## The further multiples `10P` through `18P`
+
+The nine multiples `10P, ..., 18P` are computed exactly as the earlier ones,
+each as the chord sum `(n - 1)P + P` through the previously computed point and
+`P`.  Together with the nineteen elements `{0, ±P, ..., ±9P}` these give
+twenty-seven pairwise-distinct rational points on `37a1`.  Their main purpose
+is to certify the non-vanishing `(k : ℕ) • p ≠ 0` for every `k ≤ 18`, from which
+the small-order no-torsion certificates for the named multiples follow below:
+for instance the claim `(2 : ℕ) • (2P) ≠ 0` is the claim `(4 : ℕ) • P ≠ 0`.
+-/
+
+/-! ### `10P` -/
+
+/-- The secant slope through `A` and `P` is `87/28`. -/
+theorem slope_ap : W.slope (-20/49) 0 (-435/343) 0 = 87 / 28 := by
+  rw [WeierstrassCurve.Affine.slope_of_X_ne (x₁ := -20/49) (x₂ := 0) (y₁ := -435/343) (y₂ := 0)
+    (by norm_num : (-20/49 : ℚ) ≠ 0)]
+  norm_num
+
+/-- The coordinate `x(A + P) = x(10P) = 161/16`. -/
+theorem addX_ap : W.addX (-20/49) 0 (W.slope (-20/49) 0 (-435/343) 0) = 161 / 16 := by
+  norm_num [slope_ap, WeierstrassCurve.Affine.addX]
+
+/-- The coordinate `y(A + P) = y(10P) = -2065/64`. -/
+theorem addY_ap : W.addY (-20/49) 0 (-435/343) (W.slope (-20/49) 0 (-435/343) 0) = -2065 / 64 := by
+  norm_num [slope_ap, WeierstrassCurve.Affine.addY]
+
+/-- `10P = (161/16, -2065/64)` lies on the curve. -/
+theorem equation_b : W.Equation (161/16) (-2065/64) := by
+  rw [WeierstrassCurve.Affine.equation_iff]
+  simp
+  norm_num
+
+/-- `10P = (161/16, -2065/64)` is a nonsingular rational point. -/
+theorem nonsingular_b : W.Nonsingular (161/16) (-2065/64) := by
+  rw [WeierstrassCurve.Affine.nonsingular_iff]
+  constructor
+  · exact equation_b
+  · left
+    simp
+    norm_num
+
+/-- The point `10P = (161/16, -2065/64)`. -/
+def b : W.Point := Point.some (161/16) (-2065/64) nonsingular_b
+
+/-- `A + P = B`; hence `10P = B`. -/
+theorem add_a_p_eq_b : a + p = b := by
+  unfold a p b
+  rw [add_of_X_ne (x₁ := -20/49) (x₂ := 0) (y₁ := -435/343) (y₂ := 0) (h₁ := nonsingular_A)
+    (h₂ := nonsingular_P) (by norm_num : (-20/49 : ℚ) ≠ 0)]
+  rw [WeierstrassCurve.Affine.Point.some.injEq]
+  exact ⟨addX_ap, addY_ap⟩
+
+/-- `10P = B`. -/
+theorem ten_p_eq_b : p + p + p + p + p + p + p + p + p + p = b := by
+  rw [nine_p_eq_a, add_a_p_eq_b]
+
+/-! ### `11P` -/
+
+/-- The secant slope through `B` and `P` is `-295/92`. -/
+theorem slope_bp : W.slope (161/16) 0 (-2065/64) 0 = -295 / 92 := by
+  rw [WeierstrassCurve.Affine.slope_of_X_ne (x₁ := 161/16) (x₂ := 0) (y₁ := -2065/64) (y₂ := 0)
+    (by norm_num : (161/16 : ℚ) ≠ 0)]
+  norm_num
+
+/-- The coordinate `x(B + P) = x(11P) = 116/529`. -/
+theorem addX_bp : W.addX (161/16) 0 (W.slope (161/16) 0 (-2065/64) 0) = 116 / 529 := by
+  norm_num [slope_bp, WeierstrassCurve.Affine.addX]
+
+/-- The coordinate `y(B + P) = y(11P) = -3612/12167`. -/
+theorem addY_bp : W.addY (161/16) 0 (-2065/64) (W.slope (161/16) 0 (-2065/64) 0) = -3612 / 12167 := by
+  norm_num [slope_bp, WeierstrassCurve.Affine.addY]
+
+/-- `11P = (116/529, -3612/12167)` lies on the curve. -/
+theorem equation_c : W.Equation (116/529) (-3612/12167) := by
+  rw [WeierstrassCurve.Affine.equation_iff]
+  simp
+  norm_num
+
+/-- `11P = (116/529, -3612/12167)` is a nonsingular rational point. -/
+theorem nonsingular_c : W.Nonsingular (116/529) (-3612/12167) := by
+  rw [WeierstrassCurve.Affine.nonsingular_iff]
+  constructor
+  · exact equation_c
+  · left
+    simp
+    norm_num
+
+/-- The point `11P = (116/529, -3612/12167)`. -/
+def c : W.Point := Point.some (116/529) (-3612/12167) nonsingular_c
+
+/-- `B + P = C`; hence `11P = C`. -/
+theorem add_b_p_eq_c : b + p = c := by
+  unfold b p c
+  rw [add_of_X_ne (x₁ := 161/16) (x₂ := 0) (y₁ := -2065/64) (y₂ := 0) (h₁ := nonsingular_b)
+    (h₂ := nonsingular_P) (by norm_num : (161/16 : ℚ) ≠ 0)]
+  rw [WeierstrassCurve.Affine.Point.some.injEq]
+  exact ⟨addX_bp, addY_bp⟩
+
+/-- `11P = C`. -/
+theorem eleven_p_eq_c : p + p + p + p + p + p + p + p + p + p + p = c := by
+  rw [ten_p_eq_b, add_b_p_eq_c]
+
+/-! ### `12P` -/
+
+/-- The secant slope through `C` and `P` is `-903/667`. -/
+theorem slope_cp : W.slope (116/529) 0 (-3612/12167) 0 = -903 / 667 := by
+  rw [WeierstrassCurve.Affine.slope_of_X_ne (x₁ := 116/529) (x₂ := 0) (y₁ := -3612/12167) (y₂ := 0)
+    (by norm_num : (116/529 : ℚ) ≠ 0)]
+  norm_num
+
+/-- The coordinate `x(C + P) = x(12P) = 1357/841`. -/
+theorem addX_cp : W.addX (116/529) 0 (W.slope (116/529) 0 (-3612/12167) 0) = 1357 / 841 := by
+  norm_num [slope_cp, WeierstrassCurve.Affine.addX]
+
+/-- The coordinate `y(C + P) = y(12P) = 28888/24389`. -/
+theorem addY_cp : W.addY (116/529) 0 (-3612/12167) (W.slope (116/529) 0 (-3612/12167) 0) = 28888 / 24389 := by
+  norm_num [slope_cp, WeierstrassCurve.Affine.addY]
+
+/-- `12P = (1357/841, 28888/24389)` lies on the curve. -/
+theorem equation_d : W.Equation (1357/841) (28888/24389) := by
+  rw [WeierstrassCurve.Affine.equation_iff]
+  simp
+  norm_num
+
+/-- `12P = (1357/841, 28888/24389)` is a nonsingular rational point. -/
+theorem nonsingular_d : W.Nonsingular (1357/841) (28888/24389) := by
+  rw [WeierstrassCurve.Affine.nonsingular_iff]
+  constructor
+  · exact equation_d
+  · left
+    simp
+    norm_num
+
+/-- The point `12P = (1357/841, 28888/24389)`. -/
+def d : W.Point := Point.some (1357/841) (28888/24389) nonsingular_d
+
+/-- `C + P = D`; hence `12P = D`. -/
+theorem add_c_p_eq_d : c + p = d := by
+  unfold c p d
+  rw [add_of_X_ne (x₁ := 116/529) (x₂ := 0) (y₁ := -3612/12167) (y₂ := 0) (h₁ := nonsingular_c)
+    (h₂ := nonsingular_P) (by norm_num : (116/529 : ℚ) ≠ 0)]
+  rw [WeierstrassCurve.Affine.Point.some.injEq]
+  exact ⟨addX_cp, addY_cp⟩
+
+/-- `12P = D`. -/
+theorem twelve_p_eq_d : p + p + p + p + p + p + p + p + p + p + p + p = d := by
+  rw [eleven_p_eq_c, add_c_p_eq_d]
+
+/-! ### `13P` -/
+
+/-- The secant slope through `D` and `P` is `1256/1711`. -/
+theorem slope_dp : W.slope (1357/841) 0 (28888/24389) 0 = 1256 / 1711 := by
+  rw [WeierstrassCurve.Affine.slope_of_X_ne (x₁ := 1357/841) (x₂ := 0) (y₁ := 28888/24389) (y₂ := 0)
+    (by norm_num : (1357/841 : ℚ) ≠ 0)]
+  norm_num
+
+/-- The coordinate `x(D + P) = x(13P) = -3741/3481`. -/
+theorem addX_dp : W.addX (1357/841) 0 (W.slope (1357/841) 0 (28888/24389) 0) = -3741 / 3481 := by
+  norm_num [slope_dp, WeierstrassCurve.Affine.addX]
+
+/-- The coordinate `y(D + P) = y(13P) = -43355/205379`. -/
+theorem addY_dp : W.addY (1357/841) 0 (28888/24389) (W.slope (1357/841) 0 (28888/24389) 0) = -43355 / 205379 := by
+  norm_num [slope_dp, WeierstrassCurve.Affine.addY]
+
+/-- `13P = (-3741/3481, -43355/205379)` lies on the curve. -/
+theorem equation_e : W.Equation (-3741/3481) (-43355/205379) := by
+  rw [WeierstrassCurve.Affine.equation_iff]
+  simp
+  norm_num
+
+/-- `13P = (-3741/3481, -43355/205379)` is a nonsingular rational point. -/
+theorem nonsingular_e : W.Nonsingular (-3741/3481) (-43355/205379) := by
+  rw [WeierstrassCurve.Affine.nonsingular_iff]
+  constructor
+  · exact equation_e
+  · left
+    simp
+    norm_num
+
+/-- The point `13P = (-3741/3481, -43355/205379)`. -/
+def e : W.Point := Point.some (-3741/3481) (-43355/205379) nonsingular_e
+
+/-- `D + P = E`; hence `13P = E`. -/
+theorem add_d_p_eq_e : d + p = e := by
+  unfold d p e
+  rw [add_of_X_ne (x₁ := 1357/841) (x₂ := 0) (y₁ := 28888/24389) (y₂ := 0) (h₁ := nonsingular_d)
+    (h₂ := nonsingular_P) (by norm_num : (1357/841 : ℚ) ≠ 0)]
+  rw [WeierstrassCurve.Affine.Point.some.injEq]
+  exact ⟨addX_dp, addY_dp⟩
+
+/-- `13P = E`. -/
+theorem thirteen_p_eq_e : p + p + p + p + p + p + p + p + p + p + p + p + p = e := by
+  rw [twelve_p_eq_d, add_d_p_eq_e]
+
+/-! ### `14P` -/
+
+/-- The secant slope through `E` and `P` is `1495/7611`. -/
+theorem slope_ep : W.slope (-3741/3481) 0 (-43355/205379) 0 = 1495 / 7611 := by
+  rw [WeierstrassCurve.Affine.slope_of_X_ne (x₁ := -3741/3481) (x₂ := 0) (y₁ := -43355/205379) (y₂ := 0)
+    (by norm_num : (-3741/3481 : ℚ) ≠ 0)]
+  norm_num
+
+/-- The coordinate `x(E + P) = x(14P) = 18526/16641`. -/
+theorem addX_ep : W.addX (-3741/3481) 0 (W.slope (-3741/3481) 0 (-43355/205379) 0) = 18526 / 16641 := by
+  norm_num [slope_ep, WeierstrassCurve.Affine.addX]
+
+/-- The coordinate `y(E + P) = y(14P) = -2616119/2146689`. -/
+theorem addY_ep : W.addY (-3741/3481) 0 (-43355/205379) (W.slope (-3741/3481) 0 (-43355/205379) 0) = -2616119 / 2146689 := by
+  norm_num [slope_ep, WeierstrassCurve.Affine.addY]
+
+/-- `14P = (18526/16641, -2616119/2146689)` lies on the curve. -/
+theorem equation_f : W.Equation (18526/16641) (-2616119/2146689) := by
+  rw [WeierstrassCurve.Affine.equation_iff]
+  simp
+  norm_num
+
+/-- `14P = (18526/16641, -2616119/2146689)` is a nonsingular rational point. -/
+theorem nonsingular_f : W.Nonsingular (18526/16641) (-2616119/2146689) := by
+  rw [WeierstrassCurve.Affine.nonsingular_iff]
+  constructor
+  · exact equation_f
+  · left
+    simp
+    norm_num
+
+/-- The point `14P = (18526/16641, -2616119/2146689)`. -/
+def f : W.Point := Point.some (18526/16641) (-2616119/2146689) nonsingular_f
+
+/-- `E + P = F`; hence `14P = F`. -/
+theorem add_e_p_eq_f : e + p = f := by
+  unfold e p f
+  rw [add_of_X_ne (x₁ := -3741/3481) (x₂ := 0) (y₁ := -43355/205379) (y₂ := 0) (h₁ := nonsingular_e)
+    (h₂ := nonsingular_P) (by norm_num : (-3741/3481 : ℚ) ≠ 0)]
+  rw [WeierstrassCurve.Affine.Point.some.injEq]
+  exact ⟨addX_ep, addY_ep⟩
+
+/-- `14P = F`. -/
+theorem fourteen_p_eq_f : p + p + p + p + p + p + p + p + p + p + p + p + p + p = f := by
+  rw [thirteen_p_eq_e, add_e_p_eq_f]
+
+/-! ### `15P` -/
+
+/-- The secant slope through `F` and `P` is `-44341/40506`. -/
+theorem slope_fp : W.slope (18526/16641) 0 (-2616119/2146689) 0 = -44341 / 40506 := by
+  rw [WeierstrassCurve.Affine.slope_of_X_ne (x₁ := 18526/16641) (x₂ := 0) (y₁ := -2616119/2146689) (y₂ := 0)
+    (by norm_num : (18526/16641 : ℚ) ≠ 0)]
+  norm_num
+
+/-- The coordinate `x(F + P) = x(15P) = 8385/98596`. -/
+theorem addX_fp : W.addX (18526/16641) 0 (W.slope (18526/16641) 0 (-2616119/2146689) 0) = 8385 / 98596 := by
+  norm_num [slope_fp, WeierstrassCurve.Affine.addX]
+
+/-- The coordinate `y(F + P) = y(15P) = -28076979/30959144`. -/
+theorem addY_fp : W.addY (18526/16641) 0 (-2616119/2146689) (W.slope (18526/16641) 0 (-2616119/2146689) 0) = -28076979 / 30959144 := by
+  norm_num [slope_fp, WeierstrassCurve.Affine.addY]
+
+/-- `15P = (8385/98596, -28076979/30959144)` lies on the curve. -/
+theorem equation_g : W.Equation (8385/98596) (-28076979/30959144) := by
+  rw [WeierstrassCurve.Affine.equation_iff]
+  simp
+  norm_num
+
+/-- `15P = (8385/98596, -28076979/30959144)` is a nonsingular rational point. -/
+theorem nonsingular_g : W.Nonsingular (8385/98596) (-28076979/30959144) := by
+  rw [WeierstrassCurve.Affine.nonsingular_iff]
+  constructor
+  · exact equation_g
+  · left
+    simp
+    norm_num
+
+/-- The point `15P = (8385/98596, -28076979/30959144)`. -/
+def g : W.Point := Point.some (8385/98596) (-28076979/30959144) nonsingular_g
+
+/-- `F + P = G`; hence `15P = G`. -/
+theorem add_f_p_eq_g : f + p = g := by
+  unfold f p g
+  rw [add_of_X_ne (x₁ := 18526/16641) (x₂ := 0) (y₁ := -2616119/2146689) (y₂ := 0) (h₁ := nonsingular_f)
+    (h₂ := nonsingular_P) (by norm_num : (18526/16641 : ℚ) ≠ 0)]
+  rw [WeierstrassCurve.Affine.Point.some.injEq]
+  exact ⟨addX_fp, addY_fp⟩
+
+/-- `15P = G`. -/
+theorem fifteen_p_eq_g : p + p + p + p + p + p + p + p + p + p + p + p + p + p + p = g := by
+  rw [fourteen_p_eq_f, add_f_p_eq_g]
+
+/-! ### `16P` -/
+
+/-- The secant slope through `G` and `P` is `-217651/20410`. -/
+theorem slope_gp : W.slope (8385/98596) 0 (-28076979/30959144) 0 = -217651 / 20410 := by
+  rw [WeierstrassCurve.Affine.slope_of_X_ne (x₁ := 8385/98596) (x₂ := 0) (y₁ := -28076979/30959144) (y₂ := 0)
+    (by norm_num : (8385/98596 : ℚ) ≠ 0)]
+  norm_num
+
+/-- The coordinate `x(G + P) = x(16P) = 480106/4225`. -/
+theorem addX_gp : W.addX (8385/98596) 0 (W.slope (8385/98596) 0 (-28076979/30959144) 0) = 480106 / 4225 := by
+  norm_num [slope_gp, WeierstrassCurve.Affine.addX]
+
+/-- The coordinate `y(G + P) = y(16P) = 332513754/274625`. -/
+theorem addY_gp : W.addY (8385/98596) 0 (-28076979/30959144) (W.slope (8385/98596) 0 (-28076979/30959144) 0) = 332513754 / 274625 := by
+  norm_num [slope_gp, WeierstrassCurve.Affine.addY]
+
+/-- `16P = (480106/4225, 332513754/274625)` lies on the curve. -/
+theorem equation_h : W.Equation (480106/4225) (332513754/274625) := by
+  rw [WeierstrassCurve.Affine.equation_iff]
+  simp
+  norm_num
+
+/-- `16P = (480106/4225, 332513754/274625)` is a nonsingular rational point. -/
+theorem nonsingular_h : W.Nonsingular (480106/4225) (332513754/274625) := by
+  rw [WeierstrassCurve.Affine.nonsingular_iff]
+  constructor
+  · exact equation_h
+  · left
+    simp
+    norm_num
+
+/-- The point `16P = (480106/4225, 332513754/274625)`. -/
+def h : W.Point := Point.some (480106/4225) (332513754/274625) nonsingular_h
+
+/-- `G + P = H`; hence `16P = H`. -/
+theorem add_g_p_eq_h : g + p = h := by
+  unfold g p h
+  rw [add_of_X_ne (x₁ := 8385/98596) (x₂ := 0) (y₁ := -28076979/30959144) (y₂ := 0) (h₁ := nonsingular_g)
+    (h₂ := nonsingular_P) (by norm_num : (8385/98596 : ℚ) ≠ 0)]
+  rw [WeierstrassCurve.Affine.Point.some.injEq]
+  exact ⟨addX_gp, addY_gp⟩
+
+/-- `16P = H`. -/
+theorem sixteen_p_eq_h : p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p = h := by
+  rw [fifteen_p_eq_g, add_g_p_eq_h]
+
+/-! ### `17P` -/
+
+/-- The secant slope through `H` and `P` is `1058961/99385`. -/
+theorem slope_hp : W.slope (480106/4225) 0 (332513754/274625) 0 = 1058961 / 99385 := by
+  rw [WeierstrassCurve.Affine.slope_of_X_ne (x₁ := 480106/4225) (x₂ := 0) (y₁ := 332513754/274625) (y₂ := 0)
+    (by norm_num : (480106/4225 : ℚ) ≠ 0)]
+  norm_num
+
+/-- The coordinate `x(H + P) = x(17P) = -239785/2337841`. -/
+theorem addX_hp : W.addX (480106/4225) 0 (W.slope (480106/4225) 0 (332513754/274625) 0) = -239785 / 2337841 := by
+  norm_num [slope_hp, WeierstrassCurve.Affine.addX]
+
+/-- The coordinate `y(H + P) = y(17P) = 331948240/3574558889`. -/
+theorem addY_hp : W.addY (480106/4225) 0 (332513754/274625) (W.slope (480106/4225) 0 (332513754/274625) 0) = 331948240 / 3574558889 := by
+  norm_num [slope_hp, WeierstrassCurve.Affine.addY]
+
+/-- `17P = (-239785/2337841, 331948240/3574558889)` lies on the curve. -/
+theorem equation_i : W.Equation (-239785/2337841) (331948240/3574558889) := by
+  rw [WeierstrassCurve.Affine.equation_iff]
+  simp
+  norm_num
+
+/-- `17P = (-239785/2337841, 331948240/3574558889)` is a nonsingular rational point. -/
+theorem nonsingular_i : W.Nonsingular (-239785/2337841) (331948240/3574558889) := by
+  rw [WeierstrassCurve.Affine.nonsingular_iff]
+  constructor
+  · exact equation_i
+  · left
+    simp
+    norm_num
+
+/-- The point `17P = (-239785/2337841, 331948240/3574558889)`. -/
+def i : W.Point := Point.some (-239785/2337841) (331948240/3574558889) nonsingular_i
+
+/-- `H + P = I`; hence `17P = I`. -/
+theorem add_h_p_eq_i : h + p = i := by
+  unfold h p i
+  rw [add_of_X_ne (x₁ := 480106/4225) (x₂ := 0) (y₁ := 332513754/274625) (y₂ := 0) (h₁ := nonsingular_h)
+    (h₂ := nonsingular_P) (by norm_num : (480106/4225 : ℚ) ≠ 0)]
+  rw [WeierstrassCurve.Affine.Point.some.injEq]
+  exact ⟨addX_hp, addY_hp⟩
+
+/-- `17P = I`. -/
+theorem seventeen_p_eq_i : p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p = i := by
+  rw [sixteen_p_eq_h, add_h_p_eq_i]
+
+/-! ### `18P` -/
+
+/-- The secant slope through `I` and `P` is `-5106896/5640481`. -/
+theorem slope_ip : W.slope (-239785/2337841) 0 (331948240/3574558889) 0 = -5106896 / 5640481 := by
+  rw [WeierstrassCurve.Affine.slope_of_X_ne (x₁ := -239785/2337841) (x₂ := 0) (y₁ := 331948240/3574558889) (y₂ := 0)
+    (by norm_num : (-239785/2337841 : ℚ) ≠ 0)]
+  norm_num
+
+/-- The coordinate `x(I + P) = x(18P) = 12551561/13608721`. -/
+theorem addX_ip : W.addX (-239785/2337841) 0 (W.slope (-239785/2337841) 0 (331948240/3574558889) 0) = 12551561 / 13608721 := by
+  norm_num [slope_ip, WeierstrassCurve.Affine.addX]
+
+/-- The coordinate `y(I + P) = y(18P) = -8280062505/50202571769`. -/
+theorem addY_ip : W.addY (-239785/2337841) 0 (331948240/3574558889) (W.slope (-239785/2337841) 0 (331948240/3574558889) 0) = -8280062505 / 50202571769 := by
+  norm_num [slope_ip, WeierstrassCurve.Affine.addY]
+
+/-- `18P = (12551561/13608721, -8280062505/50202571769)` lies on the curve. -/
+theorem equation_j : W.Equation (12551561/13608721) (-8280062505/50202571769) := by
+  rw [WeierstrassCurve.Affine.equation_iff]
+  simp
+  norm_num
+
+/-- `18P = (12551561/13608721, -8280062505/50202571769)` is a nonsingular rational point. -/
+theorem nonsingular_j : W.Nonsingular (12551561/13608721) (-8280062505/50202571769) := by
+  rw [WeierstrassCurve.Affine.nonsingular_iff]
+  constructor
+  · exact equation_j
+  · left
+    simp
+    norm_num
+
+/-- The point `18P = (12551561/13608721, -8280062505/50202571769)`. -/
+def j : W.Point := Point.some (12551561/13608721) (-8280062505/50202571769) nonsingular_j
+
+/-- `I + P = J`; hence `18P = J`. -/
+theorem add_i_p_eq_j : i + p = j := by
+  unfold i p j
+  rw [add_of_X_ne (x₁ := -239785/2337841) (x₂ := 0) (y₁ := 331948240/3574558889) (y₂ := 0) (h₁ := nonsingular_i)
+    (h₂ := nonsingular_P) (by norm_num : (-239785/2337841 : ℚ) ≠ 0)]
+  rw [WeierstrassCurve.Affine.Point.some.injEq]
+  exact ⟨addX_ip, addY_ip⟩
+
+/-- `18P = J`. -/
+theorem eighteen_p_eq_j : p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p = j := by
+  rw [seventeen_p_eq_i, add_i_p_eq_j]
+
 /-! ## None of the points is the identity -/
 
 /-- `P` is not the identity. -/
@@ -888,6 +1317,87 @@ theorem nine_p_ne_zero : p + p + p + p + p + p + p + p + p ≠ 0 := by
   rw [nine_p_eq_a]
   exact a_ne_zero
 
+/-- `10P` is not the identity. -/
+theorem b_ne_zero : b ≠ 0 :=
+  some_ne_zero nonsingular_b
+
+/-- `11P` is not the identity. -/
+theorem c_ne_zero : c ≠ 0 :=
+  some_ne_zero nonsingular_c
+
+/-- `12P` is not the identity. -/
+theorem d_ne_zero : d ≠ 0 :=
+  some_ne_zero nonsingular_d
+
+/-- `13P` is not the identity. -/
+theorem e_ne_zero : e ≠ 0 :=
+  some_ne_zero nonsingular_e
+
+/-- `14P` is not the identity. -/
+theorem f_ne_zero : f ≠ 0 :=
+  some_ne_zero nonsingular_f
+
+/-- `15P` is not the identity. -/
+theorem g_ne_zero : g ≠ 0 :=
+  some_ne_zero nonsingular_g
+
+/-- `16P` is not the identity. -/
+theorem h_ne_zero : h ≠ 0 :=
+  some_ne_zero nonsingular_h
+
+/-- `17P` is not the identity. -/
+theorem i_ne_zero : i ≠ 0 :=
+  some_ne_zero nonsingular_i
+
+/-- `18P` is not the identity. -/
+theorem j_ne_zero : j ≠ 0 :=
+  some_ne_zero nonsingular_j
+
+/-- `10P` is not the identity. -/
+theorem ten_p_ne_zero : p + p + p + p + p + p + p + p + p + p ≠ 0 := by
+  rw [ten_p_eq_b]
+  exact b_ne_zero
+
+/-- `11P` is not the identity. -/
+theorem eleven_p_ne_zero : p + p + p + p + p + p + p + p + p + p + p ≠ 0 := by
+  rw [eleven_p_eq_c]
+  exact c_ne_zero
+
+/-- `12P` is not the identity. -/
+theorem twelve_p_ne_zero : p + p + p + p + p + p + p + p + p + p + p + p ≠ 0 := by
+  rw [twelve_p_eq_d]
+  exact d_ne_zero
+
+/-- `13P` is not the identity. -/
+theorem thirteen_p_ne_zero : p + p + p + p + p + p + p + p + p + p + p + p + p ≠ 0 := by
+  rw [thirteen_p_eq_e]
+  exact e_ne_zero
+
+/-- `14P` is not the identity. -/
+theorem fourteen_p_ne_zero : p + p + p + p + p + p + p + p + p + p + p + p + p + p ≠ 0 := by
+  rw [fourteen_p_eq_f]
+  exact f_ne_zero
+
+/-- `15P` is not the identity. -/
+theorem fifteen_p_ne_zero : p + p + p + p + p + p + p + p + p + p + p + p + p + p + p ≠ 0 := by
+  rw [fifteen_p_eq_g]
+  exact g_ne_zero
+
+/-- `16P` is not the identity. -/
+theorem sixteen_p_ne_zero : p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p ≠ 0 := by
+  rw [sixteen_p_eq_h]
+  exact h_ne_zero
+
+/-- `17P` is not the identity. -/
+theorem seventeen_p_ne_zero : p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p ≠ 0 := by
+  rw [seventeen_p_eq_i]
+  exact i_ne_zero
+
+/-- `18P` is not the identity. -/
+theorem eighteen_p_ne_zero : p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p ≠ 0 := by
+  rw [eighteen_p_eq_j]
+  exact j_ne_zero
+
 /-- The points `P` and `Q` are distinct. -/
 theorem p_ne_q : p ≠ q := by
   intro h
@@ -895,13 +1405,16 @@ theorem p_ne_q : p ≠ q := by
   rw [WeierstrassCurve.Affine.Point.some.injEq] at h
   norm_num at h
 
-/-! ## There is no torsion of order `2` through `9`
+/-! ## There is no torsion of order `2` through `18`
 
 For the generator `P`, the multiples `2P`, `3P`, `4P`, `5P`, `6P`, `7P`, `8P`,
-`9P` are computed above and are all distinct from the identity.  Below, the same
+`9P` are computed above and are all distinct from the identity; the further
+multiples `10P` through `18P` extend this through `18P`.  Below, the same
 facts are restated in the group-theoretic form `(n : ℕ) • p ≠ 0`, using the
 `nsmul` operation of the additive group of the curve; the rewrite by
-`succ_nsmul` recovers the repeated-sum notation of the `*_ne_zero` theorems.
+`succ_nsmul` recovers the repeated-sum notation of the `*_ne_zero` theorems,
+and the orders `10` through `18` are transferred from the integer form via
+`natCast_zsmul`.
 -/
 
 /-- `P` does not have order `2`. -/
@@ -1161,6 +1674,150 @@ theorem neg_three_zsmul_p_ne_zero : (-3 : ℤ) • p ≠ 0 := by
   rw [show (-3 : ℤ) = -(3 : ℤ) by norm_num, neg_zsmul]
   exact neg_ne_zero.mpr not_three_nsmul_torsion
 
+/-- `10 • P = B`. -/
+theorem ten_zsmul_p_eq_b : (10 : ℤ) • p = b := by
+  rw [show (10 : ℤ) = (9 : ℤ) + (1 : ℤ) by norm_num, add_zsmul]
+  rw [nine_zsmul_p_eq_a, one_zsmul]
+  exact add_a_p_eq_b
+
+/-- `11 • P = C`. -/
+theorem eleven_zsmul_p_eq_c : (11 : ℤ) • p = c := by
+  rw [show (11 : ℤ) = (10 : ℤ) + (1 : ℤ) by norm_num, add_zsmul]
+  rw [ten_zsmul_p_eq_b, one_zsmul]
+  exact add_b_p_eq_c
+
+/-- `12 • P = D`. -/
+theorem twelve_zsmul_p_eq_d : (12 : ℤ) • p = d := by
+  rw [show (12 : ℤ) = (11 : ℤ) + (1 : ℤ) by norm_num, add_zsmul]
+  rw [eleven_zsmul_p_eq_c, one_zsmul]
+  exact add_c_p_eq_d
+
+/-- `13 • P = E`. -/
+theorem thirteen_zsmul_p_eq_e : (13 : ℤ) • p = e := by
+  rw [show (13 : ℤ) = (12 : ℤ) + (1 : ℤ) by norm_num, add_zsmul]
+  rw [twelve_zsmul_p_eq_d, one_zsmul]
+  exact add_d_p_eq_e
+
+/-- `14 • P = F`. -/
+theorem fourteen_zsmul_p_eq_f : (14 : ℤ) • p = f := by
+  rw [show (14 : ℤ) = (13 : ℤ) + (1 : ℤ) by norm_num, add_zsmul]
+  rw [thirteen_zsmul_p_eq_e, one_zsmul]
+  exact add_e_p_eq_f
+
+/-- `15 • P = G`. -/
+theorem fifteen_zsmul_p_eq_g : (15 : ℤ) • p = g := by
+  rw [show (15 : ℤ) = (14 : ℤ) + (1 : ℤ) by norm_num, add_zsmul]
+  rw [fourteen_zsmul_p_eq_f, one_zsmul]
+  exact add_f_p_eq_g
+
+/-- `16 • P = H`. -/
+theorem sixteen_zsmul_p_eq_h : (16 : ℤ) • p = h := by
+  rw [show (16 : ℤ) = (15 : ℤ) + (1 : ℤ) by norm_num, add_zsmul]
+  rw [fifteen_zsmul_p_eq_g, one_zsmul]
+  exact add_g_p_eq_h
+
+/-- `17 • P = I`. -/
+theorem seventeen_zsmul_p_eq_i : (17 : ℤ) • p = i := by
+  rw [show (17 : ℤ) = (16 : ℤ) + (1 : ℤ) by norm_num, add_zsmul]
+  rw [sixteen_zsmul_p_eq_h, one_zsmul]
+  exact add_h_p_eq_i
+
+/-- `18 • P = J`. -/
+theorem eighteen_zsmul_p_eq_j : (18 : ℤ) • p = j := by
+  rw [show (18 : ℤ) = (17 : ℤ) + (1 : ℤ) by norm_num, add_zsmul]
+  rw [seventeen_zsmul_p_eq_i, one_zsmul]
+  exact add_i_p_eq_j
+
+/-- `10 • P` is not the identity. -/
+theorem ten_zsmul_p_ne_zero : (10 : ℤ) • p ≠ 0 := by
+  rw [ten_zsmul_p_eq_b]
+  exact b_ne_zero
+
+/-- `11 • P` is not the identity. -/
+theorem eleven_zsmul_p_ne_zero : (11 : ℤ) • p ≠ 0 := by
+  rw [eleven_zsmul_p_eq_c]
+  exact c_ne_zero
+
+/-- `12 • P` is not the identity. -/
+theorem twelve_zsmul_p_ne_zero : (12 : ℤ) • p ≠ 0 := by
+  rw [twelve_zsmul_p_eq_d]
+  exact d_ne_zero
+
+/-- `13 • P` is not the identity. -/
+theorem thirteen_zsmul_p_ne_zero : (13 : ℤ) • p ≠ 0 := by
+  rw [thirteen_zsmul_p_eq_e]
+  exact e_ne_zero
+
+/-- `14 • P` is not the identity. -/
+theorem fourteen_zsmul_p_ne_zero : (14 : ℤ) • p ≠ 0 := by
+  rw [fourteen_zsmul_p_eq_f]
+  exact f_ne_zero
+
+/-- `15 • P` is not the identity. -/
+theorem fifteen_zsmul_p_ne_zero : (15 : ℤ) • p ≠ 0 := by
+  rw [fifteen_zsmul_p_eq_g]
+  exact g_ne_zero
+
+/-- `16 • P` is not the identity. -/
+theorem sixteen_zsmul_p_ne_zero : (16 : ℤ) • p ≠ 0 := by
+  rw [sixteen_zsmul_p_eq_h]
+  exact h_ne_zero
+
+/-- `17 • P` is not the identity. -/
+theorem seventeen_zsmul_p_ne_zero : (17 : ℤ) • p ≠ 0 := by
+  rw [seventeen_zsmul_p_eq_i]
+  exact i_ne_zero
+
+/-- `18 • P` is not the identity. -/
+theorem eighteen_zsmul_p_ne_zero : (18 : ℤ) • p ≠ 0 := by
+  rw [eighteen_zsmul_p_eq_j]
+  exact j_ne_zero
+
+/-- `P` does not have order `10`, in the `(n : ℕ) • p` notation. -/
+theorem not_ten_nsmul_torsion : (10 : ℕ) • p ≠ 0 := by
+  rw [← natCast_zsmul]
+  exact ten_zsmul_p_ne_zero
+
+/-- `P` does not have order `11`, in the `(n : ℕ) • p` notation. -/
+theorem not_eleven_nsmul_torsion : (11 : ℕ) • p ≠ 0 := by
+  rw [← natCast_zsmul]
+  exact eleven_zsmul_p_ne_zero
+
+/-- `P` does not have order `12`, in the `(n : ℕ) • p` notation. -/
+theorem not_twelve_nsmul_torsion : (12 : ℕ) • p ≠ 0 := by
+  rw [← natCast_zsmul]
+  exact twelve_zsmul_p_ne_zero
+
+/-- `P` does not have order `13`, in the `(n : ℕ) • p` notation. -/
+theorem not_thirteen_nsmul_torsion : (13 : ℕ) • p ≠ 0 := by
+  rw [← natCast_zsmul]
+  exact thirteen_zsmul_p_ne_zero
+
+/-- `P` does not have order `14`, in the `(n : ℕ) • p` notation. -/
+theorem not_fourteen_nsmul_torsion : (14 : ℕ) • p ≠ 0 := by
+  rw [← natCast_zsmul]
+  exact fourteen_zsmul_p_ne_zero
+
+/-- `P` does not have order `15`, in the `(n : ℕ) • p` notation. -/
+theorem not_fifteen_nsmul_torsion : (15 : ℕ) • p ≠ 0 := by
+  rw [← natCast_zsmul]
+  exact fifteen_zsmul_p_ne_zero
+
+/-- `P` does not have order `16`, in the `(n : ℕ) • p` notation. -/
+theorem not_sixteen_nsmul_torsion : (16 : ℕ) • p ≠ 0 := by
+  rw [← natCast_zsmul]
+  exact sixteen_zsmul_p_ne_zero
+
+/-- `P` does not have order `17`, in the `(n : ℕ) • p` notation. -/
+theorem not_seventeen_nsmul_torsion : (17 : ℕ) • p ≠ 0 := by
+  rw [← natCast_zsmul]
+  exact seventeen_zsmul_p_ne_zero
+
+/-- `P` does not have order `18`, in the `(n : ℕ) • p` notation. -/
+theorem not_eighteen_nsmul_torsion : (18 : ℕ) • p ≠ 0 := by
+  rw [← natCast_zsmul]
+  exact eighteen_zsmul_p_ne_zero
+
 /-! ## The negative multiples `-4P` through `-9P`
 
 With `-1P = R`, `-2P = U`, `-3P = S` already recorded, the six remaining
@@ -1378,6 +2035,156 @@ theorem neg_nine_zsmul_p_ne_zero : (-9 : ℤ) • p ≠ 0 := by
   rw [neg_nine_zsmul_p_eq_m9]
   exact some_ne_zero nonsingular_m9
 
+/-! ## The named multiples have no small-order torsion
+
+With `(k : ℕ) • p ≠ 0` for `2 ≤ k ≤ 18` in place, each of the earlier named
+multiples is certified torsion-free in every order `n` that is consistent with
+`18`: `(n : ℕ) • (2P) = (2n : ℕ) • P` is non-zero for `2n ≤ 18`, i.e. for
+`2 ≤ n ≤ 9`; similarly `3P` for `2 ≤ n ≤ 6`, `4P` for `2 ≤ n ≤ 4`, `5P` for
+`2 ≤ n ≤ 3`, and `6P`, `7P`, `8P`, `9P` for `n = 2`.  No listed point can
+therefore have finite order of any of these values, the orders the geometry of
+the curve (order `2` needs `3`-division polynomials, orders `3` and `5`
+`5`-division polynomials, and so on) would predict below the generators bound.
+-/
+
+/-- `Q` does not have order `2`; `(2 : ℕ) • (2P) = (4 : ℕ) • P`. -/
+theorem not_two_nsmul_q_torsion : (2 : ℕ) • q ≠ 0 := by
+  rw [← two_p_eq_q, nsmul_add, ← add_nsmul]
+  norm_num
+  exact not_four_nsmul_torsion
+
+/-- `Q` does not have order `3`; `(3 : ℕ) • (2P) = (6 : ℕ) • P`. -/
+theorem not_three_nsmul_q_torsion : (3 : ℕ) • q ≠ 0 := by
+  rw [← two_p_eq_q, nsmul_add, ← add_nsmul]
+  norm_num
+  exact not_six_nsmul_torsion
+
+/-- `Q` does not have order `4`; `(4 : ℕ) • (2P) = (8 : ℕ) • P`. -/
+theorem not_four_nsmul_q_torsion : (4 : ℕ) • q ≠ 0 := by
+  rw [← two_p_eq_q, nsmul_add, ← add_nsmul]
+  norm_num
+  exact not_eight_nsmul_torsion
+
+/-- `Q` does not have order `5`; `(5 : ℕ) • (2P) = (10 : ℕ) • P`. -/
+theorem not_five_nsmul_q_torsion : (5 : ℕ) • q ≠ 0 := by
+  rw [← two_p_eq_q, nsmul_add, ← add_nsmul]
+  norm_num
+  exact not_ten_nsmul_torsion
+
+/-- `Q` does not have order `6`; `(6 : ℕ) • (2P) = (12 : ℕ) • P`. -/
+theorem not_six_nsmul_q_torsion : (6 : ℕ) • q ≠ 0 := by
+  rw [← two_p_eq_q, nsmul_add, ← add_nsmul]
+  norm_num
+  exact not_twelve_nsmul_torsion
+
+/-- `Q` does not have order `7`; `(7 : ℕ) • (2P) = (14 : ℕ) • P`. -/
+theorem not_seven_nsmul_q_torsion : (7 : ℕ) • q ≠ 0 := by
+  rw [← two_p_eq_q, nsmul_add, ← add_nsmul]
+  norm_num
+  exact not_fourteen_nsmul_torsion
+
+/-- `Q` does not have order `8`; `(8 : ℕ) • (2P) = (16 : ℕ) • P`. -/
+theorem not_eight_nsmul_q_torsion : (8 : ℕ) • q ≠ 0 := by
+  rw [← two_p_eq_q, nsmul_add, ← add_nsmul]
+  norm_num
+  exact not_sixteen_nsmul_torsion
+
+/-- `Q` does not have order `9`; `(9 : ℕ) • (2P) = (18 : ℕ) • P`. -/
+theorem not_nine_nsmul_q_torsion : (9 : ℕ) • q ≠ 0 := by
+  rw [← two_p_eq_q, nsmul_add, ← add_nsmul]
+  norm_num
+  exact not_eighteen_nsmul_torsion
+
+/-- `T` does not have order `2`; `(2 : ℕ) • (3P) = (6 : ℕ) • P`. -/
+theorem not_two_nsmul_t_torsion : (2 : ℕ) • t ≠ 0 := by
+  rw [← three_p_eq_t, nsmul_add, nsmul_add, ← add_nsmul, ← add_nsmul]
+  norm_num
+  exact not_six_nsmul_torsion
+
+/-- `T` does not have order `3`; `(3 : ℕ) • (3P) = (9 : ℕ) • P`. -/
+theorem not_three_nsmul_t_torsion : (3 : ℕ) • t ≠ 0 := by
+  rw [← three_p_eq_t, nsmul_add, nsmul_add, ← add_nsmul, ← add_nsmul]
+  norm_num
+  exact not_nine_nsmul_torsion
+
+/-- `T` does not have order `4`; `(4 : ℕ) • (3P) = (12 : ℕ) • P`. -/
+theorem not_four_nsmul_t_torsion : (4 : ℕ) • t ≠ 0 := by
+  rw [← three_p_eq_t, nsmul_add, nsmul_add, ← add_nsmul, ← add_nsmul]
+  norm_num
+  exact not_twelve_nsmul_torsion
+
+/-- `T` does not have order `5`; `(5 : ℕ) • (3P) = (15 : ℕ) • P`. -/
+theorem not_five_nsmul_t_torsion : (5 : ℕ) • t ≠ 0 := by
+  rw [← three_p_eq_t, nsmul_add, nsmul_add, ← add_nsmul, ← add_nsmul]
+  norm_num
+  exact not_fifteen_nsmul_torsion
+
+/-- `T` does not have order `6`; `(6 : ℕ) • (3P) = (18 : ℕ) • P`. -/
+theorem not_six_nsmul_t_torsion : (6 : ℕ) • t ≠ 0 := by
+  rw [← three_p_eq_t, nsmul_add, nsmul_add, ← add_nsmul, ← add_nsmul]
+  norm_num
+  exact not_eighteen_nsmul_torsion
+
+/-- `V` does not have order `2`; `(2 : ℕ) • (4P) = (8 : ℕ) • P`. -/
+theorem not_two_nsmul_v_torsion : (2 : ℕ) • v ≠ 0 := by
+  rw [← four_p_eq_v, nsmul_add, nsmul_add, nsmul_add, ← add_nsmul, ← add_nsmul, ← add_nsmul]
+  norm_num
+  exact not_eight_nsmul_torsion
+
+/-- `V` does not have order `3`; `(3 : ℕ) • (4P) = (12 : ℕ) • P`. -/
+theorem not_three_nsmul_v_torsion : (3 : ℕ) • v ≠ 0 := by
+  rw [← four_p_eq_v, nsmul_add, nsmul_add, nsmul_add, ← add_nsmul, ← add_nsmul, ← add_nsmul]
+  norm_num
+  exact not_twelve_nsmul_torsion
+
+/-- `V` does not have order `4`; `(4 : ℕ) • (4P) = (16 : ℕ) • P`. -/
+theorem not_four_nsmul_v_torsion : (4 : ℕ) • v ≠ 0 := by
+  rw [← four_p_eq_v, nsmul_add, nsmul_add, nsmul_add, ← add_nsmul, ← add_nsmul, ← add_nsmul]
+  norm_num
+  exact not_sixteen_nsmul_torsion
+
+/-- `W` does not have order `2`; `(2 : ℕ) • (5P) = (10 : ℕ) • P`. -/
+theorem not_two_nsmul_w_torsion : (2 : ℕ) • w ≠ 0 := by
+  rw [← five_p_eq_w, nsmul_add, nsmul_add, nsmul_add, nsmul_add, ← add_nsmul, ← add_nsmul, ← add_nsmul,
+    ← add_nsmul]
+  norm_num
+  exact not_ten_nsmul_torsion
+
+/-- `W` does not have order `3`; `(3 : ℕ) • (5P) = (15 : ℕ) • P`. -/
+theorem not_three_nsmul_w_torsion : (3 : ℕ) • w ≠ 0 := by
+  rw [← five_p_eq_w, nsmul_add, nsmul_add, nsmul_add, nsmul_add, ← add_nsmul, ← add_nsmul, ← add_nsmul,
+    ← add_nsmul]
+  norm_num
+  exact not_fifteen_nsmul_torsion
+
+/-- `X` does not have order `2`; `(2 : ℕ) • (6P) = (12 : ℕ) • P`. -/
+theorem not_two_nsmul_x_torsion : (2 : ℕ) • x ≠ 0 := by
+  rw [← six_p_eq_x, nsmul_add, nsmul_add, nsmul_add, nsmul_add, nsmul_add, ← add_nsmul, ← add_nsmul,
+    ← add_nsmul, ← add_nsmul, ← add_nsmul]
+  norm_num
+  exact not_twelve_nsmul_torsion
+
+/-- `Y` does not have order `2`; `(2 : ℕ) • (7P) = (14 : ℕ) • P`. -/
+theorem not_two_nsmul_y_torsion : (2 : ℕ) • y ≠ 0 := by
+  rw [← seven_p_eq_y, nsmul_add, nsmul_add, nsmul_add, nsmul_add, nsmul_add, nsmul_add, ← add_nsmul,
+    ← add_nsmul, ← add_nsmul, ← add_nsmul, ← add_nsmul, ← add_nsmul]
+  norm_num
+  exact not_fourteen_nsmul_torsion
+
+/-- `Z` does not have order `2`; `(2 : ℕ) • (8P) = (16 : ℕ) • P`. -/
+theorem not_two_nsmul_z_torsion : (2 : ℕ) • z ≠ 0 := by
+  rw [← eight_p_eq_z, nsmul_add, nsmul_add, nsmul_add, nsmul_add, nsmul_add, nsmul_add, nsmul_add, ← add_nsmul,
+    ← add_nsmul, ← add_nsmul, ← add_nsmul, ← add_nsmul, ← add_nsmul, ← add_nsmul]
+  norm_num
+  exact not_sixteen_nsmul_torsion
+
+/-- `A` does not have order `2`; `(2 : ℕ) • (9P) = (18 : ℕ) • P`. -/
+theorem not_two_nsmul_a_torsion : (2 : ℕ) • a ≠ 0 := by
+  rw [← nine_p_eq_a, nsmul_add, nsmul_add, nsmul_add, nsmul_add, nsmul_add, nsmul_add, nsmul_add, nsmul_add,
+    ← add_nsmul, ← add_nsmul, ← add_nsmul, ← add_nsmul, ← add_nsmul, ← add_nsmul, ← add_nsmul, ← add_nsmul]
+  norm_num
+  exact not_eighteen_nsmul_torsion
+
 /-! ## The points are pairwise distinct
 
 A point of the curve is determined by its coordinates, so each pairwise
@@ -1469,6 +2276,34 @@ theorem symmetric_family_card :
     constructor
     · simp [p, q, r, s, t, u, v, w, x, y, z, a, m4, m5, m6, m7, m8, m9]
     · norm_num [p, q, r, s, t, u, v, w, x, y, z, a, m4, m5, m6, m7, m8, m9,
+        WeierstrassCurve.Affine.Point.some.injEq]
+
+/-! ## The extended distinctness certificate
+
+The nine further multiples `10P, ..., 18P` are pairwise distinct (kernel-checked
+by `norm_num`) and are all distinct from the identity by the `*_ne_zero`
+theorems, so `{0, 10P, ..., 18P}` is a set of ten distinct group elements.  The
+multiples of `P` therefore keep producing new points through `18P`, and `P` is
+not torsion of any order `2 ≤ n ≤ 18` (see `not_*_nsmul_torsion`).
+-/
+
+/-- The nine further multiples `10P` through `18P` are pairwise distinct
+(kernel-checked by `norm_num`). -/
+theorem extended_nodup_nonzero :
+    List.Nodup [j, i, h, g, f, e, d, c, b] := by
+  norm_num [b, c, d, e, f, g, h, i, j,
+    WeierstrassCurve.Affine.Point.some.injEq]
+
+/-- `{0, 10P, ..., 18P}` has ten distinct elements. -/
+theorem extended_family_card :
+    ((([(0 : W.Point), j, i, h, g, f, e, d, c, b]
+      : List W.Point).toFinset) : Finset W.Point).card = 10 := by
+  rw [List.toFinset_card_of_nodup]
+  · simp
+  · rw [List.nodup_cons]
+    constructor
+    · simp [b, c, d, e, f, g, h, i, j]
+    · norm_num [b, c, d, e, f, g, h, i, j,
         WeierstrassCurve.Affine.Point.some.injEq]
 
 end UniversalSingularity.BSD37a1
