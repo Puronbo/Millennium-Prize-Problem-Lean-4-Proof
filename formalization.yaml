@@ -26,10 +26,12 @@ proofs:
       (y^2 + y = x^3 - x): discriminant Delta = 37, twelve nonsingular rational
       points, pairwise distinct (identity included: thirteen group elements,
       kernel-checked by norm_num), the group-law relations nP for n = 2..9
-      (with 2T = X and the independent check 3T = 9P), the inverse pairs
+      (with 2T = X and the independent check 3T = 9P; plus direct pair checks
+      Q + R = P, Q + T = W, S + P = U, U + T = P), the inverse pairs
       P + R = 0, Q + U = 0, T + S = 0 plus -2P = U, -3P = S, -S = T, the
-      no-torsion form (n : Nat) • p ≠ 0 for generator P and n = 2..9, and the
-      absence of torsion of order 2 through 9. Does not prove BSD.
+      integer multiples (n : Int) • p identified for -3 <= n <= 9, and the
+      no-torsion forms (n : Nat) • p ≠ 0 and (n : Int) • p ≠ 0, i.e. no torsion
+      of order 2 through 9. Does not prove BSD.
 review:
   status: pending
 keywords:

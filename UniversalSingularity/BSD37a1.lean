@@ -699,6 +699,49 @@ theorem three_t_eq_a : t + t + t = a := by
   rw [add_comm]
   exact add_t_x_eq_a
 
+/-! ## More direct pair additions
+
+The sums `Q + R`, `Q + T`, `S + P`, and `U + T` are computed directly from the
+chord-slope definition, cross-checking the identities `Q = 2P`, `R = -P`,
+`T = 3P`, `S = -3P`, and `U = -2P` established above.
+-/
+
+/-- `Q + R = P`, i.e. `2P + (-P) = P`. -/
+theorem q_add_r_eq_p : q + r = p := by
+  unfold p q r
+  rw [add_of_X_ne (x₁ := 1) (x₂ := 0) (y₁ := 0) (y₂ := -1) (h₁ := nonsingular_Q)
+    (h₂ := nonsingular_R) (by norm_num : (1 : ℚ) ≠ 0)]
+  rw [WeierstrassCurve.Affine.Point.some.injEq]
+  norm_num [WeierstrassCurve.Affine.slope_of_X_ne, WeierstrassCurve.Affine.addX,
+    WeierstrassCurve.Affine.addY]
+
+/-- `Q + T = W`, i.e. `2P + 3P = 5P`. -/
+theorem q_add_t_eq_w : q + t = w := by
+  unfold q t w
+  rw [add_of_X_ne (x₁ := 1) (x₂ := -1) (y₁ := 0) (y₂ := -1) (h₁ := nonsingular_Q)
+    (h₂ := nonsingular_T) (by norm_num : (1 : ℚ) ≠ -1)]
+  rw [WeierstrassCurve.Affine.Point.some.injEq]
+  norm_num [WeierstrassCurve.Affine.slope_of_X_ne, WeierstrassCurve.Affine.addX,
+    WeierstrassCurve.Affine.addY]
+
+/-- `S + P = U`, i.e. `-3P + P = -2P`. -/
+theorem s_add_p_eq_u : s + p = u := by
+  unfold p s u
+  rw [add_of_X_ne (x₁ := -1) (x₂ := 0) (y₁ := 0) (y₂ := 0) (h₁ := nonsingular_S)
+    (h₂ := nonsingular_P) (by norm_num : (-1 : ℚ) ≠ 0)]
+  rw [WeierstrassCurve.Affine.Point.some.injEq]
+  norm_num [WeierstrassCurve.Affine.slope_of_X_ne, WeierstrassCurve.Affine.addX,
+    WeierstrassCurve.Affine.addY]
+
+/-- `U + T = P`, i.e. `-2P + 3P = P`. -/
+theorem u_add_t_eq_p : u + t = p := by
+  unfold p u t
+  rw [add_of_X_ne (x₁ := 1) (x₂ := -1) (y₁ := -1) (y₂ := -1) (h₁ := nonsingular_U)
+    (h₂ := nonsingular_T) (by norm_num : (1 : ℚ) ≠ -1)]
+  rw [WeierstrassCurve.Affine.Point.some.injEq]
+  norm_num [WeierstrassCurve.Affine.slope_of_X_ne, WeierstrassCurve.Affine.addX,
+    WeierstrassCurve.Affine.addY]
+
 /-- `-P = (0, -1)`. -/
 theorem neg_p_eq_r : -p = r := by
   unfold p r
@@ -951,6 +994,171 @@ theorem not_nine_nsmul_torsion : (9 : ℕ) • p ≠ 0 := by
     succ_nsmul, show (3 : ℕ) = 2 + 1 by norm_num, succ_nsmul, show (2 : ℕ) = 1 + 1 by norm_num,
     succ_nsmul, show (1 : ℕ) = 0 + 1 by norm_num, succ_nsmul]
   exact nine_p_ne_zero
+
+/-! ## The integer multiples of `P`
+
+The `zsmul` operation `(n : ℤ) • p` recovers the named points for every
+`n` with `-3 ≤ n ≤ 9`; in particular every one of the twelve listed points is
+an integer multiple of `P` (`P`, `2P`, `3P`, `-3P`, `-2P`, and `4P` through
+`9P`, together with the negatives `-P`, `-2P`, `-3P`).  The no-torsion facts
+transfer to the integer form: `(n : ℤ) • p ≠ 0` for every such `n ≠ 0`.
+-/
+
+/-- `0 • P` is the identity. -/
+theorem zero_zsmul_p_eq_zero : (0 : ℤ) • p = 0 := by
+  simp
+
+/-- `1 • P = P`. -/
+theorem one_zsmul_p_eq_p : (1 : ℤ) • p = p := by
+  simp
+
+/-- `2 • P = Q`. -/
+theorem two_zsmul_p_eq_q : (2 : ℤ) • p = q := by
+  rw [show (2 : ℤ) = (2 : ℕ) by norm_num]
+  exact two_p_eq_q
+
+/-- `3 • P = T`. -/
+theorem three_zsmul_p_eq_t : (3 : ℤ) • p = t := by
+  rw [show (3 : ℤ) = (2 : ℤ) + (1 : ℤ) by norm_num, add_zsmul]
+  rw [show (2 : ℤ) = (1 : ℤ) + (1 : ℤ) by norm_num, add_zsmul]
+  rw [one_zsmul]
+  exact three_p_eq_t
+
+/-- `4 • P = V`. -/
+theorem four_zsmul_p_eq_v : (4 : ℤ) • p = v := by
+  rw [show (4 : ℤ) = (3 : ℤ) + (1 : ℤ) by norm_num, add_zsmul]
+  rw [show (3 : ℤ) = (2 : ℤ) + (1 : ℤ) by norm_num, add_zsmul]
+  rw [show (2 : ℤ) = (1 : ℤ) + (1 : ℤ) by norm_num, add_zsmul]
+  rw [one_zsmul]
+  exact four_p_eq_v
+
+/-- `5 • P = W`. -/
+theorem five_zsmul_p_eq_w : (5 : ℤ) • p = w := by
+  rw [show (5 : ℤ) = (4 : ℤ) + (1 : ℤ) by norm_num, add_zsmul]
+  rw [show (4 : ℤ) = (3 : ℤ) + (1 : ℤ) by norm_num, add_zsmul]
+  rw [show (3 : ℤ) = (2 : ℤ) + (1 : ℤ) by norm_num, add_zsmul]
+  rw [show (2 : ℤ) = (1 : ℤ) + (1 : ℤ) by norm_num, add_zsmul]
+  rw [one_zsmul]
+  exact five_p_eq_w
+
+/-- `6 • P = X`. -/
+theorem six_zsmul_p_eq_x : (6 : ℤ) • p = x := by
+  rw [show (6 : ℤ) = (5 : ℤ) + (1 : ℤ) by norm_num, add_zsmul]
+  rw [show (5 : ℤ) = (4 : ℤ) + (1 : ℤ) by norm_num, add_zsmul]
+  rw [show (4 : ℤ) = (3 : ℤ) + (1 : ℤ) by norm_num, add_zsmul]
+  rw [show (3 : ℤ) = (2 : ℤ) + (1 : ℤ) by norm_num, add_zsmul]
+  rw [show (2 : ℤ) = (1 : ℤ) + (1 : ℤ) by norm_num, add_zsmul]
+  rw [one_zsmul]
+  exact six_p_eq_x
+
+/-- `7 • P = Y`. -/
+theorem seven_zsmul_p_eq_y : (7 : ℤ) • p = y := by
+  rw [show (7 : ℤ) = (6 : ℤ) + (1 : ℤ) by norm_num, add_zsmul]
+  rw [show (6 : ℤ) = (5 : ℤ) + (1 : ℤ) by norm_num, add_zsmul]
+  rw [show (5 : ℤ) = (4 : ℤ) + (1 : ℤ) by norm_num, add_zsmul]
+  rw [show (4 : ℤ) = (3 : ℤ) + (1 : ℤ) by norm_num, add_zsmul]
+  rw [show (3 : ℤ) = (2 : ℤ) + (1 : ℤ) by norm_num, add_zsmul]
+  rw [show (2 : ℤ) = (1 : ℤ) + (1 : ℤ) by norm_num, add_zsmul]
+  rw [one_zsmul]
+  exact seven_p_eq_y
+
+/-- `8 • P = Z`. -/
+theorem eight_zsmul_p_eq_z : (8 : ℤ) • p = z := by
+  rw [show (8 : ℤ) = (7 : ℤ) + (1 : ℤ) by norm_num, add_zsmul]
+  rw [show (7 : ℤ) = (6 : ℤ) + (1 : ℤ) by norm_num, add_zsmul]
+  rw [show (6 : ℤ) = (5 : ℤ) + (1 : ℤ) by norm_num, add_zsmul]
+  rw [show (5 : ℤ) = (4 : ℤ) + (1 : ℤ) by norm_num, add_zsmul]
+  rw [show (4 : ℤ) = (3 : ℤ) + (1 : ℤ) by norm_num, add_zsmul]
+  rw [show (3 : ℤ) = (2 : ℤ) + (1 : ℤ) by norm_num, add_zsmul]
+  rw [show (2 : ℤ) = (1 : ℤ) + (1 : ℤ) by norm_num, add_zsmul]
+  rw [one_zsmul]
+  exact eight_p_eq_z
+
+/-- `9 • P = A`. -/
+theorem nine_zsmul_p_eq_a : (9 : ℤ) • p = a := by
+  rw [show (9 : ℤ) = (8 : ℤ) + (1 : ℤ) by norm_num, add_zsmul]
+  rw [show (8 : ℤ) = (7 : ℤ) + (1 : ℤ) by norm_num, add_zsmul]
+  rw [show (7 : ℤ) = (6 : ℤ) + (1 : ℤ) by norm_num, add_zsmul]
+  rw [show (6 : ℤ) = (5 : ℤ) + (1 : ℤ) by norm_num, add_zsmul]
+  rw [show (5 : ℤ) = (4 : ℤ) + (1 : ℤ) by norm_num, add_zsmul]
+  rw [show (4 : ℤ) = (3 : ℤ) + (1 : ℤ) by norm_num, add_zsmul]
+  rw [show (3 : ℤ) = (2 : ℤ) + (1 : ℤ) by norm_num, add_zsmul]
+  rw [show (2 : ℤ) = (1 : ℤ) + (1 : ℤ) by norm_num, add_zsmul]
+  rw [one_zsmul]
+  exact nine_p_eq_a
+
+/-- `(-1) • P = R`. -/
+theorem neg_one_zsmul_p_eq_r : (-1 : ℤ) • p = r := by
+  rw [show (-1 : ℤ) = -(1 : ℤ) by norm_num, neg_zsmul]
+  exact neg_p_eq_r
+
+/-- `(-2) • P = U`. -/
+theorem neg_two_zsmul_p_eq_u : (-2 : ℤ) • p = u := by
+  rw [show (-2 : ℤ) = -(2 : ℤ) by norm_num, neg_zsmul]
+  exact neg_two_p_eq_u
+
+/-- `(-3) • P = S`. -/
+theorem neg_three_zsmul_p_eq_s : (-3 : ℤ) • p = s := by
+  rw [neg_zsmul]
+  rw [show (3 : ℤ) = (2 : ℤ) + (1 : ℤ) by norm_num, add_zsmul]
+  rw [show (2 : ℤ) = (1 : ℤ) + (1 : ℤ) by norm_num, add_zsmul]
+  rw [one_zsmul]
+  exact neg_three_p_eq_s
+
+/-- `|P|` does not vanish under integer multiplication by `2`. -/
+theorem two_zsmul_p_ne_zero : (2 : ℤ) • p ≠ 0 := by
+  rw [show (2 : ℤ) = (2 : ℕ) by norm_num]
+  exact not_two_nsmul_torsion
+
+/-- `|P|` does not vanish under integer multiplication by `3`. -/
+theorem three_zsmul_p_ne_zero : (3 : ℤ) • p ≠ 0 := by
+  rw [show (3 : ℤ) = (3 : ℕ) by norm_num]
+  exact not_three_nsmul_torsion
+
+/-- `|P|` does not vanish under integer multiplication by `4`. -/
+theorem four_zsmul_p_ne_zero : (4 : ℤ) • p ≠ 0 := by
+  rw [show (4 : ℤ) = (4 : ℕ) by norm_num]
+  exact not_four_nsmul_torsion
+
+/-- `|P|` does not vanish under integer multiplication by `5`. -/
+theorem five_zsmul_p_ne_zero : (5 : ℤ) • p ≠ 0 := by
+  rw [show (5 : ℤ) = (5 : ℕ) by norm_num]
+  exact not_five_nsmul_torsion
+
+/-- `|P|` does not vanish under integer multiplication by `6`. -/
+theorem six_zsmul_p_ne_zero : (6 : ℤ) • p ≠ 0 := by
+  rw [show (6 : ℤ) = (6 : ℕ) by norm_num]
+  exact not_six_nsmul_torsion
+
+/-- `|P|` does not vanish under integer multiplication by `7`. -/
+theorem seven_zsmul_p_ne_zero : (7 : ℤ) • p ≠ 0 := by
+  rw [show (7 : ℤ) = (7 : ℕ) by norm_num]
+  exact not_seven_nsmul_torsion
+
+/-- `|P|` does not vanish under integer multiplication by `8`. -/
+theorem eight_zsmul_p_ne_zero : (8 : ℤ) • p ≠ 0 := by
+  rw [show (8 : ℤ) = (8 : ℕ) by norm_num]
+  exact not_eight_nsmul_torsion
+
+/-- `|P|` does not vanish under integer multiplication by `9`. -/
+theorem nine_zsmul_p_ne_zero : (9 : ℤ) • p ≠ 0 := by
+  rw [show (9 : ℤ) = (9 : ℕ) by norm_num]
+  exact not_nine_nsmul_torsion
+
+/-- `(-1) • P` is not the identity. -/
+theorem neg_one_zsmul_p_ne_zero : (-1 : ℤ) • p ≠ 0 := by
+  rw [neg_zsmul]
+  exact neg_ne_zero.mpr p_ne_zero
+
+/-- `(-2) • P` is not the identity. -/
+theorem neg_two_zsmul_p_ne_zero : (-2 : ℤ) • p ≠ 0 := by
+  rw [show (-2 : ℤ) = -(2 : ℤ) by norm_num, neg_zsmul]
+  exact neg_ne_zero.mpr not_two_nsmul_torsion
+
+/-- `(-3) • P` is not the identity. -/
+theorem neg_three_zsmul_p_ne_zero : (-3 : ℤ) • p ≠ 0 := by
+  rw [show (-3 : ℤ) = -(3 : ℤ) by norm_num, neg_zsmul]
+  exact neg_ne_zero.mpr not_three_nsmul_torsion
 
 /-! ## The points are pairwise distinct
 

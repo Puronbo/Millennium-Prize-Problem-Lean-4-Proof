@@ -58,9 +58,10 @@ explicit `sorry` `gap` marker (see `ROADMAP.md`):
   included: thirteen group elements, kernel-checked by `norm_num`), the
   group-law relations `nP` for `n = 2, ..., 9` (with `2T = X` and the
   independent check `3T = 9P`), the inverse pairs (including `−2P = U`,
-  `−3P = S`, `−S = T`), the no-torsion form `(n : ℕ) • p ≠ 0` for `n = 2, ..., 9`,
-  and the absence of torsion of order `2` through `9` for the generator `P`. It
-  proves BSD's nuts-and-bolts for one curve, not BSD itself.
+  `−3P = S`, `−S = T`), the integer-multiple identifications `(n : ℤ) • p` for
+  `-3 ≤ n ≤ 9`, the no-torsion forms `(n : ℕ) • p ≠ 0` and `(n : ℤ) • p ≠ 0`,
+  and no torsion of order `2` through `9` for the generator `P`. It proves BSD's
+  nuts-and-bolts for one curve, not BSD itself.
 - `UniversalSingularity/HilbertPolya.lean` — states the Hilbert–Pólya conjecture
   on genuine spectral theory (`IsSelfAdjoint`, `spectrum Complex A`), plus the
   Riemann–von Mangoldt zero-counting and Montgomery–Odlyzko (GUE) bridge gaps.
