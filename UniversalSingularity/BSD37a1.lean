@@ -9,10 +9,10 @@ This module computes *genuine* arithmetic content about the specific rational
 elliptic curve `37a1` (`y² + y = x³ - x`), using only what Mathlib's affine
 elliptic-curve group law already provides.
 
-Every theorem here is fully proved (no `sorry`): the discriminant `Δ = 37`, a
-dozen rational points with their group-law relations inside
-`WeierstrassCurve.Affine.Point`, and the absence of `2`/`3`/`4`-torsion for the
-generator `P`.  These are *real* statements about *real* mathematics, in
+Every theorem here is fully proved (no `sorry`): the discriminant `Δ = 37`, nine
+rational points with their group-law relations inside
+`WeierstrassCurve.Affine.Point`, and the absence of `2`/`3`/`4`/`5`/`6`-torsion
+for the generator `P`.  These are *real* statements about *real* mathematics, in
 contrast to the placeholder `analyticRank`/`mordellWeilRank` in
 `UniversalSingularity.BSDReal`.
 
@@ -169,6 +169,36 @@ theorem nonsingular_V : W.Nonsingular 2 (-3) := by
     simp
     norm_num
 
+/-- `(1/4, -5/8)` lies on the curve. -/
+theorem equation_W : W.Equation (1/4) (-5/8) := by
+  rw [WeierstrassCurve.Affine.equation_iff]
+  simp
+  norm_num
+
+/-- `(1/4, -5/8)` is a nonsingular rational point. -/
+theorem nonsingular_W : W.Nonsingular (1/4) (-5/8) := by
+  rw [WeierstrassCurve.Affine.nonsingular_iff]
+  constructor
+  · exact equation_W
+  · left
+    simp
+    norm_num
+
+/-- `(6, 14)` lies on the curve. -/
+theorem equation_X : W.Equation 6 14 := by
+  rw [WeierstrassCurve.Affine.equation_iff]
+  simp
+  norm_num
+
+/-- `(6, 14)` is a nonsingular rational point. -/
+theorem nonsingular_X : W.Nonsingular 6 14 := by
+  rw [WeierstrassCurve.Affine.nonsingular_iff]
+  constructor
+  · exact equation_X
+  · left
+    simp
+    norm_num
+
 /-! ## The distinguished rational points -/
 
 /-- The rational point `P = (0, 0)`. -/
@@ -191,6 +221,12 @@ def u : W.Point := Point.some 1 (-1) nonsingular_U
 
 /-- The rational point `(2, -3)`. -/
 def v : W.Point := Point.some 2 (-3) nonsingular_V
+
+/-- The rational point `5P = (1/4, -5/8)`. -/
+def w : W.Point := Point.some (1/4) (-5/8) nonsingular_W
+
+/-- The rational point `6P = (6, 14)`. -/
+def x : W.Point := Point.some 6 14 nonsingular_X
 
 /-- The canonical equivalence records the coordinates of the rational points. -/
 theorem p_coords : W.nonsingularPointEquiv p =
@@ -241,11 +277,25 @@ theorem v_coords : W.nonsingularPointEquiv v =
   unfold v
   rw [WeierstrassCurve.Affine.nonsingularPointEquiv_some nonsingular_V]
 
+/-- The canonical equivalence records the coordinates of the rational points. -/
+theorem w_coords : W.nonsingularPointEquiv w =
+    (Option.some ⟨⟨1/4, -5/8⟩, nonsingular_W⟩ :
+      WithZero {xy : ℚ × ℚ // W.Nonsingular xy.fst xy.snd}) := by
+  unfold w
+  rw [WeierstrassCurve.Affine.nonsingularPointEquiv_some nonsingular_W]
+
+/-- The canonical equivalence records the coordinates of the rational points. -/
+theorem x_coords : W.nonsingularPointEquiv x =
+    (Option.some ⟨⟨6, 14⟩, nonsingular_X⟩ :
+      WithZero {xy : ℚ × ℚ // W.Nonsingular xy.fst xy.snd}) := by
+  unfold x
+  rw [WeierstrassCurve.Affine.nonsingularPointEquiv_some nonsingular_X]
+
 /-! ## Slopes and addition coordinates
 
 These are the explicit affine formulae for the group law, verified by
 `norm_num`.  They constitute the honest computational content: the coordinates
-of `P + P`, `P + Q`, `Q + Q`, and `T + P` on `37a1`.
+of `P + P`, `P + Q`, `Q + Q`, `T + P`, `T + T`, `V + P`, and `W + P` on `37a1`.
 -/
 
 /-- `W.negY 0 0 = -1`. -/
@@ -260,6 +310,16 @@ theorem negY_10 : W.negY 1 0 = -1 := by
 
 /-- `W.negY (-1) (-1) = 0`. -/
 theorem negY_tt : W.negY (-1) (-1) = 0 := by
+  rw [WeierstrassCurve.Affine.negY]
+  simp
+
+/-- `W.negY 0 (-1) = 0`. -/
+theorem negY_0m1 : W.negY 0 (-1) = 0 := by
+  rw [WeierstrassCurve.Affine.negY]
+  simp
+
+/-- `W.negY 1 (-1) = 0`. -/
+theorem negY_1m1 : W.negY 1 (-1) = 0 := by
   rw [WeierstrassCurve.Affine.negY]
   simp
 
@@ -326,6 +386,50 @@ theorem addX_tp : W.addX (-1) 0 (W.slope (-1) 0 (-1) 0) = 2 := by
 theorem addY_tp : W.addY (-1) 0 (-1) (W.slope (-1) 0 (-1) 0) = -3 := by
   norm_num [slope_tp, WeierstrassCurve.Affine.addY]
 
+/-- The tangent slope at `T` is `-2`. -/
+theorem slope_tt : W.slope (-1) (-1) (-1) (-1) = -2 := by
+  rw [WeierstrassCurve.Affine.slope_of_Y_ne rfl
+    (by rw [negY_tt]; norm_num : (-1 : ℚ) ≠ W.negY (-1) (-1))]
+  simp
+  norm_num
+
+/-- The coordinate `x(T + T) = 6`. -/
+theorem addX_tt : W.addX (-1) (-1) (W.slope (-1) (-1) (-1) (-1)) = 6 := by
+  norm_num [slope_tt, WeierstrassCurve.Affine.addX]
+
+/-- The coordinate `y(T + T) = 14`. -/
+theorem addY_tt : W.addY (-1) (-1) (-1) (W.slope (-1) (-1) (-1) (-1)) = 14 := by
+  norm_num [slope_tt, WeierstrassCurve.Affine.addY]
+
+/-- The secant slope through `V` and `P` is `-3/2`. -/
+theorem slope_pv : W.slope 2 0 (-3) 0 = -3 / 2 := by
+  rw [WeierstrassCurve.Affine.slope_of_X_ne (x₁ := 2) (x₂ := 0) (y₁ := -3) (y₂ := 0)
+    (by norm_num : (2 : ℚ) ≠ 0)]
+  simp
+
+/-- The coordinate `x(V + P) = 1/4`. -/
+theorem addX_pv : W.addX 2 0 (W.slope 2 0 (-3) 0) = 1 / 4 := by
+  norm_num [slope_pv, WeierstrassCurve.Affine.addX]
+
+/-- The coordinate `y(V + P) = -5/8`. -/
+theorem addY_pv : W.addY 2 0 (-3) (W.slope 2 0 (-3) 0) = -5 / 8 := by
+  norm_num [slope_pv, WeierstrassCurve.Affine.addY]
+
+/-- The secant slope through `W` and `P` is `-5/2`. -/
+theorem slope_wp : W.slope (1/4) 0 (-5/8) 0 = -5 / 2 := by
+  rw [WeierstrassCurve.Affine.slope_of_X_ne (x₁ := 1/4) (x₂ := 0) (y₁ := -5/8) (y₂ := 0)
+    (by norm_num : (1/4 : ℚ) ≠ 0)]
+  simp
+  norm_num
+
+/-- The coordinate `x(W + P) = 6`. -/
+theorem addX_wp : W.addX (1/4) 0 (W.slope (1/4) 0 (-5/8) 0) = 6 := by
+  norm_num [slope_wp, WeierstrassCurve.Affine.addX]
+
+/-- The coordinate `y(W + P) = 14`. -/
+theorem addY_wp : W.addY (1/4) 0 (-5/8) (W.slope (1/4) 0 (-5/8) 0) = 14 := by
+  norm_num [slope_wp, WeierstrassCurve.Affine.addY]
+
 /-! ## Group-law relations on `37a1` -/
 
 /-- `P + P = Q`; equivalently `2P = Q`. -/
@@ -360,6 +464,30 @@ theorem add_t_p_eq_v : t + p = v := by
   rw [WeierstrassCurve.Affine.Point.some.injEq]
   exact ⟨addX_tp, addY_tp⟩
 
+/-- `V + P = W`; hence `5P = W`. -/
+theorem add_v_p_eq_w : v + p = w := by
+  unfold v p w
+  rw [add_of_X_ne (x₁ := 2) (x₂ := 0) (y₁ := -3) (y₂ := 0) (h₁ := nonsingular_V)
+    (h₂ := nonsingular_P) (by norm_num : (2 : ℚ) ≠ 0)]
+  rw [WeierstrassCurve.Affine.Point.some.injEq]
+  exact ⟨addX_pv, addY_pv⟩
+
+/-- `W + P = X`; hence `6P = X`. -/
+theorem add_w_p_eq_x : w + p = x := by
+  unfold w p x
+  rw [add_of_X_ne (x₁ := 1/4) (x₂ := 0) (y₁ := -5/8) (y₂ := 0) (h₁ := nonsingular_W)
+    (h₂ := nonsingular_P) (by norm_num : (1/4 : ℚ) ≠ 0)]
+  rw [WeierstrassCurve.Affine.Point.some.injEq]
+  exact ⟨addX_wp, addY_wp⟩
+
+/-- `T + T = X`; the second multiple of `T`, hence `6P = X`. -/
+theorem two_t_eq_x : t + t = x := by
+  unfold t x
+  rw [add_self_of_Y_ne (x₁ := -1) (y₁ := -1) (h₁ := nonsingular_T)
+    (by rw [negY_tt]; norm_num : (-1 : ℚ) ≠ W.negY (-1) (-1))]
+  rw [WeierstrassCurve.Affine.Point.some.injEq]
+  exact ⟨addX_tt, addY_tt⟩
+
 /-- `3P = T`. -/
 theorem three_p_eq_t : p + p + p = t := by
   rw [two_p_eq_q, add_comm (a := q) (b := p), add_p_q_eq_t]
@@ -367,6 +495,15 @@ theorem three_p_eq_t : p + p + p = t := by
 /-- `4P = V`. -/
 theorem four_p_eq_v : p + p + p + p = v := by
   rw [two_p_eq_q, add_comm (a := q) (b := p), add_p_q_eq_t, add_t_p_eq_v]
+
+/-- `5P = W`. -/
+theorem five_p_eq_w : p + p + p + p + p = w := by
+  rw [four_p_eq_v, add_v_p_eq_w]
+
+/-- `6P = X`. -/
+theorem six_p_eq_x : p + p + p + p + p + p = x := by
+  rw [two_p_eq_q, add_comm (a := q) (b := p), add_p_q_eq_t, add_t_p_eq_v,
+    add_v_p_eq_w, add_w_p_eq_x]
 
 /-- `-P = (0, -1)`. -/
 theorem neg_p_eq_r : -p = r := by
@@ -393,6 +530,35 @@ theorem neg_t_eq_s : -t = s := by
 theorem p_add_neg_p_eq_zero : p + -p = 0 := by
   exact add_neg_cancel p
 
+/-- `P + R = 0`, where `R = -P`. -/
+theorem p_add_r_eq_zero : p + r = 0 := by
+  rw [← neg_p_eq_r]
+  exact p_add_neg_p_eq_zero
+
+/-- `Q + U = 0`, where `U = -Q`. -/
+theorem q_add_u_eq_zero : q + u = 0 := by
+  rw [← neg_q_eq_u]
+  exact add_neg_cancel q
+
+/-- `T + S = 0`, where `S = -T`. -/
+theorem t_add_s_eq_zero : t + s = 0 := by
+  rw [← neg_t_eq_s]
+  exact add_neg_cancel t
+
+/-- `-R = P`. -/
+theorem neg_r_eq_p : -r = p := by
+  unfold r p
+  rw [neg_some nonsingular_R]
+  rw [WeierstrassCurve.Affine.Point.some.injEq]
+  exact ⟨rfl, negY_0m1⟩
+
+/-- `-U = Q`. -/
+theorem neg_u_eq_q : -u = q := by
+  unfold u q
+  rw [neg_some nonsingular_U]
+  rw [WeierstrassCurve.Affine.Point.some.injEq]
+  exact ⟨rfl, negY_1m1⟩
+
 /-! ## None of the points is the identity -/
 
 /-- `P` is not the identity. -/
@@ -411,6 +577,14 @@ theorem t_ne_zero : t ≠ 0 :=
 theorem v_ne_zero : v ≠ 0 :=
   some_ne_zero nonsingular_V
 
+/-- `W` is not the identity. -/
+theorem w_ne_zero : w ≠ 0 :=
+  some_ne_zero nonsingular_W
+
+/-- `X` is not the identity. -/
+theorem x_ne_zero : x ≠ 0 :=
+  some_ne_zero nonsingular_X
+
 /-- `2P` is not the identity. -/
 theorem two_p_ne_zero : p + p ≠ 0 := by
   rw [two_p_eq_q]
@@ -426,6 +600,16 @@ theorem four_p_ne_zero : p + p + p + p ≠ 0 := by
   rw [four_p_eq_v]
   exact v_ne_zero
 
+/-- `5P` is not the identity. -/
+theorem five_p_ne_zero : p + p + p + p + p ≠ 0 := by
+  rw [five_p_eq_w]
+  exact w_ne_zero
+
+/-- `6P` is not the identity. -/
+theorem six_p_ne_zero : p + p + p + p + p + p ≠ 0 := by
+  rw [six_p_eq_x]
+  exact x_ne_zero
+
 /-- The points `P` and `Q` are distinct. -/
 theorem p_ne_q : p ≠ q := by
   intro h
@@ -433,10 +617,10 @@ theorem p_ne_q : p ≠ q := by
   rw [WeierstrassCurve.Affine.Point.some.injEq] at h
   norm_num at h
 
-/-! ## There is no `2`-, `3`-, or `4`-torsion
+/-! ## There is no `2`-, `3`-, `4`-, `5`-, or `6`-torsion
 
-For the generator `P`, the multiples `2P`, `3P`, `4P` are computed above and are
-all distinct from the identity.
+For the generator `P`, the multiples `2P`, `3P`, `4P`, `5P`, `6P` are computed
+above and are all distinct from the identity.
 -/
 
 /-- `P` does not have order `2`. -/
@@ -450,5 +634,13 @@ theorem not_three_torsion : p + p + p ≠ 0 :=
 /-- `P` does not have order `4`. -/
 theorem not_four_torsion : p + p + p + p ≠ 0 :=
   four_p_ne_zero
+
+/-- `P` does not have order `5`. -/
+theorem not_five_torsion : p + p + p + p + p ≠ 0 :=
+  five_p_ne_zero
+
+/-- `P` does not have order `6`. -/
+theorem not_six_torsion : p + p + p + p + p + p ≠ 0 :=
+  six_p_ne_zero
 
 end UniversalSingularity.BSD37a1
