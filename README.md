@@ -52,6 +52,11 @@ explicit `sorry` `gap` marker (see `ROADMAP.md`):
   `riemannZeta` / `riemannZetaZeros`.
 - `UniversalSingularity/BSDReal.lean` — states BSD on `WeierstrassCurve ℚ` and
   its complex `WeierstrassCurve.LSeries`.
+- `UniversalSingularity/BSD37a1.lean` — **fully proved** (no `sorry`s) concrete
+  arithmetic on the rank-one curve `37a1` (`y² + y = x³ − x`): discriminant
+  `Δ = 37`, seven nonsingular rational points, the group-law relations
+  `2P = Q`, `3P = T`, `4P = V`, and the absence of `2`/`3`/`4`-torsion for the
+  generator `P`. It proves BSD's nuts-and-bolts for one curve, not BSD itself.
 - `UniversalSingularity/HilbertPolya.lean` — states the Hilbert–Pólya conjecture
   on genuine spectral theory (`IsSelfAdjoint`, `spectrum Complex A`), plus the
   Riemann–von Mangoldt zero-counting and Montgomery–Odlyzko (GUE) bridge gaps.

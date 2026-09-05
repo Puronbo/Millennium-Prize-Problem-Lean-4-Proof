@@ -17,6 +17,15 @@ sources:
 automation:
   methods:
     - interactive theorem proving
+proofs:
+  - module: UniversalSingularity/BSD37a1.lean
+    status: complete
+    sorries: 0
+    description: >-
+      Fully proved concrete arithmetic on the rational elliptic curve 37a1
+      (y^2 + y = x^3 - x): discriminant Delta = 37, seven nonsingular rational
+      points, the group-law relations 2P = Q, 3P = T, 4P = V, and the absence
+      of 2-, 3-, and 4-torsion for the generator P. Does not prove BSD.
 review:
   status: pending
 keywords:

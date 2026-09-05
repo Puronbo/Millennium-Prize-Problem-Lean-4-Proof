@@ -22,6 +22,11 @@ Legend: **LIVE** = usable infrastructure exists · **GAP** = missing dependency 
   genuine `riemannZetaZeros` + `riemannZeta`; 3 `gap` theorems marked `sorry`.
 - `UniversalSingularity/BSDReal.lean` — states BSD on the genuine
   `WeierstrassCurve ℚ` + `WeierstrassCurve.LSeries`; 1 `gap` theorem marked `sorry`.
+- `UniversalSingularity/BSD37a1.lean` — **new**: fully proved concrete
+  arithmetic on the rank-one curve `37a1` (`y² + y = x³ − x`): `Δ = 37`, seven
+  nonsingular rational points, `2P = Q`, `3P = T`, `4P = V`, and no `2`/`3`/`4`-
+  torsion for the generator `P`. **Zero `sorry`s** — the first fully proved module
+  in the repo. Does not prove BSD itself.
 - `UniversalSingularity/HilbertPolya.lean` — states the Hilbert–Pólya
   conjecture on genuine spectral theory, plus the Riemann–von Mangoldt and
   Montgomery–Odlyzko bridge gaps; 3 `gap` theorems marked `sorry`.
@@ -101,16 +106,21 @@ Present in Mathlib:
 - `Mathlib.NumberTheory.NumberField.Basic` for `NumberField ℚ`.
 
 Milestones:
-1. **LIVE ready (hard but finite):** compute `mordellWeilRank` for a concrete rank
-   curve (e.g. `37a1`, field set in `sampleCurve`) by descent. This is a *real*
-   theorem (integer rank = n), unlike the old placeholder.
-2. **GAP:** define `ord_{s=1} L(E,s)` (order of vanishing) from `LSeries` — not
+1. **DONE:** `UniversalSingularity/BSD37a1.lean` fully proves the concrete
+   layer of the curve `37a1` (field set in `sampleCurve`): discriminant `Δ = 37`,
+   seven nonsingular rational points with their coordinates, the explicit slopes
+   and group-law relations `2P = Q`, `3P = T`, `4P = V`, and the absence of
+   `2`/`3`/`4`-torsion for the generator `P`. Zero `sorry`s.
+2. **LIVE ready (hard but finite):** compute `mordellWeilRank` for `37a1` by
+   descent. This is a *real* theorem (integer rank = n), unlike the old
+   placeholder.
+3. **GAP:** define `ord_{s=1} L(E,s)` (order of vanishing) from `LSeries` — not
    packaged in Mathlib.
-3. **OPEN:** prove `analyticRank = mordellWeilRank` for a general curve — this is BSD.
+4. **OPEN:** prove `analyticRank = mordellWeilRank` for a general curve — this is BSD.
 
 Realistic: prove a **rank-0 instance** (e.g. `L(E,1) ≠ 0 ⇒ rank = 0`) for a
 specific curve once `ord` and nonvanishing lemmas are added. This is the single
-finishable "real proof" in this landscape, but still a substantial project.
+finishable "real proof" left in this landscape, but still a substantial project.
 
 ### 3. Poincaré Conjecture — statable, Himalayan proof (not open)
 
@@ -169,7 +179,8 @@ settings). **Not bridgeable now.** `HodgeConjectureReal.lean` pins the claim
 
 ## Suggested next work (real proofs, in increasing difficulty)
 
-1. **BSD rank computation for `37a1`** — the concrete, finishable "real proof".
+1. **BSD rank computation for `37a1`** — the group-law layer is DONE in
+   `BSD37a1.lean`; the remaining concrete step is `mordellWeilRank` by descent.
 2. **RH nontrivial-zero classification + finite counterexample search** — real
    theorem, get `riemannZetaZeros` genuinely connected.
 3. **HP spectral bridge** — pin the Hilbert–Pólya operator on a concrete Hilbert

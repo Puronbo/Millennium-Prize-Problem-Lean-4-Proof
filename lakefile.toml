@@ -31,4 +31,5 @@ roots = [
   "UniversalSingularity.YangMillsReal",
   "UniversalSingularity.NavierStokesReal",
   "UniversalSingularity.HilbertPolya",
+  "UniversalSingularity.BSD37a1",
 ]
