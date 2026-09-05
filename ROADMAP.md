@@ -23,11 +23,13 @@ Legend: **LIVE** = usable infrastructure exists · **GAP** = missing dependency 
 - `UniversalSingularity/BSDReal.lean` — states BSD on the genuine
   `WeierstrassCurve ℚ` + `WeierstrassCurve.LSeries`; 1 `gap` theorem marked `sorry`.
 - `UniversalSingularity/BSD37a1.lean` — **new**: fully proved concrete
-  arithmetic on the rank-one curve `37a1` (`y² + y = x³ − x`): `Δ = 37`, eleven
-  nonsingular rational points, the low multiples `nP` for `n = 2, ..., 8` (with
-  `2T = X`), the inverse pairs (`P + R = 0`, `Q + U = 0`, `T + S = 0`), and no
-  torsion of order `2` through `8` for the generator `P`. **Zero `sorry`s** — the
-  first fully proved module in the repo. Does not prove BSD itself.
+  arithmetic on the rank-one curve `37a1` (`y² + y = x³ − x`): `Δ = 37`, twelve
+  nonsingular rational points (pairwise distinct, together with the identity:
+  thirteen elements of the group), the low multiples `nP` for `n = 2, ..., 9`
+  (with `2T = X`), the inverse pairs (`P + R = 0`, `Q + U = 0`, `T + S = 0`),
+  and no torsion of order `2` through `9` for the generator `P`. **Zero
+  `sorry`s** — the first fully proved module in the repo. Does not prove BSD
+  itself.
 - `UniversalSingularity/HilbertPolya.lean` — states the Hilbert–Pólya
   conjecture on genuine spectral theory, plus the Riemann–von Mangoldt and
   Montgomery–Odlyzko bridge gaps; 3 `gap` theorems marked `sorry`.
@@ -109,10 +111,11 @@ Present in Mathlib:
 Milestones:
 1. **DONE:** `UniversalSingularity/BSD37a1.lean` fully proves the concrete
    layer of the curve `37a1` (field set in `sampleCurve`): discriminant `Δ = 37`,
-   eleven nonsingular rational points with their coordinates, the explicit slopes
-   and group-law relations `nP` for `n = 2, ..., 8` (with `2T = X`), the inverse
-   pairs (`P + R = 0`, `Q + U = 0`, `T + S = 0`), and the absence of torsion of
-   order `2` through `8` for the generator `P`. Zero `sorry`s.
+   twelve nonsingular rational points, pairwise distinct and adding the identity
+   to give thirteen distinct group elements, the explicit slopes and group-law
+   relations `nP` for `n = 2, ..., 9` (with `2T = X`), the inverse pairs
+   (`P + R = 0`, `Q + U = 0`, `T + S = 0`), and the absence of torsion of order
+   `2` through `9` for the generator `P`. Zero `sorry`s.
 2. **LIVE ready (hard but finite):** compute `mordellWeilRank` for `37a1` by
    descent. This is a *real* theorem (integer rank = n), unlike the old
    placeholder.

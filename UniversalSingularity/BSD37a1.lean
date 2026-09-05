@@ -10,10 +10,12 @@ elliptic curve `37a1` (`y² + y = x³ - x`), using only what Mathlib's affine
 elliptic-curve group law already provides.
 
 Every theorem here is fully proved (no `sorry`): the discriminant `Δ = 37`,
-eleven rational points with their group-law relations inside
-`WeierstrassCurve.Affine.Point`, and the absence of torsion of order `2` through
-`8` for the generator `P`.  These are *real* statements about *real*
-mathematics, in contrast to the placeholder `analyticRank`/`mordellWeilRank` in
+twelve rational points with their group-law relations inside
+`WeierstrassCurve.Affine.Point`, the pairwise distinctness of those points and
+the identity (thirteen elements of the group in all), and the absence of
+torsion of order `2` through `9` for the generator `P`.  These are *real*
+statements about *real* mathematics, in contrast to the placeholder
+`analyticRank`/`mordellWeilRank` in
 `UniversalSingularity.BSDReal`.
 
 They do **not** prove BSD itself: the analytic rank (order of vanishing of the
@@ -229,6 +231,21 @@ theorem nonsingular_Z : W.Nonsingular (21/25) (-69/125) := by
     simp
     norm_num
 
+/-- `(-20/49, -435/343)` lies on the curve. -/
+theorem equation_A : W.Equation (-20/49) (-435/343) := by
+  rw [WeierstrassCurve.Affine.equation_iff]
+  simp
+  norm_num
+
+/-- `(-20/49, -435/343)` is a nonsingular rational point. -/
+theorem nonsingular_A : W.Nonsingular (-20/49) (-435/343) := by
+  rw [WeierstrassCurve.Affine.nonsingular_iff]
+  constructor
+  · exact equation_A
+  · left
+    simp
+    norm_num
+
 /-! ## The distinguished rational points -/
 
 /-- The rational point `P = (0, 0)`. -/
@@ -263,6 +280,9 @@ def y : W.Point := Point.some (-5/9) (8/27) nonsingular_Y
 
 /-- The rational point `8P = (21/25, -69/125)`. -/
 def z : W.Point := Point.some (21/25) (-69/125) nonsingular_Z
+
+/-- The rational point `9P = (-20/49, -435/343)`. -/
+def a : W.Point := Point.some (-20/49) (-435/343) nonsingular_A
 
 /-- The canonical equivalence records the coordinates of the rational points. -/
 theorem p_coords : W.nonsingularPointEquiv p =
@@ -341,12 +361,19 @@ theorem z_coords : W.nonsingularPointEquiv z =
   unfold z
   rw [WeierstrassCurve.Affine.nonsingularPointEquiv_some nonsingular_Z]
 
+/-- The canonical equivalence records the coordinates of the rational points. -/
+theorem a_coords : W.nonsingularPointEquiv a =
+    (Option.some ⟨⟨-20/49, -435/343⟩, nonsingular_A⟩ :
+      WithZero {xy : ℚ × ℚ // W.Nonsingular xy.fst xy.snd}) := by
+  unfold a
+  rw [WeierstrassCurve.Affine.nonsingularPointEquiv_some nonsingular_A]
+
 /-! ## Slopes and addition coordinates
 
 These are the explicit affine formulae for the group law, verified by
 `norm_num`.  They constitute the honest computational content: the coordinates
-of `P + P`, `P + Q`, `Q + Q`, `T + P`, `T + T`, `V + P`, `W + P`, `X + P`, and
-`Y + P` on `37a1`.
+of `P + P`, `P + Q`, `Q + Q`, `T + P`, `T + T`, `V + P`, `W + P`, `X + P`,
+`Y + P`, and `Z + P` on `37a1`.
 -/
 
 /-- `W.negY 0 0 = -1`. -/
@@ -511,6 +538,21 @@ theorem addX_yp : W.addX (-5/9) 0 (W.slope (-5/9) 0 (8/27) 0) = 21 / 25 := by
 theorem addY_yp : W.addY (-5/9) 0 (8/27) (W.slope (-5/9) 0 (8/27) 0) = -69 / 125 := by
   norm_num [slope_yp, WeierstrassCurve.Affine.addY]
 
+/-- The secant slope through `Z` and `P` is `-23/35`. -/
+theorem slope_zp : W.slope (21/25) 0 (-69/125) 0 = -23 / 35 := by
+  rw [WeierstrassCurve.Affine.slope_of_X_ne (x₁ := 21/25) (x₂ := 0) (y₁ := -69/125) (y₂ := 0)
+    (by norm_num : (21/25 : ℚ) ≠ 0)]
+  simp
+  norm_num
+
+/-- The coordinate `x(Z + P) = -20/49`. -/
+theorem addX_zp : W.addX (21/25) 0 (W.slope (21/25) 0 (-69/125) 0) = -20 / 49 := by
+  norm_num [slope_zp, WeierstrassCurve.Affine.addX]
+
+/-- The coordinate `y(Z + P) = -435/343`. -/
+theorem addY_zp : W.addY (21/25) 0 (-69/125) (W.slope (21/25) 0 (-69/125) 0) = -435 / 343 := by
+  norm_num [slope_zp, WeierstrassCurve.Affine.addY]
+
 /-! ## Group-law relations on `37a1` -/
 
 /-- `P + P = Q`; equivalently `2P = Q`. -/
@@ -602,6 +644,14 @@ theorem add_y_p_eq_z : y + p = z := by
   rw [WeierstrassCurve.Affine.Point.some.injEq]
   exact ⟨addX_yp, addY_yp⟩
 
+/-- `Z + P = A`; hence `9P = A`. -/
+theorem add_z_p_eq_a : z + p = a := by
+  unfold z p a
+  rw [add_of_X_ne (x₁ := 21/25) (x₂ := 0) (y₁ := -69/125) (y₂ := 0) (h₁ := nonsingular_Z)
+    (h₂ := nonsingular_P) (by norm_num : (21/25 : ℚ) ≠ 0)]
+  rw [WeierstrassCurve.Affine.Point.some.injEq]
+  exact ⟨addX_zp, addY_zp⟩
+
 /-- `7P = Y`. -/
 theorem seven_p_eq_y : p + p + p + p + p + p + p = y := by
   rw [six_p_eq_x, add_x_p_eq_y]
@@ -609,6 +659,10 @@ theorem seven_p_eq_y : p + p + p + p + p + p + p = y := by
 /-- `8P = Z`. -/
 theorem eight_p_eq_z : p + p + p + p + p + p + p + p = z := by
   rw [seven_p_eq_y, add_y_p_eq_z]
+
+/-- `9P = A`. -/
+theorem nine_p_eq_a : p + p + p + p + p + p + p + p + p = a := by
+  rw [eight_p_eq_z, add_z_p_eq_a]
 
 /-- `-P = (0, -1)`. -/
 theorem neg_p_eq_r : -p = r := by
@@ -698,6 +752,10 @@ theorem y_ne_zero : y ≠ 0 :=
 theorem z_ne_zero : z ≠ 0 :=
   some_ne_zero nonsingular_Z
 
+/-- `A` is not the identity. -/
+theorem a_ne_zero : a ≠ 0 :=
+  some_ne_zero nonsingular_A
+
 /-- `2P` is not the identity. -/
 theorem two_p_ne_zero : p + p ≠ 0 := by
   rw [two_p_eq_q]
@@ -733,6 +791,11 @@ theorem eight_p_ne_zero : p + p + p + p + p + p + p + p ≠ 0 := by
   rw [eight_p_eq_z]
   exact z_ne_zero
 
+/-- `9P` is not the identity. -/
+theorem nine_p_ne_zero : p + p + p + p + p + p + p + p + p ≠ 0 := by
+  rw [nine_p_eq_a]
+  exact a_ne_zero
+
 /-- The points `P` and `Q` are distinct. -/
 theorem p_ne_q : p ≠ q := by
   intro h
@@ -740,10 +803,10 @@ theorem p_ne_q : p ≠ q := by
   rw [WeierstrassCurve.Affine.Point.some.injEq] at h
   norm_num at h
 
-/-! ## There is no torsion of order `2` through `8`
+/-! ## There is no torsion of order `2` through `9`
 
-For the generator `P`, the multiples `2P`, `3P`, `4P`, `5P`, `6P`, `7P`, `8P`
-are computed above and are all distinct from the identity.
+For the generator `P`, the multiples `2P`, `3P`, `4P`, `5P`, `6P`, `7P`, `8P`,
+`9P` are computed above and are all distinct from the identity.
 -/
 
 /-- `P` does not have order `2`. -/
@@ -773,5 +836,73 @@ theorem not_seven_torsion : p + p + p + p + p + p + p ≠ 0 :=
 /-- `P` does not have order `8`. -/
 theorem not_eight_torsion : p + p + p + p + p + p + p + p ≠ 0 :=
   eight_p_ne_zero
+
+/-- `P` does not have order `9`. -/
+theorem not_nine_torsion : p + p + p + p + p + p + p + p + p ≠ 0 :=
+  nine_p_ne_zero
+
+/-! ## The points are pairwise distinct
+
+The group `W.Point` has decidable equality, so the pairwise distinctness of the
+twelve listed points together with the identity is a finite computation:
+
+- a point is determined by its coordinates, so different coordinates give
+  different points;
+- the only pairs among the twelve whose `x`-coordinates coincide are
+  `(P, R)` at `x = 0`, `(Q, U)` at `x = 1`, and `(S, T)` at `x = -1`, which
+  differ in `y`.
+
+We record the equal-`x` exceptions explicitly (the mixed pairs follow from the
+coordinate computation), then count the whole thirteen-element set.
+-/
+
+/-- A point is determined by its coordinates. -/
+theorem some_ne_of_x_ne {x₁ x₂ y₁ y₂ : ℚ}
+    {h₁ : W.Nonsingular x₁ y₁} {h₂ : W.Nonsingular x₂ y₂}
+    (hx : x₁ ≠ x₂) :
+    Point.some x₁ y₁ h₁ ≠ Point.some x₂ y₂ h₂ := by
+  intro heq
+  rw [WeierstrassCurve.Affine.Point.some.injEq] at heq
+  exact hx heq.1
+
+/-- A point is determined by its coordinates. -/
+theorem some_ne_of_y_ne {x₁ x₂ y₁ y₂ : ℚ}
+    {h₁ : W.Nonsingular x₁ y₁} {h₂ : W.Nonsingular x₂ y₂}
+    (hy : y₁ ≠ y₂) :
+    Point.some x₁ y₁ h₁ ≠ Point.some x₂ y₂ h₂ := by
+  intro heq
+  rw [WeierstrassCurve.Affine.Point.some.injEq] at heq
+  exact hy heq.2
+
+/-- The points `P` and `R` (same `x`-coordinate) are distinct. -/
+theorem p_ne_r : p ≠ r := by
+  unfold p r
+  exact some_ne_of_y_ne (by norm_num : (0 : ℚ) ≠ -1)
+
+/-- The points `Q` and `U` (same `x`-coordinate) are distinct. -/
+theorem q_ne_u : q ≠ u := by
+  unfold q u
+  exact some_ne_of_y_ne (by norm_num : (0 : ℚ) ≠ -1)
+
+/-- The points `S` and `T` (same `x`-coordinate) are distinct. -/
+theorem s_ne_t : s ≠ t := by
+  unfold s t
+  exact some_ne_of_y_ne (by norm_num : (0 : ℚ) ≠ -1)
+
+/-- The points `T` and `V` have different `x`-coordinates, hence differ. -/
+theorem t_ne_v : t ≠ v := by
+  unfold t v
+  exact some_ne_of_x_ne (by norm_num : (-1 : ℚ) ≠ 2)
+
+/-- Identity, the ten multiples `P, ..., 9P`, and the three negative points are
+pairwise distinct: thirteen elements of the group in all. -/
+theorem points_distinct_card :
+    ({(0 : W.Point), p, q, r, s, t, u, v, w, x, y, z, a} : Finset W.Point).card = 13 := by
+  native_decide
+
+/-- The listed thirteen group elements have no duplicates. -/
+theorem points_nodup :
+    List.Nodup [(0 : W.Point), p, q, r, s, t, u, v, w, x, y, z, a] := by
+  native_decide
 
 end UniversalSingularity.BSD37a1
