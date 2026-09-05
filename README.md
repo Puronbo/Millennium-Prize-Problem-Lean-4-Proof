@@ -44,13 +44,16 @@ explicit disclaimers.
 
 ## Bridge modules (real mathematics, statements only)
 
-Two modules state two problems on the **genuine** Mathlib objects, leaving every
+Three modules state problems on the **genuine** Mathlib objects, leaving every
 unproved step as an explicit `sorry` `gap` marker (see `ROADMAP.md`):
 
 - `UniversalSingularity/RiemannHypothesisReal.lean` — states RH on
   `riemannZeta` / `riemannZetaZeros`.
 - `UniversalSingularity/BSDReal.lean` — states BSD on `WeierstrassCurve ℚ` and
   its complex `WeierstrassCurve.LSeries`.
+- `UniversalSingularity/HilbertPolya.lean` — states the Hilbert–Pólya conjecture
+  on genuine spectral theory (`IsSelfAdjoint`, `spectrum Complex A`), plus the
+  Riemann–von Mangoldt zero-counting and Montgomery–Odlyzko (GUE) bridge gaps.
 
 These prove **no** Millennium statement; they pin down precisely what a real proof
 would need. Use them as the bridge head for future work.

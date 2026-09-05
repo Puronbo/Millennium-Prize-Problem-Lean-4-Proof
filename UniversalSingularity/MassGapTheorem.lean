@@ -15,6 +15,8 @@ remain unproven.
 
 namespace UniversalSingularity
 
+universe u
+
 open MassGapProblem
 
 /-- Convenient top-level alias for the Q-model equivalence. -/

@@ -22,6 +22,8 @@ It is "at the God-force balance point" when it is in neither sector, which
 
 namespace UniversalSingularity
 
+universe u
+
 /-- A "Q-model" for a theory. It provides a real valued parameter `Q` and a
 distinguished `massGapElement` where `Q = 1` by definition. -/
 class MassGapProblem (α : Type u) where

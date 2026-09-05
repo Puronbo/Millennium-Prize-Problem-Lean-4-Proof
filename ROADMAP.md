@@ -18,10 +18,13 @@ Legend: **LIVE** = usable infrastructure exists · **GAP** = missing dependency 
 - `UniversalSingularity/*.lean` — 7 heuristic `Q` models. Each proves only
   `GodForceProp a ↔ Q a = 1` (trichotomy of `≤`). No Millennium statement is
   proved.
-- `UniversalSingularity/RiemannHypothesisReal.lean` — **new**: states RH on the
-  genuine `riemannZetaZeros` + `riemannZeta`; 2 `gap` theorems marked `sorry`.
-- `UniversalSingularity/BSDReal.lean` — **new**: states BSD on the genuine
+- `UniversalSingularity/RiemannHypothesisReal.lean` — states RH on the
+  genuine `riemannZetaZeros` + `riemannZeta`; 3 `gap` theorems marked `sorry`.
+- `UniversalSingularity/BSDReal.lean` — states BSD on the genuine
   `WeierstrassCurve ℚ` + `WeierstrassCurve.LSeries`; 1 `gap` theorem marked `sorry`.
+- `UniversalSingularity/HilbertPolya.lean` — **new**: states the Hilbert–Pólya
+  conjecture on genuine spectral theory, plus the Riemann–von Mangoldt and
+  Montgomery–Odlyzko bridge gaps; 3 `gap` theorems marked `sorry`.
 - `UniversalSingularity/MassGap.lean` — the (heuristic) typeclass frame.
 
 **Design note:** the `MassGapProblem` frame demands `Q massGapElement = 1`, but
@@ -55,6 +58,27 @@ Milestones:
 Realistic near-term Lean: prove the **negation** of RH for a finite prefix via a
 computational/Searle search, or formalize a classical `∃`/`∀` reformulation. Full
 RH remains open.
+
+#### 1b. Hilbert–Pólya bridge (spectral route to RH)
+
+`UniversalSingularity/HilbertPolya.lean` concretizes the "shadow = imaginary
+part, operator = real part" framing:
+
+- `genuineZerosZ`, `zeroImagParts` — the zero *heights* (the statistical shadow).
+- `HilbertPolyaConjecture` — **real Mathlib spectral theory**: a self-adjoint
+  bounded operator on a Hilbert space whose spectrum is exactly
+  `{ iγ | γ ∈ zeroImagParts }` (`IsSelfAdjoint`, `spectrum Complex A`).
+  Self-adjointness forces the spectrum into `ℝ`, so any zero off the critical
+  line would contribute a non-real height to the spectrum — a contradiction.
+  This is precisely HP ⇒ RH.
+- `riemannVonMangoldt` — **bridge gap**: `N(T) = (T/2π)log(T/2π) − T/2π + O(log T)`,
+  the density-growth law ("gaps tighten with height").
+- `montgomeryOdlyzko_bridge` — **bridge gap**: the two-point correlation of
+  normalized heights matches the GUE sine kernel `1 − (sin πx/πx)²`.
+
+Mathlib provides the spectral infrastructure (`Analysis.InnerProductSpace.Spectrum`,
+`Algebra.Star.SelfAdjoint`, `Analysis.Matrix.Hermitian`). The HP operator is not
+in Mathlib and HP itself remains exactly as open as RH.
 
 ### 2. BSD Conjecture — the most bridgeable genuine proof
 
@@ -130,7 +154,10 @@ settings). **Not bridgeable now.**
 1. **BSD rank computation for `37a1`** — the concrete, finishable "real proof".
 2. **RH nontrivial-zero classification + finite counterexample search** — real
    theorem, get `riemannZetaZeros` genuinely connected.
-3. Any attempt at the other five requires building foundational Mathlib first
+3. **HP spectral bridge** — pin the Hilbert–Pólya operator on a concrete Hilbert
+   space (`ℓ²`, Hermite/`L²(ℝ)`, or a Sturm–Liouville operator) and prove the
+   GUE pair-correlation as its spectral rigidity; HP ⇒ RH follows. Open.
+4. Any attempt at the other five requires building foundational Mathlib first
    (PDE, gauge theory, Hodge theory) and/or is mathematically OPEN.
 
 Keep the heuristic `MassGap` modules as pedagogy. Build the real proofs in
