@@ -24,6 +24,11 @@ roots = [
   "UniversalSingularity.BSD",
   "UniversalSingularity.BSDReal",
   "UniversalSingularity.PoincareConjecture",
+  "UniversalSingularity.PoincareConjectureReal",
   "UniversalSingularity.HodgeConjecture",
+  "UniversalSingularity.HodgeConjectureReal",
+  "UniversalSingularity.PvsNPReal",
+  "UniversalSingularity.YangMillsReal",
+  "UniversalSingularity.NavierStokesReal",
   "UniversalSingularity.HilbertPolya",
 ]

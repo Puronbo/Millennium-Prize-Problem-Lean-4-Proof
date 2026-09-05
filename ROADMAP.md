@@ -22,9 +22,18 @@ Legend: **LIVE** = usable infrastructure exists · **GAP** = missing dependency 
   genuine `riemannZetaZeros` + `riemannZeta`; 3 `gap` theorems marked `sorry`.
 - `UniversalSingularity/BSDReal.lean` — states BSD on the genuine
   `WeierstrassCurve ℚ` + `WeierstrassCurve.LSeries`; 1 `gap` theorem marked `sorry`.
-- `UniversalSingularity/HilbertPolya.lean` — **new**: states the Hilbert–Pólya
+- `UniversalSingularity/HilbertPolya.lean` — states the Hilbert–Pólya
   conjecture on genuine spectral theory, plus the Riemann–von Mangoldt and
   Montgomery–Odlyzko bridge gaps; 3 `gap` theorems marked `sorry`.
+- `UniversalSingularity/PoincareConjectureReal.lean` — **new**: states the
+  topological and smooth 3D Poincaré conjecture on genuine manifold objects;
+  topologial and smooth gaps, 2 `sorry`s.
+- `UniversalSingularity/PvsNPReal.lean` — **new**: defines the classes **P**
+  and **NP** on `Language Bool` from Mathlib's `Turing.TM2ComputableInPolyTime`;
+  `P ≠ NP` gap, 2 `sorry`s.
+- `UniversalSingularity/YangMillsReal.lean`, `NavierStokesReal.lean`,
+  `HodgeConjectureReal.lean` — **new**: pin the Clay claims as documented
+  placeholder bridges (Mathlib lacks gauge / PDE / Hodge machinery); 1 `sorry` each.
 - `UniversalSingularity/MassGap.lean` — the (heuristic) typeclass frame.
 
 **Design note:** the `MassGapProblem` frame demands `Q massGapElement = 1`, but
@@ -111,10 +120,13 @@ Present in Mathlib:
 - Homology (singular + chain complexes).
 
 Milestones:
-1. **LIVE ready:** `Manifold R (Fin 3)`, `IsSimplyConnected M`, 
-   `Nonempty (M ≃ₜ 𝕊³)` — all writable now.
+1. **DONE:** `PoincareConjectureReal.lean` states the topological and smooth
+   statements (`PoincareConjectureTopological`, `PoincareConjectureSmooth`) on
+   genuine `ChartedSpace` / `SimplyConnectedSpace` / `𝕊³` objects and proves the
+   base case `𝕊³ ≃ₜ 𝕊³`. Mathlib itself only ships the claim as `proof_wanted`.
 2. **GAP:** Perelman's Ricci-flow proof is not formalized (curvature flows, neck
-   decomposition, collapse). Multi-thousand-lemma project.
+   decomposition, collapse). Multi-thousand-lemma project. The `sorry`s
+   `poincareConjectureTopological_gap` / `poincareConjectureSmooth_gap` pin this.
 
 Conclusion is **PROVEN** (Perelman); the Lean formalization is a research-scale
 program, not a quick bridge.
@@ -126,26 +138,32 @@ Present in Mathlib:
   reductions), `ModelTheory/Complexity`.
 
 Milestones:
-1. **GAP:** define the complexity classes `P` and `NP` as sets of languages
-   (polytime TM-decidability / non-deterministic polytime). Turing infra exists;
-   the `P`/`NP` class machinery does not.
-2. **OPEN:** `P ≠ NP`. Genuinely unsolved.
+1. **DONE:** `PvsNPReal.lean` defines **P** (`InP : Problem → Prop`) and **NP**
+   (`InNP : Problem → Prop`) on binary decision problems, lifting Mathlib's
+   `Turing.TM2ComputableInPolyTime` and `Language Bool` (polytime bounds via
+   `Polynomial ℕ`).
+2. **GAP:** the formal `P ⊆ NP` inclusion on this machinery
+   (`p_subset_np_gap`), classically true but unproved here.
+3. **OPEN:** `P ≠ NP` (`p_vs_np_gap`). Genuinely unsolved.
 
 ### 5. Yang-Mills (existence + mass gap) — GAP, OPEN
 
 No gauge theory / rigorous Yang-Mills functional / Sobolev 4D gauge machinery in
 Mathlib. Full QFT construction is the deep open part. **Not bridgeable by Lean now.**
+`YangMillsReal.lean` pins the claim (`yangMillsMassGap_gap`, placeholder objects).
 
 ### 6. Navier-Stokes (existence & smoothness) — GAP, OPEN
 
 No Sobolev spaces / Leray weak solutions / regularity in Mathlib (some ODE/evolution
 and Brownian motion exist). Existence-and-smoothness is OPEN. **Not bridgeable now.**
+`NavierStokesReal.lean` pins the claim (`navierStokesGlobalRegularity_gap`, placeholders).
 
 ### 7. Hodge Conjecture — GAP, OPEN
 
 Some singular homology/cohomology exist, but no Hodge decomposition / Kähler
 manifold machinery; the conjecture is OPEN (with known counterexamples in general
-settings). **Not bridgeable now.**
+settings). **Not bridgeable now.** `HodgeConjectureReal.lean` pins the claim
+(`hodgeConjecture_gap`, placeholders).
 
 ---
 
@@ -158,7 +176,10 @@ settings). **Not bridgeable now.**
    space (`ℓ²`, Hermite/`L²(ℝ)`, or a Sturm–Liouville operator) and prove the
    GUE pair-correlation as its spectral rigidity; HP ⇒ RH follows. Open.
 4. Any attempt at the other five requires building foundational Mathlib first
-   (PDE, gauge theory, Hodge theory) and/or is mathematically OPEN.
+   (PDE, gauge theory, Hodge theory) and/or is mathematically OPEN. The five
+   `*Real` bridge modules (`PoincareConjectureReal`, `PvsNPReal`, `YangMillsReal`,
+   `NavierStokesReal`, `HodgeConjectureReal`) pin exactly where those foundations
+   would have to be built; filling **any** of their `sorry` gaps is real progress.
 
 Keep the heuristic `MassGap` modules as pedagogy. Build the real proofs in
 `UniversalSingularity/*Real.lean`, outside the heuristic frame.

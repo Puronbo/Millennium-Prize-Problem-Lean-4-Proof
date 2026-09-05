@@ -44,8 +44,9 @@ explicit disclaimers.
 
 ## Bridge modules (real mathematics, statements only)
 
-Three modules state problems on the **genuine** Mathlib objects, leaving every
-unproved step as an explicit `sorry` `gap` marker (see `ROADMAP.md`):
+Eight bridge modules state the problems on the **genuine** Mathlib objects where they
+exist, and pin the rest as documented placeholders — leaving every unproved step as an
+explicit `sorry` `gap` marker (see `ROADMAP.md`):
 
 - `UniversalSingularity/RiemannHypothesisReal.lean` — states RH on
   `riemannZeta` / `riemannZetaZeros`.
@@ -54,6 +55,17 @@ unproved step as an explicit `sorry` `gap` marker (see `ROADMAP.md`):
 - `UniversalSingularity/HilbertPolya.lean` — states the Hilbert–Pólya conjecture
   on genuine spectral theory (`IsSelfAdjoint`, `spectrum Complex A`), plus the
   Riemann–von Mangoldt zero-counting and Montgomery–Odlyzko (GUE) bridge gaps.
+- `UniversalSingularity/PoincareConjectureReal.lean` — states the topological and
+  smooth 3D Poincaré conjecture on genuine manifold objects (`ChartedSpace`,
+  `SimplyConnectedSpace`, `≃ₜ`, `≃ₘ⟮𝓡 3, 𝓡 3⟯`, `𝕊³`), and proves the trivial base
+  case `𝕊³ ≃ₜ 𝕊³`. Mathlib ships the statement only as `proof_wanted`, so the
+  mechanized Perelman proof is the gap.
+- `UniversalSingularity/PvsNPReal.lean` — defines **P** and **NP** on binary
+  decision problems (`Language Bool`) using Mathlib's polytime Turing machinery
+  (`Turing.TM2ComputableInPolyTime`); `P ≠ NP` is the gap.
+- `UniversalSingularity/YangMillsReal.lean`, `NavierStokesReal.lean`,
+  `HodgeConjectureReal.lean` — pin the Clay claims as documented placeholder
+  bridges (Mathlib has no gauge theory, PDE/Sobolev, or Hodge machinery).
 
 These prove **no** Millennium statement; they pin down precisely what a real proof
 would need. Use them as the bridge head for future work.
@@ -71,5 +83,6 @@ toolchain (matching the `lean-toolchain` file). The first build fetches Mathlib.
 
 - The seven Millennium Problems remain open (except Poincaré, which Perelman
   proved). This code does not claim them.
-- There are no `sorry`s, `axiom`s, or `fake` proofs.
+- The bridge modules use `sorry` **only** as explicit, documented `gap` markers;
+  there are no `axiom`s and no fake proofs, and no Millennium statement is proved.
 - `Q` is a heuristic parameter; `Q = 1` at the mass-gap element is a convention.

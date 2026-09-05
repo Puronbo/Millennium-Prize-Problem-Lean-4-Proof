@@ -1,5 +1,5 @@
 name: Heuristic Q-Model in Lean 4 + Mathlib
-description: An honest, pedagogical Lean 4 + Mathlib framework that attaches each of the seven Millennium Prize Problems to a real-valued parameter Q and a massGapElement with Q = 1. It proves only elementary facts about the real numbers (trichotomy of <=); it does NOT prove or resolve any Millennium Prize Problem. Bridge modules state RH, BSD and the Hilbert-Polya conjecture on genuine Mathlib objects, every unproved step an explicit <code>sorry</code> gap marker.
+description: An honest, pedagogical Lean 4 + Mathlib framework that attaches each of the seven Millennium Prize Problems to a real-valued parameter Q and a massGapElement with Q = 1. It proves only elementary facts about the real numbers (trichotomy of <=); it does NOT prove or resolve any Millennium Prize Problem. Bridge modules state the problems on genuine Mathlib objects where they exist (RH, BSD, Hilbert-Polya, Poincare, P vs NP) and pin the rest as documented placeholder bridges (Yang-Mills, Navier-Stokes, Hodge); every unproved step is an explicit <code>sorry</code> gap marker.
 authors:
   - name: Michael_Grafiel_S._Puno
     email: michaelgrafielspuno@gmail.com
