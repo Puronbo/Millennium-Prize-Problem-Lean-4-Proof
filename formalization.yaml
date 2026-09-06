@@ -53,7 +53,9 @@ proofs:
       realizes the zero height in zeroImagParts), and the consistency check
       hp_forces_height_zero (a real spectrum under the pure-frequency encoding
       contains only the zero height — a genuine HP operator stores heights as
-      real eigenvalues gamma, not points I*gamma).
+      real eigenvalues gamma, not points I*gamma). Plus
+      trivialZero_mem_genuineZerosZ / genuineZerosZ_nonempty: every trivial
+      zero of zeta inhabits the HP genuine-zero set.
   - module: UniversalSingularity/RiemannHypothesisZeta.lean
     status: complete
     sorries: 0
@@ -67,7 +69,9 @@ proofs:
       Dirichlet series identity zeta(s) = sum' n, 1/n^s for Re s > 1, the
       functional equation, complex-analyticity away from the pole s = 1, and
       the logic-level restatement riemannHypothesis_iff_zeros of mathlib's own
-      RiemannHypothesis predicate. Does not prove RH.
+      RiemannHypothesis predicate. Also verifies the trivial family is
+      real-axis (Im = 0) and strictly left of the critical strip (Re <= -2):
+      trivialZero_im_zero, trivialZero_re_nonpos. Does not prove RH.
   - module: UniversalSingularity/PoincareSphere.lean
     status: complete
     sorries: 0

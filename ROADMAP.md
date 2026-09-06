@@ -102,9 +102,14 @@ Milestones:
    series identity, functional equation, analyticity, closed/discrete zero set
    with finite intersection with every compact set) and a logic-level
    restatement `riemannHypothesis_iff_zeros` of Mathlib's `RiemannHypothesis`.
-1. **LIVE ready:** classify nontrivial zeros wrt critical strip (`trivial_zero_gap` in
-   `RiemannHypothesisReal.lean`). Needs a lemma that the real zeros
-   `0, -1, -2, ...` are exactly the non-critical ones.
+1. **LIVE ready (one direction DONE):** classify nontrivial zeros wrt critical
+   strip (`trivial_zero_gap` in `RiemannHypothesisReal.lean`). The trivial family
+   is now verified to be real-axis (`Im = 0`) and strictly left of the strip
+   (`Re ≤ -2`): `trivialZero_im_zero`, `trivialZero_re_nonpos` in
+   `RiemannHypothesisZeta.lean`, and every trivial zero inhabits the
+   Hilbert-Pólya genuine-zero set (`trivialZero_mem_genuineZerosZ`). Still
+   missing the converse: that the real zeros `0, -1, -2, ...` are **exactly**
+   the non-critical ones.
 2. **GAP:** no Mathlib theorem that all zeros lie *on* `Re s = 1/2`. This *is* RH.
 3. **OPEN:** proving `RiemannHypothesisFormal` (`∀ z ∈ genuineZerosZ, z.re = 1/2`)
    settles RH. Not provable by Lean alone.
@@ -126,7 +131,9 @@ part, operator = real part" framing:
   trivial zero `-2` realizes `0 ∈ zeroImagParts`), and the consistency check
   `hp_forces_height_zero` (a *real* spectrum under the pure-frequency encoding
   contains only the zero height — a genuine Hilbert-Pólya operator stores
-  heights as **real** eigenvalues `γ`, not as points `I·γ`).
+  heights as **real** eigenvalues `γ`, not as points `I·γ`), plus
+  `trivialZero_mem_genuineZerosZ` and `genuineZerosZ_nonempty` (the trivial
+  family inhabits the HP genuine-zero set, so `zeroImagParts` is nonempty).
 - `genuineZerosZ`, `zeroImagParts` — the zero *heights* (the statistical shadow).
 - `HilbertPolyaConjecture` — **real Mathlib spectral theory**: a self-adjoint
   bounded operator on a Hilbert space whose spectrum is exactly

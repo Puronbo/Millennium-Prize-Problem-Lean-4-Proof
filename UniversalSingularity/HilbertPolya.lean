@@ -111,6 +111,24 @@ theorem zero_height_from_trivial_zero : (0 : Real) ∈ zeroImagParts := by
   · simpa using (trivialZero_mem_riemannZetaZeros 0)
   · constructor <;> norm_num
 
+/-- Every trivial zero of `ζ` is a genuine (nontrivial) zero in the
+Hilbert-Pólya frame: `-2(n+1)` has real part `-2(n+1)`, which is neither `0`
+nor `1`.  Together with `trivialZero_im_zero` this puts the trivial family
+exactly on the zero-frequency axis of `zeroImagParts`. -/
+theorem trivialZero_mem_genuineZerosZ (n : ℕ) :
+    ((-2 : ℂ) * (n + 1 : ℂ)) ∈ genuineZerosZ := by
+  rw [genuineZerosZ]
+  constructor
+  · exact trivialZero_mem_riemannZetaZeros n
+  · have hv : ((-2 : ℂ) * (n + 1 : ℂ)).re = -2 * ((n : ℝ) + 1) := by simp
+    constructor <;> (rw [hv]; nlinarith [Nat.succ_pos n])
+
+/-- The genuine zero set of the Hilbert-Pólya frame is inhabited: the trivial
+zero `-2` qualifies.  (Whether a *nontrivial* zero exists in Mathlib's
+`riemannZetaZeros` is beyond this module.) -/
+theorem genuineZerosZ_nonempty : genuineZerosZ.Nonempty := by
+  exact ⟨(-2 : Complex), by simpa using trivialZero_mem_genuineZerosZ 0⟩
+
 /-- **Consistency check (verified).**  If the conjectured spectrum is exactly
 the set of pure frequencies `{z | z.re = 0 ∧ z.im ∈ zeroImagParts}` and that
 spectrum is **real** — as self-adjointness forces any spectrum to be — then the

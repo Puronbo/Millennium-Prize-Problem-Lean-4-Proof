@@ -73,6 +73,20 @@ theorem trivialZero_re_lt_one (n : ℕ) : ((-2 : ℂ) * (n + 1 : ℂ)).re < 1 :=
   simp
   nlinarith
 
+/-- The trivial zeros lie on the real axis: they carry vanishing imaginary
+part, so a trivial zero can never be a critical-strip zero.  This is the
+"frequency is zero" half of the Hilbert–Pólya picture (see
+`UniversalSingularity.HilbertPolya`). -/
+theorem trivialZero_im_zero (n : ℕ) : ((-2 : ℂ) * (n + 1 : ℂ)).im = 0 := by
+  simp
+
+/-- The trivial zeros lie strictly to the left of the critical strip
+`{s | 0 < s.re ∧ s.re < 1}`: indeed `Re(-2·(n+1)) ≤ -2 < 0` for every `n`. -/
+theorem trivialZero_re_nonpos (n : ℕ) : ((-2 : ℂ) * (n + 1 : ℂ)).re ≤ 0 := by
+  have hv : ((-2 : ℂ) * (n + 1 : ℂ)).re = -2 * ((n : ℝ) + 1) := by simp
+  rw [hv]
+  nlinarith [Nat.succ_pos n]
+
 /-- No zero of `ζ` lies in the closed right half-plane `Re s ≥ 1`: `ζ` is
 nonvanishing there. -/
 theorem no_zero_re_ge_one {z : ℂ} (hz : 1 ≤ z.re) : z ∉ riemannZetaZeros := by

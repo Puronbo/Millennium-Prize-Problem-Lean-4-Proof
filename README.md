@@ -100,13 +100,15 @@ still stands:
   `sorry`s) zeta layer: `ζ(0) = -1/2` (so `0 ∉ riemannZetaZeros`); nonvanishing
   at `s = 1` and on the closed half-plane `Re s ≥ 1` (hence every zero of `ζ`
   satisfies `Re z < 1`); the trivial zeros `-2(n+1)`, `n : ℕ`, genuinely in
-  `riemannZetaZeros` and strictly left of the critical strip; the zero set is
+  `riemannZetaZeros`, strictly left of the critical strip, and verified
+  real-axis zeros with `Im = 0` and `Re ≤ -2` (`trivialZero_im_zero`,
+  `trivialZero_re_nonpos`) so they can never be critical-strip zeros; the zero set is
   closed and discrete with finitely many zeros in every compact set; the
   Dirichlet series identity `ζ(s) = ∑' n, 1/nˢ` for `Re s > 1`; the functional
   equation; complex-analyticity away from the pole `s = 1`; and a logic-level
   restatement `riemannHypothesis_iff_zeros` of Mathlib's own `RiemannHypothesis`
   predicate. It does **not** prove RH.
-- `UniversalSingularity/HilbertPolya.lean` — **six new fully proved facts** (0
+- `UniversalSingularity/HilbertPolya.lean` — **eight new fully proved facts** (0
   new `sorry`s; the three bridge gaps remain): the "imaginary frequency axis"
   bookkeeping — a complex number lies on the imaginary axis iff it is
   `I · γ` for some real `γ`, `(I · γ).re = 0` (a pure frequency carries no
@@ -115,7 +117,10 @@ still stands:
   height `0 ∈ zeroImagParts`, and the consistency check `hp_forces_height_zero`:
   a *real* spectrum (as self-adjointness forces) under the pure-frequency
   encoding contains only the zero height — so a genuine Hilbert–Pólya operator
-  stores heights as real eigenvalues, not as the points `I · γ`.
+  stores heights as real eigenvalues, not as the points `I · γ`. Also
+  `trivialZero_mem_genuineZerosZ` and `genuineZerosZ_nonempty`: every trivial
+  zero of `ζ` inhabits the HP genuine-zero set, so the frequency set
+  `zeroImagParts` is nonempty.
 - `UniversalSingularity/PoincareSphere.lean` — **fully proved** (0 `sorry`s):
   the 3-sphere `𝕊³ ⊆ ℝ⁴` is inhabited, path-connected, compact, and a smooth
   (`C^∞`) 3-manifold charted by `ℝ³`. Mathlib has **no** `SimplyConnectedSpace 𝕊³`
