@@ -91,9 +91,10 @@ would need. Use them as the bridge head for future work.
 
 ## Verified concrete milestone layers (no `sorry`s)
 
-Five additional modules prove a concrete, entirely `sorry`-free layer for each of
-the five non-BSD problems. Like `BSD37a1`, they prove real facts about real
-objects — and explicitly state where the open claim still stands:
+Six additional layers prove concrete, entirely `sorry`-free facts for the five
+non-BSD problems and the Hilbert–Pólya spectral bridge. Like `BSD37a1`, they
+prove real facts about real objects — and explicitly state where the open claim
+still stands:
 
 - `UniversalSingularity/RiemannHypothesisZeta.lean` — **fully proved** (0
   `sorry`s) zeta layer: `ζ(0) = -1/2` (so `0 ∉ riemannZetaZeros`); nonvanishing
@@ -105,6 +106,16 @@ objects — and explicitly state where the open claim still stands:
   equation; complex-analyticity away from the pole `s = 1`; and a logic-level
   restatement `riemannHypothesis_iff_zeros` of Mathlib's own `RiemannHypothesis`
   predicate. It does **not** prove RH.
+- `UniversalSingularity/HilbertPolya.lean` — **six new fully proved facts** (0
+  new `sorry`s; the three bridge gaps remain): the "imaginary frequency axis"
+  bookkeeping — a complex number lies on the imaginary axis iff it is
+  `I · γ` for some real `γ`, `(I · γ).re = 0` (a pure frequency carries no
+  "electricity"), `(I · γ).im = γ` (the frequency equals the height), the
+  embedding `γ ↦ I · γ` is injective, the trivial zero `-2` realizes the zero
+  height `0 ∈ zeroImagParts`, and the consistency check `hp_forces_height_zero`:
+  a *real* spectrum (as self-adjointness forces) under the pure-frequency
+  encoding contains only the zero height — so a genuine Hilbert–Pólya operator
+  stores heights as real eigenvalues, not as the points `I · γ`.
 - `UniversalSingularity/PoincareSphere.lean` — **fully proved** (0 `sorry`s):
   the 3-sphere `𝕊³ ⊆ ℝ⁴` is inhabited, path-connected, compact, and a smooth
   (`C^∞`) 3-manifold charted by `ℝ³`. Mathlib has **no** `SimplyConnectedSpace 𝕊³`

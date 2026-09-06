@@ -38,6 +38,22 @@ proofs:
       nsmul_p_ne_zsmul_neg: P has no torsion of any order 2 <= n <= 27, and the
       twenty-eight group elements 0, +-P..+-9P and 10P..18P are pairwise
       distinct. Does not prove BSD.
+  - module: UniversalSingularity/HilbertPolya.lean
+    status: partial
+    sorries: 3
+    description: >-
+      Hilbert-Polya spectral bridge. The three classical bridge claims
+      (Riemann-von Mangoldt counting, existence of the self-adjoint operator,
+      Montgomery-Odlyzko GUE pair-correlation) are pinned as explicit sorry
+      gaps. Fully proved (0 sorries): the 'imaginary frequency axis'
+      bookkeeping — imaginaryAxis_eq_range_mul_I (the imaginary axis is I*R),
+      mul_I_re / mul_I_im (pure frequencies carry zero real part and their
+      frequency equals the height), ext_mul_I_iff (injectivity of the
+      frequency embedding), zero_height_from_trivial_zero (the trivial zero -2
+      realizes the zero height in zeroImagParts), and the consistency check
+      hp_forces_height_zero (a real spectrum under the pure-frequency encoding
+      contains only the zero height — a genuine HP operator stores heights as
+      real eigenvalues gamma, not points I*gamma).
   - module: UniversalSingularity/RiemannHypothesisZeta.lean
     status: complete
     sorries: 0

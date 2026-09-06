@@ -118,6 +118,15 @@ RH remains open.
 `UniversalSingularity/HilbertPolya.lean` concretizes the "shadow = imaginary
 part, operator = real part" framing:
 
+- **DONE (verified, 0 `sorry`s):** the "imaginary frequency axis" facts —
+  `imaginaryAxis_eq_range_mul_I` (the imaginary axis *is* `I · ℝ`),
+  `mul_I_re`/`mul_I_im` (`(I·γ).re = 0`, `(I·γ).im = γ`: pure frequencies carry
+  no real part and their frequency is the height), `ext_mul_I_iff` (the
+  frequency embedding is injective), `zero_height_from_trivial_zero` (the
+  trivial zero `-2` realizes `0 ∈ zeroImagParts`), and the consistency check
+  `hp_forces_height_zero` (a *real* spectrum under the pure-frequency encoding
+  contains only the zero height — a genuine Hilbert-Pólya operator stores
+  heights as **real** eigenvalues `γ`, not as points `I·γ`).
 - `genuineZerosZ`, `zeroImagParts` — the zero *heights* (the statistical shadow).
 - `HilbertPolyaConjecture` — **real Mathlib spectral theory**: a self-adjoint
   bounded operator on a Hilbert space whose spectrum is exactly

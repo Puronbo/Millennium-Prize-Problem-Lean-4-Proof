@@ -1,6 +1,7 @@
 import Mathlib.NumberTheory.LSeries.ZetaZeros
 import Mathlib.Analysis.InnerProductSpace.Spectrum
 import Mathlib.Analysis.Matrix.Hermitian
+import UniversalSingularity.RiemannHypothesisZeta
 
 /-!
 # Hilbert-Polya bridge (honest)
@@ -19,6 +20,10 @@ This module:
    spectrum is exactly the set of purely-imaginary heights `{iγ | γ = Im ρ}`.
 3. Records the three classical bridge claims (Riemann-von Mangoldt,
    Hilbert-Polya, Montgomery-Odlyzko) as explicit `sorry` gaps.
+4. Proves, with zero `sorry`s, the "imaginary frequency axis" bookkeeping
+   and its consistency check: the axis `I * Real` is exactly the set of
+   purely imaginary numbers; a *real* spectrum (as self-adjointness forces)
+   contains only the zero height under the pure-frequency encoding.
 
 No claim here is proved. The gaps are the point: RH itself remains open, and
 every step toward it from the density / spectral / random-matrix side is
@@ -28,6 +33,7 @@ pinned down but unproved.
 namespace UniversalSingularity.HilbertPolya
 
 open scoped ComplexOrder
+open UniversalSingularity.RiemannHypothesisZeta
 
 /-! ## 0. The raw material: zeros and their heights -/
 
@@ -42,6 +48,92 @@ def genuineZerosZ : Set Complex :=
 would have as its spectrum. -/
 def zeroImagParts : Set Real :=
   {γ : Real | ∃ ρ : Complex, ρ ∈ genuineZerosZ ∧ ρ.im = γ}
+
+/-! ## 0.5 The imaginary frequency axis (verified)
+
+The working slogan is: **frequency is imaginary, electricity is real.**  Every
+height `γ ∈ zeroImagParts` is realized as the purely imaginary point
+`Complex.I * γ` — zero real part ("no electricity"), imaginary strength `γ`
+("the frequency").  All theorems of this subsection are *fully proved* (zero
+`sorry`s); only the existence of the Hilbert-Pólya operator itself remains a
+bridge gap (section 2 below).
+
+These are formal facts about `Complex` plus one honest consistency check: a
+*real* spectrum — as self-adjointness forces any spectrum to be — viewed
+through the pure-frequency encoding can contain only the zero height.  A
+genuine Hilbert-Pólya operator therefore stores the heights as **real**
+eigenvalues `γ`, not as the points `Complex.I * γ`; the `I` in the conjectured
+spectrum is bookkeeping for that correspondence.
+-/
+
+/-- A complex number lies on the imaginary axis iff it is `I` times a real
+number: the imaginary axis *is* the set of pure frequencies. -/
+theorem imaginaryAxis_eq_range_mul_I :
+    {z : Complex | z.re = 0} = Set.range (fun γ : Real => Complex.I * γ) := by
+  ext z
+  constructor
+  · intro hz
+    have hz' : z.re = 0 := by simpa using hz
+    refine ⟨z.im, ?_⟩
+    rw [Complex.ext_iff]
+    constructor
+    · simp [hz']
+    · simp
+  · rintro ⟨γ, rfl⟩
+    simp
+
+/-- The real part ("electricity") of a pure frequency `I * γ` vanishes. -/
+theorem mul_I_re (γ : Real) : (Complex.I * γ).re = 0 := by
+  simp
+
+/-- The imaginary part ("frequency") of `I * γ` is exactly `γ`. -/
+theorem mul_I_im (γ : Real) : (Complex.I * γ).im = γ := by
+  simp
+
+/-- The frequency embedding `γ ↦ I * γ` is injective: equal pure frequencies
+are equal heights. -/
+theorem ext_mul_I_iff {γ δ : Real} :
+    Complex.I * γ = Complex.I * δ ↔ γ = δ := by
+  constructor
+  · intro h
+    simpa [mul_I_im] using congrArg Complex.im h
+  · intro h
+    rw [h]
+
+/-- The zero height is realized as a frequency of `ζ`: the trivial zero
+`ρ = -2` contributes `0` to `zeroImagParts`.  (An actual nontrivial zero with
+nonzero imaginary part would likewise contribute its height `ρ.im`; whether
+such a zero exists in Mathlib's `riemannZetaZeros` is beyond this module.) -/
+theorem zero_height_from_trivial_zero : (0 : Real) ∈ zeroImagParts := by
+  refine ⟨(-2 : Complex), ?_, by norm_num⟩
+  rw [genuineZerosZ]
+  constructor
+  · simpa using (trivialZero_mem_riemannZetaZeros 0)
+  · constructor <;> norm_num
+
+/-- **Consistency check (verified).**  If the conjectured spectrum is exactly
+the set of pure frequencies `{z | z.re = 0 ∧ z.im ∈ zeroImagParts}` and that
+spectrum is **real** — as self-adjointness forces any spectrum to be — then the
+only admissible height is `0`: a real axis ("electricity") carries no nonzero
+imaginary frequency. -/
+theorem hp_forces_height_zero
+    {E : Type} [NormedAddCommGroup E] [InnerProductSpace Complex E]
+    [CompleteSpace E] (A : E →L[Complex] E)
+    (hS : spectrum Complex A = {z : Complex | z.re = 0 ∧ z.im ∈ zeroImagParts})
+    (hR : spectrum Complex A ⊆ Set.range (fun r : Real => (r : Complex))) :
+    zeroImagParts ⊆ {0} := by
+  intro γ hγ
+  have hz : Complex.I * γ ∈ {z : Complex | z.re = 0 ∧ z.im ∈ zeroImagParts} := by
+    constructor
+    · exact mul_I_re γ
+    · simpa [mul_I_im] using hγ
+  have hspec : Complex.I * γ ∈ spectrum Complex A := by
+    simpa [hS] using hz
+  rcases hR hspec with ⟨r, hr⟩
+  have hγ0' : 0 = γ := by
+    simpa using congrArg Complex.im hr
+  have hγ0 : γ = 0 := hγ0'.symm
+  simpa [hγ0]
 
 /-! ## 1. The Hilbert-Polya conjecture, stated on real spectral theory
 
