@@ -89,6 +89,43 @@ explicit `sorry` `gap` marker (see `ROADMAP.md`):
 These prove **no** Millennium statement; they pin down precisely what a real proof
 would need. Use them as the bridge head for future work.
 
+## Verified concrete milestone layers (no `sorry`s)
+
+Five additional modules prove a concrete, entirely `sorry`-free layer for each of
+the five non-BSD problems. Like `BSD37a1`, they prove real facts about real
+objects — and explicitly state where the open claim still stands:
+
+- `UniversalSingularity/RiemannHypothesisZeta.lean` — **fully proved** (0
+  `sorry`s) zeta layer: `ζ(0) = -1/2` (so `0 ∉ riemannZetaZeros`); nonvanishing
+  at `s = 1` and on the closed half-plane `Re s ≥ 1` (hence every zero of `ζ`
+  satisfies `Re z < 1`); the trivial zeros `-2(n+1)`, `n : ℕ`, genuinely in
+  `riemannZetaZeros` and strictly left of the critical strip; the zero set is
+  closed and discrete with finitely many zeros in every compact set; the
+  Dirichlet series identity `ζ(s) = ∑' n, 1/nˢ` for `Re s > 1`; the functional
+  equation; complex-analyticity away from the pole `s = 1`; and a logic-level
+  restatement `riemannHypothesis_iff_zeros` of Mathlib's own `RiemannHypothesis`
+  predicate. It does **not** prove RH.
+- `UniversalSingularity/PoincareSphere.lean` — **fully proved** (0 `sorry`s):
+  the 3-sphere `𝕊³ ⊆ ℝ⁴` is inhabited, path-connected, compact, and a smooth
+  (`C^∞`) 3-manifold charted by `ℝ³`. Mathlib has **no** `SimplyConnectedSpace 𝕊³`
+  instance — that simply-connectedness statement is exactly the Poincaré gap.
+- `UniversalSingularity/YangMillsMilestone.lean` — **fully proved** (0 `sorry`s):
+  the base manifold `𝕊⁴ ⊆ ℝ⁵` of the Clay Yang-Mills problem is inhabited,
+  path-connected, compact, and a smooth (`C^∞`) 4-manifold charted by `ℝ⁴`. No
+  gauge-theoretic content is claimed.
+- `UniversalSingularity/PvsNPPolytime.lean` — **fully proved** (0 `sorry`s): the
+  step-count predicate `PolytimeBound` used by the **P**/**NP** bridges is closed
+  under pointwise sum, pointwise product, constants, and monotone domination.
+  It does not settle `P vs NP`.
+- `UniversalSingularity/BridgeIntegrity.lean` — **fully proved** (0 `sorry`s): the
+  placeholder skeletons for Navier-Stokes (`globalSmoothSolutionExists _ = false`)
+  and Yang-Mills (`massGap _ = 0`) visibly **fail** their pinned Clay statements,
+  so those `sorry` gaps are non-vacuous. The Hodge skeleton is deliberately
+  **not** asserted, because its stubs would make `HodgeConjecturePinned X` reduce
+  to `∀ p, 0 = 0` — vacuously true, which would be misleading to publish.
+- `UniversalSingularity/BSD37a1.lean` — remains the first fully proved module
+  (see the bridge list above).
+
 ## Build
 
 ```

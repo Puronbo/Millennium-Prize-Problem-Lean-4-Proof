@@ -1,5 +1,5 @@
 name: Heuristic Q-Model in Lean 4 + Mathlib
-description: An honest, pedagogical Lean 4 + Mathlib framework that attaches each of the seven Millennium Prize Problems to a real-valued parameter Q and a massGapElement with Q = 1. It proves only elementary facts about the real numbers (trichotomy of <=); it does NOT prove or resolve any Millennium Prize Problem. Bridge modules state the problems on genuine Mathlib objects where they exist (RH, BSD, Hilbert-Polya, Poincare, P vs NP) and pin the rest as documented placeholder bridges (Yang-Mills, Navier-Stokes, Hodge); every unproved step is an explicit <code>sorry</code> gap marker.
+description: An honest, pedagogical Lean 4 + Mathlib framework that attaches each of the seven Millennium Prize Problems to a real-valued parameter Q and a massGapElement with Q = 1. It proves only elementary facts about the real numbers (trichotomy of <=); it does NOT prove or resolve any Millennium Prize Problem. Bridge modules state the problems on genuine Mathlib objects where they exist (RH, BSD, Hilbert-Polya, Poincare, P vs NP) and pin the rest as documented placeholder bridges (Yang-Mills, Navier-Stokes, Hodge); every unproved step is an explicit <code>sorry</code> gap marker. A set of verified concrete milestone layers (RiemannHypothesisZeta, PoincareSphere, YangMillsMilestone, PvsNPPolytime, BridgeIntegrity, BSD37a1) proves real facts about real objects with zero <code>sorry</code>s.
 authors:
   - name: Michael_Grafiel_S._Puno
     email: michaelgrafielspuno@gmail.com
@@ -38,6 +38,56 @@ proofs:
       nsmul_p_ne_zsmul_neg: P has no torsion of any order 2 <= n <= 27, and the
       twenty-eight group elements 0, +-P..+-9P and 10P..18P are pairwise
       distinct. Does not prove BSD.
+  - module: UniversalSingularity/RiemannHypothesisZeta.lean
+    status: complete
+    sorries: 0
+    description: >-
+      Verified concrete zeta layer for the Riemann Hypothesis. Proves
+      zeta(0) = -1/2 (so 0 is not a zero), nonvanishing at s = 1 and on the
+      closed half-plane Re s >= 1 (hence every zero z of zeta has Re z < 1),
+      the trivial-zero family -2(n+1) for n : Nat genuinely in
+      riemannZetaZeros and strictly left of the critical strip, the zero set
+      closed and discrete with finite intersection with every compact set, the
+      Dirichlet series identity zeta(s) = sum' n, 1/n^s for Re s > 1, the
+      functional equation, complex-analyticity away from the pole s = 1, and
+      the logic-level restatement riemannHypothesis_iff_zeros of mathlib's own
+      RiemannHypothesis predicate. Does not prove RH.
+  - module: UniversalSingularity/PoincareSphere.lean
+    status: complete
+    sorries: 0
+    description: >-
+      Verified concrete layer for the Poincare Conjecture: the unit 3-sphere S3
+      in R^4 is inhabited, path-connected, compact, and a smooth C^infty
+      3-manifold charted by R^3. Mathlib has no SimplyConnectedSpace S3
+      instance; that simply-connectedness statement is exactly the Poincare
+      gap.
+  - module: UniversalSingularity/YangMillsMilestone.lean
+    status: complete
+    sorries: 0
+    description: >-
+      Verified concrete base layer for Yang-Mills: the base manifold S4 in R^5
+      is inhabited, path-connected, compact, and a smooth C^infty 4-manifold
+      charted by R^4. No gauge-theoretic content is claimed.
+  - module: UniversalSingularity/PvsNPPolytime.lean
+    status: complete
+    sorries: 0
+    description: >-
+      Verified concrete layer for P vs NP: the polynomial step-bound predicate
+      PolytimeBound used by the P/NP bridges is closed under pointwise sum,
+      pointwise product, constants, and monotone domination. Does not settle
+      P vs NP.
+  - module: UniversalSingularity/BridgeIntegrity.lean
+    status: complete
+    sorries: 0
+    description: >-
+      Verified placeholder-integrity layer: the Navier-Stokes skeleton
+      (globalSmoothSolutionExists _ = false) visibly fails the pinned
+      NavierStokesGlobalRegularity statement, and the Yang-Mills skeleton
+      (massGap _ = 0) visibly fails the pinned YangMillsMassGapProblem of
+      positive mass gap, so those sorry gaps are non-vacuous. The Hodge
+      skeleton is deliberately not asserted anywhere because its stubs would
+      make HodgeConjecturePinned X reduce to (forall p, 0 = 0), vacuously true,
+      which would be misleading.
 review:
   status: pending
 keywords:

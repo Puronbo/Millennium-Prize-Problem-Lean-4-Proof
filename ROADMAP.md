@@ -51,6 +51,28 @@ Legend: **LIVE** = usable infrastructure exists · **GAP** = missing dependency 
 - `UniversalSingularity/YangMillsReal.lean`, `NavierStokesReal.lean`,
   `HodgeConjectureReal.lean` — **new**: pin the Clay claims as documented
   placeholder bridges (Mathlib lacks gauge / PDE / Hodge machinery); 1 `sorry` each.
+- `UniversalSingularity/RiemannHypothesisZeta.lean` — **new, fully proved**
+  (`0` `sorry`s): the concrete zeta layer — `ζ(0) = -1/2` (so `0` is not a
+  zero), nonvanishing at `s = 1` and on `Re s ≥ 1` (every zero has `Re z < 1`),
+  the trivial-zero family `-2(n+1)` strictly left of the critical strip, zero
+  set closed/discrete with finite intersection with every compact set, the
+  Dirichlet series identity on `Re s > 1`, the functional equation, analyticity
+  away from `s = 1`, and a logic-level restatement
+  `riemannHypothesis_iff_zeros` of Mathlib's `RiemannHypothesis`.
+- `UniversalSingularity/PoincareSphere.lean` — **new, fully proved** (`0`
+  `sorry`s): `𝕊³ ⊆ ℝ⁴` is inhabited, path-connected, compact, and a smooth
+  `C^∞` 3-manifold charted by `ℝ³`.
+- `UniversalSingularity/YangMillsMilestone.lean` — **new, fully proved** (`0`
+  `sorry`s): the Clay base `𝕊⁴ ⊆ ℝ⁵` is inhabited, path-connected, compact, and
+  a smooth `C^∞` 4-manifold charted by `ℝ⁴`.
+- `UniversalSingularity/PvsNPPolytime.lean` — **new, fully proved** (`0`
+  `sorry`s): `PolytimeBound` is closed under pointwise `+`, pointwise `*`,
+  constants, and monotone domination.
+- `UniversalSingularity/BridgeIntegrity.lean` — **new, fully proved** (`0`
+  `sorry`s): the Navier-Stokes and Yang-Mills placeholder skeletons visibly
+  **fail** their pinned Clay statements (the `sorry` gaps are non-vacuous); the
+  Hodge skeleton is deliberately **not** asserted (its stubs would make
+  `HodgeConjecturePinned X` vacuously true).
 - `UniversalSingularity/MassGap.lean` — the (heuristic) typeclass frame.
 
 **Design note:** the `MassGapProblem` frame demands `Q massGapElement = 1`, but
@@ -74,6 +96,12 @@ Present in Mathlib:
   local finiteness.
 
 Milestones:
+0. **DONE (concrete layer):** `UniversalSingularity/RiemannHypothesisZeta.lean`
+   proves, with zero `sorry`s, the zeta-facts layer (values `ζ(0) = -1/2`
+   non-zero, nonvanishing on `Re s ≥ 1`, trivial zeros `-2(n+1)`, Dirichlet
+   series identity, functional equation, analyticity, closed/discrete zero set
+   with finite intersection with every compact set) and a logic-level
+   restatement `riemannHypothesis_iff_zeros` of Mathlib's `RiemannHypothesis`.
 1. **LIVE ready:** classify nontrivial zeros wrt critical strip (`trivial_zero_gap` in
    `RiemannHypothesisReal.lean`). Needs a lemma that the real zeros
    `0, -1, -2, ...` are exactly the non-critical ones.
@@ -154,6 +182,10 @@ Present in Mathlib:
 - Homology (singular + chain complexes).
 
 Milestones:
+0. **DONE (concrete layer):** `UniversalSingularity/PoincareSphere.lean` proves,
+   with zero `sorry`s, that `𝕊³` is inhabited, path-connected, compact, and a
+   smooth `C^∞` 3-manifold charted by `ℝ³`. Mathlib still has **no**
+   `SimplyConnectedSpace 𝕊³` instance.
 1. **DONE:** `PoincareConjectureReal.lean` states the topological and smooth
    statements (`PoincareConjectureTopological`, `PoincareConjectureSmooth`) on
    genuine `ChartedSpace` / `SimplyConnectedSpace` / `𝕊³` objects and proves the
@@ -172,6 +204,11 @@ Present in Mathlib:
   reductions), `ModelTheory/Complexity`.
 
 Milestones:
+0. **DONE (concrete layer):** `UniversalSingularity/PvsNPPolytime.lean` proves,
+   with zero `sorry`s, that the `PolytimeBound` predicate is closed under
+   pointwise sum, pointwise product, constants, and monotone domination.
+   (The shipped Mathlib bundle has no olean for `Mathlib.Computability.Halting`,
+   and `TM2ComputableInPolyTime.comp` is `proof_wanted` in this Mathlib.)
 1. **DONE:** `PvsNPReal.lean` defines **P** (`InP : Problem → Prop`) and **NP**
    (`InNP : Problem → Prop`) on binary decision problems, lifting Mathlib's
    `Turing.TM2ComputableInPolyTime` and `Language Bool` (polytime bounds via
@@ -185,19 +222,31 @@ Milestones:
 No gauge theory / rigorous Yang-Mills functional / Sobolev 4D gauge machinery in
 Mathlib. Full QFT construction is the deep open part. **Not bridgeable by Lean now.**
 `YangMillsReal.lean` pins the claim (`yangMillsMassGap_gap`, placeholder objects).
+**DONE (base only):** `YangMillsMilestone.lean` proves, with zero `sorry`s, that
+the Clay base manifold `𝕊⁴ ⊆ ℝ⁵` (`YMBase`) is inhabited, path-connected,
+compact, and a smooth `C^∞` 4-manifold charted by `ℝ⁴`. All gauge-theoretic
+content remains GAP/OPEN.
 
 ### 6. Navier-Stokes (existence & smoothness) — GAP, OPEN
 
 No Sobolev spaces / Leray weak solutions / regularity in Mathlib (some ODE/evolution
 and Brownian motion exist). Existence-and-smoothness is OPEN. **Not bridgeable now.**
 `NavierStokesReal.lean` pins the claim (`navierStokesGlobalRegularity_gap`, placeholders).
+**DONE (integrity):** `BridgeIntegrity.lean` proves, with zero `sorry`s, that the
+NS placeholder skeleton `globalSmoothSolutionExists _ = false` visibly **fails**
+the pinned statement (`¬ NavierStokesGlobalRegularity`), so the `sorry` gap is
+non-vacuous.
 
 ### 7. Hodge Conjecture — GAP, OPEN
 
 Some singular homology/cohomology exist, but no Hodge decomposition / Kähler
 manifold machinery; the conjecture is OPEN (with known counterexamples in general
 settings). **Not bridgeable now.** `HodgeConjectureReal.lean` pins the claim
-(`hodgeConjecture_gap`, placeholders).
+(`hodgeConjecture_gap`, placeholders). **Integrity note:** the Hodge placeholder
+skeleton is deliberately **not** asserted anywhere — its stubs would make
+`HodgeConjecturePinned X` reduce to `∀ p, 0 = 0`, i.e. vacuously true, which
+would be misleading. `BridgeIntegrity.lean` documents this decision (zero
+`sorry`s).
 
 ---
 
@@ -205,8 +254,9 @@ settings). **Not bridgeable now.** `HodgeConjectureReal.lean` pins the claim
 
 1. **BSD rank computation for `37a1`** — the group-law layer is DONE in
    `BSD37a1.lean`; the remaining concrete step is `mordellWeilRank` by descent.
-2. **RH nontrivial-zero classification + finite counterexample search** — real
-   theorem, get `riemannZetaZeros` genuinely connected.
+2. **RH nontrivial-zero classification + finite counterexample search** — the
+   concrete zeta layer is DONE in `RiemannHypothesisZeta.lean`; the next step
+   connects it to the `riemannZetaZeros` gap in `RiemannHypothesisReal.lean`.
 3. **HP spectral bridge** — pin the Hilbert–Pólya operator on a concrete Hilbert
    space (`ℓ²`, Hermite/`L²(ℝ)`, or a Sturm–Liouville operator) and prove the
    GUE pair-correlation as its spectral rigidity; HP ⇒ RH follows. Open.
@@ -214,7 +264,10 @@ settings). **Not bridgeable now.** `HodgeConjectureReal.lean` pins the claim
    (PDE, gauge theory, Hodge theory) and/or is mathematically OPEN. The five
    `*Real` bridge modules (`PoincareConjectureReal`, `PvsNPReal`, `YangMillsReal`,
    `NavierStokesReal`, `HodgeConjectureReal`) pin exactly where those foundations
-   would have to be built; filling **any** of their `sorry` gaps is real progress.
+   would have to be built; the `RiemannHypothesisZeta`, `PoincareSphere`,
+   `YangMillsMilestone`, `PvsNPPolytime`, and `BridgeIntegrity` milestone modules
+   (all 0 `sorry`) pin the concrete layers that are already available; filling
+   **any** of their `sorry` gaps is real progress.
 
 Keep the heuristic `MassGap` modules as pedagogy. Build the real proofs in
 `UniversalSingularity/*Real.lean`, outside the heuristic frame.

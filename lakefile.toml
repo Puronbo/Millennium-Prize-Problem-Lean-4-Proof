@@ -32,4 +32,9 @@ roots = [
   "UniversalSingularity.NavierStokesReal",
   "UniversalSingularity.HilbertPolya",
   "UniversalSingularity.BSD37a1",
+  "UniversalSingularity.RiemannHypothesisZeta",
+  "UniversalSingularity.PoincareSphere",
+  "UniversalSingularity.YangMillsMilestone",
+  "UniversalSingularity.PvsNPPolytime",
+  "UniversalSingularity.BridgeIntegrity",
 ]
