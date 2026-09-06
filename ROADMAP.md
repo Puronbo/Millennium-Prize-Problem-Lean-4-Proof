@@ -24,19 +24,21 @@ Legend: **LIVE** = usable infrastructure exists · **GAP** = missing dependency 
   `WeierstrassCurve ℚ` + `WeierstrassCurve.LSeries`; 1 `gap` theorem marked `sorry`.
 - `UniversalSingularity/BSD37a1.lean` — **new**: fully proved concrete
   arithmetic on the rank-one curve `37a1` (`y² + y = x³ − x`): `Δ = 37`, the
-  twenty-one nonsingular rational points `P`, `2P, ..., 18P`, `-P`, `-2P`,
+  twenty-seven nonsingular rational points `P`, `2P, ..., 27P`, `-P`, `-2P`,
   `-3P`, and `-4P`, ..., `-9P`, all explicitly integer multiples `(m : ℤ) • p`
-  of the generator `P` for `-9 ≤ m ≤ 18` (new multiples `10P = (161/16, -2065/64)`
-  through `18P = (12551561/13608721, -8280062505/50202571769)` computed as
-  chord sums `(n-1)P + P`), the pairwise distinctness (kernel-checked via
-  `norm_num`) of the symmetric family `{0, ±P, ..., ±9P}` of nineteen
-  elements and of `{0, 10P, ..., 18P}` of ten elements, the group relations
-  (`2T = X`, independent `3T = 9P`, inverse pairs, more direct pair checks), the
-  no-torsion forms `(n : ℕ) • p ≠ 0` and `(n : ℤ) • p ≠ 0` for
-  `2 ≤ |n| ≤ 18`, and the small-order no-torsion certificates for each named
+  of the generator `P` for `-9 ≤ m ≤ 27` (the multiples `10P = (161/16, -2065/64)`
+  through `27P` computed as chord sums `(n-1)P + P`), the pairwise distinctness
+  (kernel-checked via `norm_num`) of the symmetric family `{0, ±P, ..., ±9P}` of
+  nineteen elements and of `{0, 10P, ..., 18P}` of ten elements, the group
+  relations (`2T = X`, independent `3T = 9P`, inverse pairs, more direct pair
+  checks), the no-torsion forms `(n : ℕ) • p ≠ 0` and `(n : ℤ) • p ≠ 0` for
+  `2 ≤ |n| ≤ 27`, the small-order no-torsion certificates for each named
   multiple `2P` through `9P` (e.g. `(n : ℕ) • (2P) = (2n : ℕ) • P ≠ 0` for
-  `n ≤ 9`). **Zero `sorry`s** — the first fully proved module in the repo. Does
-  not prove BSD itself.
+  `n ≤ 9`), and the quantified certificates `not_nsmul_p_torsion_le_27`,
+  `nsmul_p_injective_le_27` and `nsmul_p_ne_zsmul_neg`. Together these give
+  `2 ≤ n ≤ 27` non-torsion of `P` and the **twenty-eight** pairwise-distinct
+  group elements `0`, `±P, ..., ±9P`, `10P, ..., 18P`. **Zero `sorry`s** — the
+  first fully proved module in the repo. Does not prove BSD itself.
 - `UniversalSingularity/HilbertPolya.lean` — states the Hilbert–Pólya
   conjecture on genuine spectral theory, plus the Riemann–von Mangoldt and
   Montgomery–Odlyzko bridge gaps; 3 `gap` theorems marked `sorry`.
@@ -118,18 +120,21 @@ Present in Mathlib:
 Milestones:
 1. **DONE:** `UniversalSingularity/BSD37a1.lean` fully proves the concrete
    layer of the curve `37a1` (field set in `sampleCurve`): discriminant `Δ = 37`,
-   the twenty-one nonsingular rational points `P`, `2P, ..., 18P`, `-P`, `-2P`,
+   the twenty-seven nonsingular rational points `P`, `2P, ..., 27P`, `-P`, `-2P`,
    `-3P`, `-4P, ..., -9P` (all integer multiples `(m : ℤ) • p` of `P` for
-   `-9 ≤ m ≤ 18`), pairwise distinct together with the identity: the symmetric
-   family `{0, ±P, ..., ±9P}` of nineteen distinct group elements and
-   `{0, 10P, ..., 18P}` of ten distinct elements (kernel-checked by `norm_num`),
-   the explicit slopes and group-law relations `nP` for `n = 2, ..., 9` (with
-   `2T = X` and the independent check `3T = 9P`), more direct pair checks
-   (`Q + R = P`, `Q + T = W`, `S + P = U`, `U + T = P`), the inverse pairs
-   (`P + R = 0`, `Q + U = 0`, `T + S = 0`, plus `−2P = U`, `−3P = S`, `−S = T`),
-   and the no-torsion forms `(n : ℕ) • p ≠ 0` and `(n : ℤ) • p ≠ 0` for
-   `2 ≤ |n| ≤ 18`, giving each named multiple `2P` through `9P` its own
-   small-order no-torsion certificate. Zero `sorry`s.
+   `-9 ≤ m ≤ 27`), pairwise distinct together with the identity: the symmetric
+   family `{0, ±P, ..., ±9P}` of nineteen distinct group elements,
+   `{0, 10P, ..., 18P}` of ten distinct elements, and — via the quantified
+   certificates `not_nsmul_p_torsion_le_27`, `nsmul_p_injective_le_27` and
+   `nsmul_p_ne_zsmul_neg` — the full **twenty-eight**-element family
+   `{0, ±P, ..., ±9P, 10P, ..., 18P}` pairwise distinct (so `P` is not torsion
+   of any order `2 ≤ n ≤ 27`), the explicit slopes and group-law relations
+   `nP` for `n = 2, ..., 9` (with `2T = X` and the independent check `3T = 9P`),
+   more direct pair checks (`Q + R = P`, `Q + T = W`, `S + P = U`, `U + T = P`),
+   the inverse pairs (`P + R = 0`, `Q + U = 0`, `T + S = 0`, plus `−2P = U`,
+   `−3P = S`, `−S = T`), and the no-torsion forms `(n : ℕ) • p ≠ 0` and
+   `(n : ℤ) • p ≠ 0` for `2 ≤ |n| ≤ 27`, giving each named multiple `2P`
+   through `9P` its own small-order no-torsion certificate. Zero `sorry`s.
 2. **LIVE ready (hard but finite):** compute `mordellWeilRank` for `37a1` by
    descent. This is a *real* theorem (integer rank = n), unlike the old
    placeholder.

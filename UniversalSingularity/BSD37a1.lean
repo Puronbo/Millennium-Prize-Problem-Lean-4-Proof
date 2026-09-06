@@ -1409,11 +1409,11 @@ theorem p_ne_q : p ≠ q := by
 
 For the generator `P`, the multiples `2P`, `3P`, `4P`, `5P`, `6P`, `7P`, `8P`,
 `9P` are computed above and are all distinct from the identity; the further
-multiples `10P` through `18P` extend this through `18P`.  Below, the same
+multiples `10P` through `27P` extend this through `27P`.  Below, the same
 facts are restated in the group-theoretic form `(n : ℕ) • p ≠ 0`, using the
 `nsmul` operation of the additive group of the curve; the rewrite by
 `succ_nsmul` recovers the repeated-sum notation of the `*_ne_zero` theorems,
-and the orders `10` through `18` are transferred from the integer form via
+and the orders `10` through `27` are transferred from the integer form via
 `natCast_zsmul`.
 -/
 
@@ -1817,6 +1817,653 @@ theorem not_seventeen_nsmul_torsion : (17 : ℕ) • p ≠ 0 := by
 theorem not_eighteen_nsmul_torsion : (18 : ℕ) • p ≠ 0 := by
   rw [← natCast_zsmul]
   exact eighteen_zsmul_p_ne_zero
+
+/-! ## The further multiples `19P` through `27P`
+
+Continuing the same pattern, the secant through the previous multiple and `P`
+produces the next nine multiples `19P, ..., 27P`, each verified on the curve as
+a nonsingular rational point.  Their significance is the certificates below:
+`P` has no torsion of any order `2 ≤ n ≤ 27` (`not_*_nsmul_torsion`).
+-/
+
+/-! ### `19P` -/
+
+/-- The secant slope through `J` and `P` is `-5415345/30283001`. -/
+theorem slope_jp : W.slope (12551561/13608721) 0 (-8280062505/50202571769) 0 = -5415345 / 30283001 := by
+  rw [WeierstrassCurve.Affine.slope_of_X_ne (x₁ := 12551561/13608721) (x₂ := 0) (y₁ := -8280062505/50202571769) (y₂ := 0)
+    (by norm_num : (12551561/13608721 : ℚ) ≠ 0)]
+  norm_num
+
+/-- The coordinate `x(J + P) = x(19P) = -59997896/67387681`. -/
+theorem addX_jp : W.addX (12551561/13608721) 0 (W.slope (12551561/13608721) 0 (-8280062505/50202571769) 0) = -59997896 / 67387681 := by
+  norm_num [slope_jp, WeierstrassCurve.Affine.addX]
+
+/-- The coordinate `y(J + P) = y(19P) = -641260644409/553185473329`. -/
+theorem addY_jp : W.addY (12551561/13608721) 0 (-8280062505/50202571769) (W.slope (12551561/13608721) 0 (-8280062505/50202571769) 0) = -641260644409 / 553185473329 := by
+  norm_num [slope_jp, WeierstrassCurve.Affine.addY]
+
+/-- `19P = (-59997896/67387681, -641260644409/553185473329)` lies on the curve. -/
+theorem equation_p19 : W.Equation (-59997896/67387681) (-641260644409/553185473329) := by
+  rw [WeierstrassCurve.Affine.equation_iff]
+  simp
+  norm_num
+
+/-- `19P = (-59997896/67387681, -641260644409/553185473329)` is a nonsingular rational point. -/
+theorem nonsingular_p19 : W.Nonsingular (-59997896/67387681) (-641260644409/553185473329) := by
+  rw [WeierstrassCurve.Affine.nonsingular_iff]
+  constructor
+  · exact equation_p19
+  · left
+    simp
+    norm_num
+
+/-- The point `19P = (-59997896/67387681, -641260644409/553185473329)`. -/
+def p19 : W.Point := Point.some (-59997896/67387681) (-641260644409/553185473329) nonsingular_p19
+
+/-- `J + P = 19P`; the secant through `J` and `P` meets the curve at `19P`. -/
+theorem add_j_p_eq_p19 : j + p = p19 := by
+  unfold j p p19
+  rw [add_of_X_ne (x₁ := 12551561/13608721) (x₂ := 0) (y₁ := -8280062505/50202571769) (y₂ := 0) (h₁ := nonsingular_j)
+    (h₂ := nonsingular_P) (by norm_num : (12551561/13608721 : ℚ) ≠ 0)]
+  rw [WeierstrassCurve.Affine.Point.some.injEq]
+  exact ⟨addX_jp, addY_jp⟩
+
+/-- `19P = P19`. -/
+theorem nineteen_p_eq_p19 : p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p = p19 := by
+  rw [eighteen_p_eq_j, add_j_p_eq_p19]
+
+/-! ### `20P` -/
+
+/-- The secant slope through `19P` and `P` is `173830481/133511176`. -/
+theorem slope_p19p : W.slope (-59997896/67387681) 0 (-641260644409/553185473329) 0 = 173830481 / 133511176 := by
+  rw [WeierstrassCurve.Affine.slope_of_X_ne (x₁ := -59997896/67387681) (x₂ := 0) (y₁ := -641260644409/553185473329) (y₂ := 0)
+    (by norm_num : (-59997896/67387681 : ℚ) ≠ 0)]
+  norm_num
+
+/-- The coordinate `x(19P + P) = x(20P) = 683916417/264517696`. -/
+theorem addX_p19p : W.addX (-59997896/67387681) 0 (W.slope (-59997896/67387681) 0 (-641260644409/553185473329) 0) = 683916417 / 264517696 := by
+  norm_num [slope_p19p, WeierstrassCurve.Affine.addX]
+
+/-- The coordinate `y(19P + P) = y(20P) = -18784454671297/4302115807744`. -/
+theorem addY_p19p : W.addY (-59997896/67387681) 0 (-641260644409/553185473329) (W.slope (-59997896/67387681) 0 (-641260644409/553185473329) 0) = -18784454671297 / 4302115807744 := by
+  norm_num [slope_p19p, WeierstrassCurve.Affine.addY]
+
+/-- `20P = (683916417/264517696, -18784454671297/4302115807744)` lies on the curve. -/
+theorem equation_p20 : W.Equation (683916417/264517696) (-18784454671297/4302115807744) := by
+  rw [WeierstrassCurve.Affine.equation_iff]
+  simp
+  norm_num
+
+/-- `20P = (683916417/264517696, -18784454671297/4302115807744)` is a nonsingular rational point. -/
+theorem nonsingular_p20 : W.Nonsingular (683916417/264517696) (-18784454671297/4302115807744) := by
+  rw [WeierstrassCurve.Affine.nonsingular_iff]
+  constructor
+  · exact equation_p20
+  · left
+    simp
+    norm_num
+
+/-- The point `20P = (683916417/264517696, -18784454671297/4302115807744)`. -/
+def p20 : W.Point := Point.some (683916417/264517696) (-18784454671297/4302115807744) nonsingular_p20
+
+/-- `19P + P = 20P`; the secant through `19P` and `P` meets the curve at `20P`. -/
+theorem add_p19_p_eq_p20 : p19 + p = p20 := by
+  unfold p19 p p20
+  rw [add_of_X_ne (x₁ := -59997896/67387681) (x₂ := 0) (y₁ := -641260644409/553185473329) (y₂ := 0) (h₁ := nonsingular_p19)
+    (h₂ := nonsingular_P) (by norm_num : (-59997896/67387681 : ℚ) ≠ 0)]
+  rw [WeierstrassCurve.Affine.Point.some.injEq]
+  exact ⟨addX_p19p, addY_p19p⟩
+
+/-- `20P = P20`. -/
+theorem twenty_p_eq_p20 : p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p = p20 := by
+  rw [nineteen_p_eq_p19, add_p19_p_eq_p20]
+
+/-! ### `21P` -/
+
+/-- The secant slope through `20P` and `P` is `-2288275633/1355002632`. -/
+theorem slope_p20p : W.slope (683916417/264517696) 0 (-18784454671297/4302115807744) 0 = -2288275633 / 1355002632 := by
+  rw [WeierstrassCurve.Affine.slope_of_X_ne (x₁ := 683916417/264517696) (x₂ := 0) (y₁ := -18784454671297/4302115807744) (y₂ := 0)
+    (by norm_num : (683916417/264517696 : ℚ) ≠ 0)]
+  norm_num
+
+/-- The coordinate `x(20P + P) = x(21P) = 1849037896/6941055969`. -/
+theorem addX_p20p : W.addX (683916417/264517696) 0 (W.slope (683916417/264517696) 0 (-18784454671297/4302115807744) 0) = 1849037896 / 6941055969 := by
+  norm_num [slope_p20p, WeierstrassCurve.Affine.addX]
+
+/-- The coordinate `y(20P + P) = y(21P) = -318128427505160/578280195945297`. -/
+theorem addY_p20p : W.addY (683916417/264517696) 0 (-18784454671297/4302115807744) (W.slope (683916417/264517696) 0 (-18784454671297/4302115807744) 0) = -318128427505160 / 578280195945297 := by
+  norm_num [slope_p20p, WeierstrassCurve.Affine.addY]
+
+/-- `21P = (1849037896/6941055969, -318128427505160/578280195945297)` lies on the curve. -/
+theorem equation_p21 : W.Equation (1849037896/6941055969) (-318128427505160/578280195945297) := by
+  rw [WeierstrassCurve.Affine.equation_iff]
+  simp
+  norm_num
+
+/-- `21P = (1849037896/6941055969, -318128427505160/578280195945297)` is a nonsingular rational point. -/
+theorem nonsingular_p21 : W.Nonsingular (1849037896/6941055969) (-318128427505160/578280195945297) := by
+  rw [WeierstrassCurve.Affine.nonsingular_iff]
+  constructor
+  · exact equation_p21
+  · left
+    simp
+    norm_num
+
+/-- The point `21P = (1849037896/6941055969, -318128427505160/578280195945297)`. -/
+def p21 : W.Point := Point.some (1849037896/6941055969) (-318128427505160/578280195945297) nonsingular_p21
+
+/-- `20P + P = 21P`; the secant through `20P` and `P` meets the curve at `21P`. -/
+theorem add_p20_p_eq_p21 : p20 + p = p21 := by
+  unfold p20 p p21
+  rw [add_of_X_ne (x₁ := 683916417/264517696) (x₂ := 0) (y₁ := -18784454671297/4302115807744) (y₂ := 0) (h₁ := nonsingular_p20)
+    (h₂ := nonsingular_P) (by norm_num : (683916417/264517696 : ℚ) ≠ 0)]
+  rw [WeierstrassCurve.Affine.Point.some.injEq]
+  exact ⟨addX_p20p, addY_p20p⟩
+
+/-- `21P = P21`. -/
+theorem twenty_one_p_eq_p21 : p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p = p21 := by
+  rw [twenty_p_eq_p20, add_p20_p_eq_p21]
+
+/-! ### `22P` -/
+
+/-- The secant slope through `21P` and `P` is `-19560282065/9471771657`. -/
+theorem slope_p21p : W.slope (1849037896/6941055969) 0 (-318128427505160/578280195945297) 0 = -19560282065 / 9471771657 := by
+  rw [WeierstrassCurve.Affine.slope_of_X_ne (x₁ := 1849037896/6941055969) (x₂ := 0) (y₁ := -318128427505160/578280195945297) (y₂ := 0)
+    (by norm_num : (1849037896/6941055969 : ℚ) ≠ 0)]
+  norm_num
+
+/-- The coordinate `x(21P + P) = x(22P) = 51678803961/12925188721`. -/
+theorem addX_p21p : W.addX (1849037896/6941055969) 0 (W.slope (1849037896/6941055969) 0 (-318128427505160/578280195945297) 0) = 51678803961 / 12925188721 := by
+  norm_num [slope_p21p, WeierstrassCurve.Affine.addX]
+
+/-- The coordinate `y(21P + P) = y(22P) = 10663732503571536/1469451780501769`. -/
+theorem addY_p21p : W.addY (1849037896/6941055969) 0 (-318128427505160/578280195945297) (W.slope (1849037896/6941055969) 0 (-318128427505160/578280195945297) 0) = 10663732503571536 / 1469451780501769 := by
+  norm_num [slope_p21p, WeierstrassCurve.Affine.addY]
+
+/-- `22P = (51678803961/12925188721, 10663732503571536/1469451780501769)` lies on the curve. -/
+theorem equation_p22 : W.Equation (51678803961/12925188721) (10663732503571536/1469451780501769) := by
+  rw [WeierstrassCurve.Affine.equation_iff]
+  simp
+  norm_num
+
+/-- `22P = (51678803961/12925188721, 10663732503571536/1469451780501769)` is a nonsingular rational point. -/
+theorem nonsingular_p22 : W.Nonsingular (51678803961/12925188721) (10663732503571536/1469451780501769) := by
+  rw [WeierstrassCurve.Affine.nonsingular_iff]
+  constructor
+  · exact equation_p22
+  · left
+    simp
+    norm_num
+
+/-- The point `22P = (51678803961/12925188721, 10663732503571536/1469451780501769)`. -/
+def p22 : W.Point := Point.some (51678803961/12925188721) (10663732503571536/1469451780501769) nonsingular_p22
+
+/-- `21P + P = 22P`; the secant through `21P` and `P` meets the curve at `22P`. -/
+theorem add_p21_p_eq_p22 : p21 + p = p22 := by
+  unfold p21 p p22
+  rw [add_of_X_ne (x₁ := 1849037896/6941055969) (x₂ := 0) (y₁ := -318128427505160/578280195945297) (y₂ := 0) (h₁ := nonsingular_p21)
+    (h₂ := nonsingular_P) (by norm_num : (1849037896/6941055969 : ℚ) ≠ 0)]
+  rw [WeierstrassCurve.Affine.Point.some.injEq]
+  exact ⟨addX_p21p, addY_p21p⟩
+
+/-- `22P = P22`. -/
+theorem twenty_two_p_eq_p22 : p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p = p22 := by
+  rw [twenty_one_p_eq_p21, add_p21_p_eq_p22]
+
+/-! ### `23P` -/
+
+/-- The secant slope through `22P` and `P` is `127996021072/70520945633`. -/
+theorem slope_p22p : W.slope (51678803961/12925188721) 0 (10663732503571536/1469451780501769) 0 = 127996021072 / 70520945633 := by
+  rw [WeierstrassCurve.Affine.slope_of_X_ne (x₁ := 51678803961/12925188721) (x₂ := 0) (y₁ := 10663732503571536/1469451780501769) (y₂ := 0)
+    (by norm_num : (51678803961/12925188721 : ℚ) ≠ 0)]
+  norm_num
+
+/-- The coordinate `x(22P + P) = x(23P) = -270896443865/384768368209`. -/
+theorem addX_p22p : W.addX (51678803961/12925188721) 0 (W.slope (51678803961/12925188721) 0 (10663732503571536/1469451780501769) 0) = -270896443865 / 384768368209 := by
+  norm_num [slope_p22p, WeierstrassCurve.Affine.addX]
+
+/-- The coordinate `y(22P + P) = y(23P) = 66316334575107447/238670664494938073`. -/
+theorem addY_p22p : W.addY (51678803961/12925188721) 0 (10663732503571536/1469451780501769) (W.slope (51678803961/12925188721) 0 (10663732503571536/1469451780501769) 0) = 66316334575107447 / 238670664494938073 := by
+  norm_num [slope_p22p, WeierstrassCurve.Affine.addY]
+
+/-- `23P = (-270896443865/384768368209, 66316334575107447/238670664494938073)` lies on the curve. -/
+theorem equation_p23 : W.Equation (-270896443865/384768368209) (66316334575107447/238670664494938073) := by
+  rw [WeierstrassCurve.Affine.equation_iff]
+  simp
+  norm_num
+
+/-- `23P = (-270896443865/384768368209, 66316334575107447/238670664494938073)` is a nonsingular rational point. -/
+theorem nonsingular_p23 : W.Nonsingular (-270896443865/384768368209) (66316334575107447/238670664494938073) := by
+  rw [WeierstrassCurve.Affine.nonsingular_iff]
+  constructor
+  · exact equation_p23
+  · left
+    simp
+    norm_num
+
+/-- The point `23P = (-270896443865/384768368209, 66316334575107447/238670664494938073)`. -/
+def p23 : W.Point := Point.some (-270896443865/384768368209) (66316334575107447/238670664494938073) nonsingular_p23
+
+/-- `22P + P = 23P`; the secant through `22P` and `P` meets the curve at `23P`. -/
+theorem add_p22_p_eq_p23 : p22 + p = p23 := by
+  unfold p22 p p23
+  rw [add_of_X_ne (x₁ := 51678803961/12925188721) (x₂ := 0) (y₁ := 10663732503571536/1469451780501769) (y₂ := 0) (h₁ := nonsingular_p22)
+    (h₂ := nonsingular_P) (by norm_num : (51678803961/12925188721 : ℚ) ≠ 0)]
+  rw [WeierstrassCurve.Affine.Point.some.injEq]
+  exact ⟨addX_p22p, addY_p22p⟩
+
+/-- `23P = P23`. -/
+theorem twenty_three_p_eq_p23 : p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p = p23 := by
+  rw [twenty_two_p_eq_p22, add_p22_p_eq_p23]
+
+/-! ### `24P` -/
+
+/-- The secant slope through `23P` and `P` is `-583313553423/1478034387145`. -/
+theorem slope_p23p : W.slope (-270896443865/384768368209) 0 (66316334575107447/238670664494938073) 0 = -583313553423 / 1478034387145 := by
+  rw [WeierstrassCurve.Affine.slope_of_X_ne (x₁ := -270896443865/384768368209) (x₂ := 0) (y₁ := 66316334575107447/238670664494938073) (y₂ := 0)
+    (by norm_num : (-270896443865/384768368209 : ℚ) ≠ 0)]
+  norm_num
+
+/-- The coordinate `x(23P + P) = x(24P) = 4881674119706/5677664356225`. -/
+theorem addX_p23p : W.addX (-270896443865/384768368209) 0 (W.slope (-270896443865/384768368209) 0 (66316334575107447/238670664494938073) 0) = 4881674119706 / 5677664356225 := by
+  norm_num [slope_p23p, WeierstrassCurve.Affine.addX]
+
+/-- The coordinate `y(23P + P) = y(24P) = -8938035295591025771/13528653463047586625`. -/
+theorem addY_p23p : W.addY (-270896443865/384768368209) 0 (66316334575107447/238670664494938073) (W.slope (-270896443865/384768368209) 0 (66316334575107447/238670664494938073) 0) = -8938035295591025771 / 13528653463047586625 := by
+  norm_num [slope_p23p, WeierstrassCurve.Affine.addY]
+
+/-- `24P = (4881674119706/5677664356225, -8938035295591025771/13528653463047586625)` lies on the curve. -/
+theorem equation_p24 : W.Equation (4881674119706/5677664356225) (-8938035295591025771/13528653463047586625) := by
+  rw [WeierstrassCurve.Affine.equation_iff]
+  simp
+  norm_num
+
+/-- `24P = (4881674119706/5677664356225, -8938035295591025771/13528653463047586625)` is a nonsingular rational point. -/
+theorem nonsingular_p24 : W.Nonsingular (4881674119706/5677664356225) (-8938035295591025771/13528653463047586625) := by
+  rw [WeierstrassCurve.Affine.nonsingular_iff]
+  constructor
+  · exact equation_p24
+  · left
+    simp
+    norm_num
+
+/-- The point `24P = (4881674119706/5677664356225, -8938035295591025771/13528653463047586625)`. -/
+def p24 : W.Point := Point.some (4881674119706/5677664356225) (-8938035295591025771/13528653463047586625) nonsingular_p24
+
+/-- `23P + P = 24P`; the secant through `23P` and `P` meets the curve at `24P`. -/
+theorem add_p23_p_eq_p24 : p23 + p = p24 := by
+  unfold p23 p p24
+  rw [add_of_X_ne (x₁ := -270896443865/384768368209) (x₂ := 0) (y₁ := 66316334575107447/238670664494938073) (y₂ := 0) (h₁ := nonsingular_p23)
+    (h₂ := nonsingular_P) (by norm_num : (-270896443865/384768368209 : ℚ) ≠ 0)]
+  rw [WeierstrassCurve.Affine.Point.some.injEq]
+  exact ⟨addX_p23p, addY_p23p⟩
+
+/-- `24P = P24`. -/
+theorem twenty_four_p_eq_p24 : p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p = p24 := by
+  rw [twenty_three_p_eq_p23, add_p23_p_eq_p24]
+
+/-! ### `25P` -/
+
+/-- The secant slope through `24P` and `P` is `-14409283449043/18752274905930`. -/
+theorem slope_p24p : W.slope (4881674119706/5677664356225) 0 (-8938035295591025771/13528653463047586625) 0 = -14409283449043 / 18752274905930 := by
+  rw [WeierstrassCurve.Affine.slope_of_X_ne (x₁ := 4881674119706/5677664356225) (x₂ := 0) (y₁ := -8938035295591025771/13528653463047586625) (y₂ := 0)
+    (by norm_num : (4881674119706/5677664356225 : ℚ) ≠ 0)]
+  norm_num
+
+/-- The coordinate `x(24P + P) = x(25P) = -16683000076735/61935294530404`. -/
+theorem addX_p24p : W.addX (4881674119706/5677664356225) 0 (W.slope (4881674119706/5677664356225) 0 (-8938035295591025771/13528653463047586625) 0) = -16683000076735 / 61935294530404 := by
+  norm_num [slope_p24p, WeierstrassCurve.Affine.addX]
+
+/-- The coordinate `y(24P + P) = y(25P) = -588310630753491921045/487424450554237378792`. -/
+theorem addY_p24p : W.addY (4881674119706/5677664356225) 0 (-8938035295591025771/13528653463047586625) (W.slope (4881674119706/5677664356225) 0 (-8938035295591025771/13528653463047586625) 0) = -588310630753491921045 / 487424450554237378792 := by
+  norm_num [slope_p24p, WeierstrassCurve.Affine.addY]
+
+/-- `25P = (-16683000076735/61935294530404, -588310630753491921045/487424450554237378792)` lies on the curve. -/
+theorem equation_p25 : W.Equation (-16683000076735/61935294530404) (-588310630753491921045/487424450554237378792) := by
+  rw [WeierstrassCurve.Affine.equation_iff]
+  simp
+  norm_num
+
+/-- `25P = (-16683000076735/61935294530404, -588310630753491921045/487424450554237378792)` is a nonsingular rational point. -/
+theorem nonsingular_p25 : W.Nonsingular (-16683000076735/61935294530404) (-588310630753491921045/487424450554237378792) := by
+  rw [WeierstrassCurve.Affine.nonsingular_iff]
+  constructor
+  · exact equation_p25
+  · left
+    simp
+    norm_num
+
+/-- The point `25P = (-16683000076735/61935294530404, -588310630753491921045/487424450554237378792)`. -/
+def p25 : W.Point := Point.some (-16683000076735/61935294530404) (-588310630753491921045/487424450554237378792) nonsingular_p25
+
+/-- `24P + P = 25P`; the secant through `24P` and `P` meets the curve at `25P`. -/
+theorem add_p24_p_eq_p25 : p24 + p = p25 := by
+  unfold p24 p p25
+  rw [add_of_X_ne (x₁ := 4881674119706/5677664356225) (x₂ := 0) (y₁ := -8938035295591025771/13528653463047586625) (y₂ := 0) (h₁ := nonsingular_p24)
+    (h₂ := nonsingular_P) (by norm_num : (4881674119706/5677664356225 : ℚ) ≠ 0)]
+  rw [WeierstrassCurve.Affine.Point.some.injEq]
+  exact ⟨addX_p24p, addY_p24p⟩
+
+/-- `25P = P25`. -/
+theorem twenty_five_p_eq_p25 : p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p = p25 := by
+  rw [twenty_four_p_eq_p24, add_p24_p_eq_p25]
+
+/-! ### `26P` -/
+
+/-- The secant slope through `25P` and `P` is `246900425658837/55100862619958`. -/
+theorem slope_p25p : W.slope (-16683000076735/61935294530404) 0 (-588310630753491921045/487424450554237378792) 0 = 246900425658837 / 55100862619958 := by
+  rw [WeierstrassCurve.Affine.slope_of_X_ne (x₁ := -16683000076735/61935294530404) (x₂ := 0) (y₁ := -588310630753491921045/487424450554237378792) (y₂ := 0)
+    (by norm_num : (-16683000076735/61935294530404 : ℚ) ≠ 0)]
+  norm_num
+
+/-- The coordinate `x(25P + P) = x(26P) = 997454379905326/49020596163841`. -/
+theorem addX_p25p : W.addX (-16683000076735/61935294530404) 0 (W.slope (-16683000076735/61935294530404) 0 (-588310630753491921045/487424450554237378792) 0) = 997454379905326 / 49020596163841 := by
+  norm_num [slope_p25p, WeierstrassCurve.Affine.addX]
+
+/-- The coordinate `y(25P + P) = y(26P) = -31636113722016288336230/343216282443844010111`. -/
+theorem addY_p25p : W.addY (-16683000076735/61935294530404) 0 (-588310630753491921045/487424450554237378792) (W.slope (-16683000076735/61935294530404) 0 (-588310630753491921045/487424450554237378792) 0) = -31636113722016288336230 / 343216282443844010111 := by
+  norm_num [slope_p25p, WeierstrassCurve.Affine.addY]
+
+/-- `26P = (997454379905326/49020596163841, -31636113722016288336230/343216282443844010111)` lies on the curve. -/
+theorem equation_p26 : W.Equation (997454379905326/49020596163841) (-31636113722016288336230/343216282443844010111) := by
+  rw [WeierstrassCurve.Affine.equation_iff]
+  simp
+  norm_num
+
+/-- `26P = (997454379905326/49020596163841, -31636113722016288336230/343216282443844010111)` is a nonsingular rational point. -/
+theorem nonsingular_p26 : W.Nonsingular (997454379905326/49020596163841) (-31636113722016288336230/343216282443844010111) := by
+  rw [WeierstrassCurve.Affine.nonsingular_iff]
+  constructor
+  · exact equation_p26
+  · left
+    simp
+    norm_num
+
+/-- The point `26P = (997454379905326/49020596163841, -31636113722016288336230/343216282443844010111)`. -/
+def p26 : W.Point := Point.some (997454379905326/49020596163841) (-31636113722016288336230/343216282443844010111) nonsingular_p26
+
+/-- `25P + P = 26P`; the secant through `25P` and `P` meets the curve at `26P`. -/
+theorem add_p25_p_eq_p26 : p25 + p = p26 := by
+  unfold p25 p p26
+  rw [add_of_X_ne (x₁ := -16683000076735/61935294530404) (x₂ := 0) (y₁ := -588310630753491921045/487424450554237378792) (y₂ := 0) (h₁ := nonsingular_p25)
+    (h₂ := nonsingular_P) (by norm_num : (-16683000076735/61935294530404 : ℚ) ≠ 0)]
+  rw [WeierstrassCurve.Affine.Point.some.injEq]
+  exact ⟨addX_p25p, addY_p25p⟩
+
+/-- `26P = P26`. -/
+theorem twenty_six_p_eq_p26 : p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p = p26 := by
+  rw [twenty_five_p_eq_p25, add_p25_p_eq_p26]
+
+/-! ### `27P` -/
+
+/-- The secant slope through `26P` and `P` is `-4019888659550135/887387347933877`. -/
+theorem slope_p26p : W.slope (997454379905326/49020596163841) 0 (-31636113722016288336230/343216282443844010111) 0 = -4019888659550135 / 887387347933877 := by
+  rw [WeierstrassCurve.Affine.slope_of_X_ne (x₁ := 997454379905326/49020596163841) (x₂ := 0) (y₁ := -31636113722016288336230/343216282443844010111) (y₂ := 0)
+    (by norm_num : (997454379905326/49020596163841 : ℚ) ≠ 0)]
+  norm_num
+
+/-- The coordinate `x(26P + P) = x(27P) = 2786836257692691/16063784753682169`. -/
+theorem addX_p26p : W.addX (997454379905326/49020596163841) 0 (W.slope (997454379905326/49020596163841) 0 (-31636113722016288336230/343216282443844010111) 0) = 2786836257692691 / 16063784753682169 := by
+  norm_num [slope_p26p, WeierstrassCurve.Affine.addX]
+
+/-- The coordinate `y(26P + P) = y(27P) = -435912379274109872312968/2035972062206737347698803`. -/
+theorem addY_p26p : W.addY (997454379905326/49020596163841) 0 (-31636113722016288336230/343216282443844010111) (W.slope (997454379905326/49020596163841) 0 (-31636113722016288336230/343216282443844010111) 0) = -435912379274109872312968 / 2035972062206737347698803 := by
+  norm_num [slope_p26p, WeierstrassCurve.Affine.addY]
+
+/-- `27P = (2786836257692691/16063784753682169, -435912379274109872312968/2035972062206737347698803)` lies on the curve. -/
+theorem equation_p27 : W.Equation (2786836257692691/16063784753682169) (-435912379274109872312968/2035972062206737347698803) := by
+  rw [WeierstrassCurve.Affine.equation_iff]
+  simp
+  norm_num
+
+/-- `27P = (2786836257692691/16063784753682169, -435912379274109872312968/2035972062206737347698803)` is a nonsingular rational point. -/
+theorem nonsingular_p27 : W.Nonsingular (2786836257692691/16063784753682169) (-435912379274109872312968/2035972062206737347698803) := by
+  rw [WeierstrassCurve.Affine.nonsingular_iff]
+  constructor
+  · exact equation_p27
+  · left
+    simp
+    norm_num
+
+/-- The point `27P = (2786836257692691/16063784753682169, -435912379274109872312968/2035972062206737347698803)`. -/
+def p27 : W.Point := Point.some (2786836257692691/16063784753682169) (-435912379274109872312968/2035972062206737347698803) nonsingular_p27
+
+/-- `26P + P = 27P`; the secant through `26P` and `P` meets the curve at `27P`. -/
+theorem add_p26_p_eq_p27 : p26 + p = p27 := by
+  unfold p26 p p27
+  rw [add_of_X_ne (x₁ := 997454379905326/49020596163841) (x₂ := 0) (y₁ := -31636113722016288336230/343216282443844010111) (y₂ := 0) (h₁ := nonsingular_p26)
+    (h₂ := nonsingular_P) (by norm_num : (997454379905326/49020596163841 : ℚ) ≠ 0)]
+  rw [WeierstrassCurve.Affine.Point.some.injEq]
+  exact ⟨addX_p26p, addY_p26p⟩
+
+/-- `27P = P27`. -/
+theorem twenty_seven_p_eq_p27 : p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p = p27 := by
+  rw [twenty_six_p_eq_p26, add_p26_p_eq_p27]
+
+/-- `19P` is not the identity. -/
+theorem p19_ne_zero : p19 ≠ 0 :=
+  some_ne_zero nonsingular_p19
+
+/-- `20P` is not the identity. -/
+theorem p20_ne_zero : p20 ≠ 0 :=
+  some_ne_zero nonsingular_p20
+
+/-- `21P` is not the identity. -/
+theorem p21_ne_zero : p21 ≠ 0 :=
+  some_ne_zero nonsingular_p21
+
+/-- `22P` is not the identity. -/
+theorem p22_ne_zero : p22 ≠ 0 :=
+  some_ne_zero nonsingular_p22
+
+/-- `23P` is not the identity. -/
+theorem p23_ne_zero : p23 ≠ 0 :=
+  some_ne_zero nonsingular_p23
+
+/-- `24P` is not the identity. -/
+theorem p24_ne_zero : p24 ≠ 0 :=
+  some_ne_zero nonsingular_p24
+
+/-- `25P` is not the identity. -/
+theorem p25_ne_zero : p25 ≠ 0 :=
+  some_ne_zero nonsingular_p25
+
+/-- `26P` is not the identity. -/
+theorem p26_ne_zero : p26 ≠ 0 :=
+  some_ne_zero nonsingular_p26
+
+/-- `27P` is not the identity. -/
+theorem p27_ne_zero : p27 ≠ 0 :=
+  some_ne_zero nonsingular_p27
+
+/-- `19P` is not the identity. -/
+theorem nineteen_p_ne_zero : p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p ≠ 0 := by
+  rw [nineteen_p_eq_p19]
+  exact p19_ne_zero
+
+/-- `20P` is not the identity. -/
+theorem twenty_p_ne_zero : p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p ≠ 0 := by
+  rw [twenty_p_eq_p20]
+  exact p20_ne_zero
+
+/-- `21P` is not the identity. -/
+theorem twenty_one_p_ne_zero : p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p ≠ 0 := by
+  rw [twenty_one_p_eq_p21]
+  exact p21_ne_zero
+
+/-- `22P` is not the identity. -/
+theorem twenty_two_p_ne_zero : p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p ≠ 0 := by
+  rw [twenty_two_p_eq_p22]
+  exact p22_ne_zero
+
+/-- `23P` is not the identity. -/
+theorem twenty_three_p_ne_zero : p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p ≠ 0 := by
+  rw [twenty_three_p_eq_p23]
+  exact p23_ne_zero
+
+/-- `24P` is not the identity. -/
+theorem twenty_four_p_ne_zero : p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p ≠ 0 := by
+  rw [twenty_four_p_eq_p24]
+  exact p24_ne_zero
+
+/-- `25P` is not the identity. -/
+theorem twenty_five_p_ne_zero : p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p ≠ 0 := by
+  rw [twenty_five_p_eq_p25]
+  exact p25_ne_zero
+
+/-- `26P` is not the identity. -/
+theorem twenty_six_p_ne_zero : p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p ≠ 0 := by
+  rw [twenty_six_p_eq_p26]
+  exact p26_ne_zero
+
+/-- `27P` is not the identity. -/
+theorem twenty_seven_p_ne_zero : p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p + p ≠ 0 := by
+  rw [twenty_seven_p_eq_p27]
+  exact p27_ne_zero
+
+/-- `19 • P = 19P`. -/
+theorem nineteen_zsmul_p_eq_p19 : (19 : ℤ) • p = p19 := by
+  rw [show (19 : ℤ) = (18 : ℤ) + (1 : ℤ) by norm_num, add_zsmul]
+  rw [eighteen_zsmul_p_eq_j, one_zsmul]
+  exact add_j_p_eq_p19
+
+/-- `20 • P = 20P`. -/
+theorem twenty_zsmul_p_eq_p20 : (20 : ℤ) • p = p20 := by
+  rw [show (20 : ℤ) = (19 : ℤ) + (1 : ℤ) by norm_num, add_zsmul]
+  rw [nineteen_zsmul_p_eq_p19, one_zsmul]
+  exact add_p19_p_eq_p20
+
+/-- `21 • P = 21P`. -/
+theorem twenty_one_zsmul_p_eq_p21 : (21 : ℤ) • p = p21 := by
+  rw [show (21 : ℤ) = (20 : ℤ) + (1 : ℤ) by norm_num, add_zsmul]
+  rw [twenty_zsmul_p_eq_p20, one_zsmul]
+  exact add_p20_p_eq_p21
+
+/-- `22 • P = 22P`. -/
+theorem twenty_two_zsmul_p_eq_p22 : (22 : ℤ) • p = p22 := by
+  rw [show (22 : ℤ) = (21 : ℤ) + (1 : ℤ) by norm_num, add_zsmul]
+  rw [twenty_one_zsmul_p_eq_p21, one_zsmul]
+  exact add_p21_p_eq_p22
+
+/-- `23 • P = 23P`. -/
+theorem twenty_three_zsmul_p_eq_p23 : (23 : ℤ) • p = p23 := by
+  rw [show (23 : ℤ) = (22 : ℤ) + (1 : ℤ) by norm_num, add_zsmul]
+  rw [twenty_two_zsmul_p_eq_p22, one_zsmul]
+  exact add_p22_p_eq_p23
+
+/-- `24 • P = 24P`. -/
+theorem twenty_four_zsmul_p_eq_p24 : (24 : ℤ) • p = p24 := by
+  rw [show (24 : ℤ) = (23 : ℤ) + (1 : ℤ) by norm_num, add_zsmul]
+  rw [twenty_three_zsmul_p_eq_p23, one_zsmul]
+  exact add_p23_p_eq_p24
+
+/-- `25 • P = 25P`. -/
+theorem twenty_five_zsmul_p_eq_p25 : (25 : ℤ) • p = p25 := by
+  rw [show (25 : ℤ) = (24 : ℤ) + (1 : ℤ) by norm_num, add_zsmul]
+  rw [twenty_four_zsmul_p_eq_p24, one_zsmul]
+  exact add_p24_p_eq_p25
+
+/-- `26 • P = 26P`. -/
+theorem twenty_six_zsmul_p_eq_p26 : (26 : ℤ) • p = p26 := by
+  rw [show (26 : ℤ) = (25 : ℤ) + (1 : ℤ) by norm_num, add_zsmul]
+  rw [twenty_five_zsmul_p_eq_p25, one_zsmul]
+  exact add_p25_p_eq_p26
+
+/-- `27 • P = 27P`. -/
+theorem twenty_seven_zsmul_p_eq_p27 : (27 : ℤ) • p = p27 := by
+  rw [show (27 : ℤ) = (26 : ℤ) + (1 : ℤ) by norm_num, add_zsmul]
+  rw [twenty_six_zsmul_p_eq_p26, one_zsmul]
+  exact add_p26_p_eq_p27
+
+/-- `19 • P` is not the identity. -/
+theorem nineteen_zsmul_p_ne_zero : (19 : ℤ) • p ≠ 0 := by
+  rw [nineteen_zsmul_p_eq_p19]
+  exact p19_ne_zero
+
+/-- `20 • P` is not the identity. -/
+theorem twenty_zsmul_p_ne_zero : (20 : ℤ) • p ≠ 0 := by
+  rw [twenty_zsmul_p_eq_p20]
+  exact p20_ne_zero
+
+/-- `21 • P` is not the identity. -/
+theorem twenty_one_zsmul_p_ne_zero : (21 : ℤ) • p ≠ 0 := by
+  rw [twenty_one_zsmul_p_eq_p21]
+  exact p21_ne_zero
+
+/-- `22 • P` is not the identity. -/
+theorem twenty_two_zsmul_p_ne_zero : (22 : ℤ) • p ≠ 0 := by
+  rw [twenty_two_zsmul_p_eq_p22]
+  exact p22_ne_zero
+
+/-- `23 • P` is not the identity. -/
+theorem twenty_three_zsmul_p_ne_zero : (23 : ℤ) • p ≠ 0 := by
+  rw [twenty_three_zsmul_p_eq_p23]
+  exact p23_ne_zero
+
+/-- `24 • P` is not the identity. -/
+theorem twenty_four_zsmul_p_ne_zero : (24 : ℤ) • p ≠ 0 := by
+  rw [twenty_four_zsmul_p_eq_p24]
+  exact p24_ne_zero
+
+/-- `25 • P` is not the identity. -/
+theorem twenty_five_zsmul_p_ne_zero : (25 : ℤ) • p ≠ 0 := by
+  rw [twenty_five_zsmul_p_eq_p25]
+  exact p25_ne_zero
+
+/-- `26 • P` is not the identity. -/
+theorem twenty_six_zsmul_p_ne_zero : (26 : ℤ) • p ≠ 0 := by
+  rw [twenty_six_zsmul_p_eq_p26]
+  exact p26_ne_zero
+
+/-- `27 • P` is not the identity. -/
+theorem twenty_seven_zsmul_p_ne_zero : (27 : ℤ) • p ≠ 0 := by
+  rw [twenty_seven_zsmul_p_eq_p27]
+  exact p27_ne_zero
+
+/-- `P` does not have order `19`, in the `(n : ℕ) • p` notation. -/
+theorem not_nineteen_nsmul_torsion : (19 : ℕ) • p ≠ 0 := by
+  rw [← natCast_zsmul]
+  exact nineteen_zsmul_p_ne_zero
+
+/-- `P` does not have order `20`, in the `(n : ℕ) • p` notation. -/
+theorem not_twenty_nsmul_torsion : (20 : ℕ) • p ≠ 0 := by
+  rw [← natCast_zsmul]
+  exact twenty_zsmul_p_ne_zero
+
+/-- `P` does not have order `21`, in the `(n : ℕ) • p` notation. -/
+theorem not_twenty_one_nsmul_torsion : (21 : ℕ) • p ≠ 0 := by
+  rw [← natCast_zsmul]
+  exact twenty_one_zsmul_p_ne_zero
+
+/-- `P` does not have order `22`, in the `(n : ℕ) • p` notation. -/
+theorem not_twenty_two_nsmul_torsion : (22 : ℕ) • p ≠ 0 := by
+  rw [← natCast_zsmul]
+  exact twenty_two_zsmul_p_ne_zero
+
+/-- `P` does not have order `23`, in the `(n : ℕ) • p` notation. -/
+theorem not_twenty_three_nsmul_torsion : (23 : ℕ) • p ≠ 0 := by
+  rw [← natCast_zsmul]
+  exact twenty_three_zsmul_p_ne_zero
+
+/-- `P` does not have order `24`, in the `(n : ℕ) • p` notation. -/
+theorem not_twenty_four_nsmul_torsion : (24 : ℕ) • p ≠ 0 := by
+  rw [← natCast_zsmul]
+  exact twenty_four_zsmul_p_ne_zero
+
+/-- `P` does not have order `25`, in the `(n : ℕ) • p` notation. -/
+theorem not_twenty_five_nsmul_torsion : (25 : ℕ) • p ≠ 0 := by
+  rw [← natCast_zsmul]
+  exact twenty_five_zsmul_p_ne_zero
+
+/-- `P` does not have order `26`, in the `(n : ℕ) • p` notation. -/
+theorem not_twenty_six_nsmul_torsion : (26 : ℕ) • p ≠ 0 := by
+  rw [← natCast_zsmul]
+  exact twenty_six_zsmul_p_ne_zero
+
+/-- `P` does not have order `27`, in the `(n : ℕ) • p` notation. -/
+theorem not_twenty_seven_nsmul_torsion : (27 : ℕ) • p ≠ 0 := by
+  rw [← natCast_zsmul]
+  exact twenty_seven_zsmul_p_ne_zero
 
 /-! ## The negative multiples `-4P` through `-9P`
 
@@ -2305,5 +2952,96 @@ theorem extended_family_card :
     · simp [b, c, d, e, f, g, h, i, j]
     · norm_num [b, c, d, e, f, g, h, i, j,
         WeierstrassCurve.Affine.Point.some.injEq]
+
+/-! ## No torsion through order `27` and the twenty-eight-family distinctness
+
+The order certificates `not_*_nsmul_torsion` for `2 ≤ n ≤ 27` are gathered into
+a single quantified statement.  Its payoff is multiplicative: making the
+assertion that a multiple is the identity at order `n` amounts to a *linear*
+constraint `(n : ℕ) • P = 0`, so distinct positive multiples `mP` and `nP`
+are certified unequal by looking at the difference `|m - n|` (`≤ 27`); and a
+positive multiple `mP` (`1 ≤ m ≤ 18`) is certified different from a negative
+multiple `-kP` (`1 ≤ k ≤ 9`) by the sum `m + k` (`≤ 27`).  Together with the
+`*_ne_zero` theorems (each listed point is distinct from the identity) and the
+earlier `List.Nodup` certificates for the negative multiples, this proves the
+*twenty-eight* elements `0`, `±P, ..., ±9P` and `10P, ..., 18P` are pairwise
+distinct; the point named `P` is therefore not torsion of any order
+`2 ≤ n ≤ 27`.
+-/
+
+/-- `P` has no torsion of any order `2 ≤ k ≤ 27`: every multiple `(k : ℕ) • P`
+with `2 ≤ k ≤ 27` is distinct from the identity. -/
+theorem not_nsmul_p_torsion_le_27 (k : ℕ) (hk2 : 2 ≤ k) (hk27 : k ≤ 27) :
+    (k : ℕ) • p ≠ 0 := by
+  interval_cases k
+  all_goals
+    first
+    | exact not_two_nsmul_torsion
+    | exact not_three_nsmul_torsion
+    | exact not_four_nsmul_torsion
+    | exact not_five_nsmul_torsion
+    | exact not_six_nsmul_torsion
+    | exact not_seven_nsmul_torsion
+    | exact not_eight_nsmul_torsion
+    | exact not_nine_nsmul_torsion
+    | exact not_ten_nsmul_torsion
+    | exact not_eleven_nsmul_torsion
+    | exact not_twelve_nsmul_torsion
+    | exact not_thirteen_nsmul_torsion
+    | exact not_fourteen_nsmul_torsion
+    | exact not_fifteen_nsmul_torsion
+    | exact not_sixteen_nsmul_torsion
+    | exact not_seventeen_nsmul_torsion
+    | exact not_eighteen_nsmul_torsion
+    | exact not_nineteen_nsmul_torsion
+    | exact not_twenty_nsmul_torsion
+    | exact not_twenty_one_nsmul_torsion
+    | exact not_twenty_two_nsmul_torsion
+    | exact not_twenty_three_nsmul_torsion
+    | exact not_twenty_four_nsmul_torsion
+    | exact not_twenty_five_nsmul_torsion
+    | exact not_twenty_six_nsmul_torsion
+    | exact not_twenty_seven_nsmul_torsion
+
+/-- Multiplication by `P` is injective on the positive multiples up to `27P`:
+if `mP = nP` with `1 ≤ m ≤ n ≤ 27`, then `m = n`; equivalently the multiples
+`P, 2P, ..., 27P` are pairwise distinct. -/
+theorem nsmul_p_injective_le_27 (m n : ℕ) (hm1 : 1 ≤ m) (hmn : m ≤ n) (hn27 : n ≤ 27)
+    (heq : m • p = n • p) : m = n := by
+  by_cases hmnN : m = n
+  · exact hmnN
+  · exfalso
+    have hd : 1 ≤ n - m := by omega
+    have hd27 : n - m ≤ 27 := by omega
+    have hzero : (n - m) • p = 0 := by
+      have hrewrite : (n - m) • p + m • p = n • p := by
+        rw [← add_nsmul]
+        congr 1
+        omega
+      have h : (n - m) • p + m • p = (0 : W.Point) + m • p := by
+        rw [hrewrite, heq, zero_add]
+      exact add_right_cancel h
+    by_cases h1 : n - m = 1
+    · have hp : p = 0 := by
+        simpa [h1] using hzero
+      exact (p_ne_zero hp)
+    · have hd2 : 2 ≤ n - m := by omega
+      exact not_nsmul_p_torsion_le_27 (n - m) hd2 hd27 hzero
+
+/-- A positive multiple `mP` (`1 ≤ m ≤ 18`) is never a negative multiple `-kP`
+(`1 ≤ k ≤ 9`): such an equality would give `(m + k) • P = 0` with
+`2 ≤ m + k ≤ 27`, contradicting the no-torsion certificates. -/
+theorem nsmul_p_ne_zsmul_neg (m k : ℕ) (hm1 : 1 ≤ m) (hm18 : m ≤ 18) (hk1 : 1 ≤ k) (hk9 : k ≤ 9) :
+    m • p ≠ (-(k : ℤ)) • p := by
+  intro heq
+  have hsum : 2 ≤ m + k := by omega
+  have hsum27 : m + k ≤ 27 := by omega
+  have hz : (m + k : ℕ) • p = 0 := by
+    calc
+      (m + k : ℕ) • p = m • p + k • p := by rw [add_nsmul]
+      _ = (-(k : ℤ)) • p + (k : ℤ) • p := by rw [heq, ← natCast_zsmul]
+      _ = ((-(k : ℤ) + (k : ℤ)) : ℤ) • p := by rw [← add_zsmul]
+      _ = 0 := by simp
+  exact not_nsmul_p_torsion_le_27 (m + k) hsum hsum27 hz
 
 end UniversalSingularity.BSD37a1

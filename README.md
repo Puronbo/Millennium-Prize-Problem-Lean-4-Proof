@@ -54,18 +54,23 @@ explicit `sorry` `gap` marker (see `ROADMAP.md`):
   its complex `WeierstrassCurve.LSeries`.
 - `UniversalSingularity/BSD37a1.lean` — **fully proved** (no `sorry`s) concrete
   arithmetic on the rank-one curve `37a1` (`y² + y = x³ − x`): discriminant
-  `Δ = 37`, twenty-one nonsingular rational points `P`, `2P, ..., 18P`,
-  `-P`, `-2P`, `-3P` plus the negative multiples `-4P`, ..., `-9P`, all integer
-  multiples `(m : ℤ) • p` of the generator `P` for `-9 ≤ m ≤ 18`, the
+  `Δ = 37`, the twenty-seven nonsingular rational points `P`, `2P, ..., 27P`
+  plus the negative multiples `-P`, ..., `-9P`, all integer multiples
+  `(m : ℤ) • p` of the generator `P` for `-9 ≤ m ≤ 27`, the
   pairwise-distinct symmetric family `{0, ±P, ..., ±9P}` of nineteen elements
   and `{0, 10P, ..., 18P}` of ten elements (kernel-checked by `norm_num`), the
   group-law relations `nP` for `n = 2, ..., 9` (with `2T = X`, `3T = 9P`, and
   direct pair checks),
-  the inverse pairs (including `−2P = U`, `−3P = S`, `−S = T`), and the
+  the inverse pairs (including `−2P = U`, `−3P = S`, `−S = T`), the
   no-torsion forms `(n : ℕ) • p ≠ 0` and `(n : ℤ) • p ≠ 0` for every order
-  `2 ≤ |n| ≤ 18`, and the resulting small-order no-torsion certificates for each
-  of the named multiples `2P` through `9P`. It proves BSD's
-  nuts-and-bolts for one curve, not BSD itself.
+  `2 ≤ |n| ≤ 27` (with the small-order no-torsion certificates for each of the
+  named multiples `2P` through `9P`), and the quantified certificates
+  `not_nsmul_p_torsion_le_27`, `nsmul_p_injective_le_27` (the first `27`
+  positive multiples are pairwise distinct) and `nsmul_p_ne_zsmul_neg` (a
+  positive multiple `mP`, `m ≤ 18`, is never `-kP`, `1 ≤ k ≤ 9`); these prove
+  `P` has no torsion of any order `2 ≤ n ≤ 27` and that the *twenty-eight*
+  group elements `0`, `±P, ..., ±9P` and `10P, ..., 18P` are pairwise distinct.
+  It proves BSD's nuts-and-bolts for one curve, not BSD itself.
 - `UniversalSingularity/HilbertPolya.lean` — states the Hilbert–Pólya conjecture
   on genuine spectral theory (`IsSelfAdjoint`, `spectrum Complex A`), plus the
   Riemann–von Mangoldt zero-counting and Montgomery–Odlyzko (GUE) bridge gaps.
