@@ -187,4 +187,16 @@ theorem defect_tendsto_zero (hP : 0 < P) :
   rw [tendsto_zero_iff_norm_tendsto_zero]
   simpa [Real.norm_eq_abs] using hsqz
 
+/-- Exact rational window defect at P = 1, a = 128 (half-window length):
+     D = 16·1·128/(1 + 4·128^2) = 2048/65537. -/
+theorem defect_window_closed_form :
+    (16 : ℚ) * 1 * 128 / (1 + 4 * 1 * 128 ^ 2) = (2048 : ℚ) / 65537 := by
+  norm_num
+
+/-- The outer-tail remainder at P = 1, b = 4096 is 65536/67108865 and lies
+     strictly below the window defect D = 2048/65537, so mass leaks beyond. -/
+theorem defect_at_L_tail_lt_window :
+    (16 : ℚ) * 1 * 4096 / (1 + 4 * 1 * 4096 ^ 2) < (2048 : ℚ) / 65537 := by
+  norm_num
+
 end PunoTwin
