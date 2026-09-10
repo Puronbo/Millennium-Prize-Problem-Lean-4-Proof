@@ -3044,4 +3044,27 @@ theorem nsmul_p_ne_zsmul_neg (m k : ℕ) (hm1 : 1 ≤ m) (hm18 : m ≤ 18) (hk1 
       _ = 0 := by simp
   exact not_nsmul_p_torsion_le_27 (m + k) hsum hsum27 hz
 
+/-! ## Exact closed-form certificate
+
+This mirrors the registry style of `PunoTwin.TwinAnalyticLaws`: the single
+most load-bearing rational constant of this module is restated as an exact
+`norm_num`-closed identity.  It certifies only an arithmetic identity about
+the curve `37a1`; it is NOT a claim that BSD holds.  The analytic rank, the
+Mordell-Weil rank, and their equality remain open gaps tracked in
+`UniversalSingularity.BSDReal`.
+-/
+
+/-- The registered discriminant of `37a1`, as an exact rational constant. -/
+def bsd37a1Disc : ℚ := 37
+
+/-- The registry constant is exactly `37`, closed by `norm_num`. -/
+theorem bsd37a1_disc_closed_form : bsd37a1Disc = 37 := by
+  norm_num [bsd37a1Disc]
+
+/-- The discriminant closed-form certificate: `W.Δ` is exactly the rational 37. -/
+theorem bsd37a1_discriminant_closed_form : W.Δ = 37 := by
+  rw [WeierstrassCurve.Δ]
+  norm_num [UniversalSingularity.BSDReal.sampleCurve,
+    WeierstrassCurve.b₂, WeierstrassCurve.b₄, WeierstrassCurve.b₆, WeierstrassCurve.b₈]
+
 end UniversalSingularity.BSD37a1

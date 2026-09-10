@@ -38,3 +38,10 @@ roots = [
   "UniversalSingularity.PvsNPPolytime",
   "UniversalSingularity.BridgeIntegrity",
 ]
+
+[[lean_lib]]
+name = "PunoTwin"
+roots = [
+  "PunoTwin.TwinAnalyticLaws",
+  "PunoTwin.TwinRingLaws",
+]
