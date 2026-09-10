@@ -44,4 +44,5 @@ name = "PunoTwin"
 roots = [
   "PunoTwin.TwinAnalyticLaws",
   "PunoTwin.TwinRingLaws",
+  "PunoTwin.MPOperator",
 ]
