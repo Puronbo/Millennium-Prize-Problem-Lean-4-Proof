@@ -153,4 +153,19 @@ theorem riemannHypothesis_iff_zeros : RiemannHypothesis ↔
     · exact False.elim (h1 hs1)
     · exact hline
 
+/-! ## Exact closed-form certificate
+
+This mirrors the registry style of `PunoTwin.TwinAnalyticLaws`: the single
+most load-bearing exact rational of this row, `ζ(0) = -1/2`, is restated as a
+named one-line theorem over `ℚ`.  It certifies only an arithmetic identity
+about the genuine zeta function; it is NOT a claim that RH holds.  Whether every
+non-trivial zero lies on `Re s = 1/2` remains the open gap pinned in
+`UniversalSingularity.RiemannHypothesisReal`.
+-/
+
+/-- `ζ(0) = -1/2`: the exact-rational closed-form certificate for the RH row,
+restated as a named theorem (the computation is kernel-provided by Mathlib). -/
+theorem rh_zeta_zero_window : riemannZeta (0 : ℂ) = -(1 : ℂ) / 2 := by
+  simpa using riemannZeta_zero_val
+
 end UniversalSingularity.RiemannHypothesisZeta
