@@ -45,4 +45,5 @@ roots = [
   "PunoTwin.TwinAnalyticLaws",
   "PunoTwin.TwinRingLaws",
   "PunoTwin.MPOperator",
+  "PunoTwin.DirichletLaws",
 ]
